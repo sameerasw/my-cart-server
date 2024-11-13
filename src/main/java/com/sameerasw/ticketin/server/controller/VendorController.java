@@ -1,5 +1,7 @@
-package com.sameerasw.ticketin.server;
+package com.sameerasw.ticketin.server.controller;
 
+import com.sameerasw.ticketin.server.model.Vendor;
+import com.sameerasw.ticketin.server.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
