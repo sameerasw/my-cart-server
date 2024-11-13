@@ -1,4 +1,4 @@
-package com.sameerasw.ticketin.server;
+package com.sameerasw.ticketin.server.model;
 
 public interface IVendor {
     int getMaxTicketPoolSize();

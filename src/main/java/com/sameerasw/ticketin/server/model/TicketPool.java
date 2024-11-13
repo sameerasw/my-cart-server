@@ -1,6 +1,5 @@
-package com.sameerasw.ticketin.server;
+package com.sameerasw.ticketin.server.model;
 
-import com.sameerasw.ticketin.server.model.Ticket;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentHashMap;

@@ -1,6 +1,5 @@
 package com.sameerasw.ticketin.server.model;
 
-import com.sameerasw.ticketin.server.ICustomer;
 import jakarta.persistence.Entity;
 
 @Entity

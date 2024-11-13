@@ -1,7 +1,7 @@
 package com.sameerasw.ticketin.server.service;
 
 import com.sameerasw.ticketin.server.repository.CustomerRepository;
-import com.sameerasw.ticketin.server.TicketPool;
+import com.sameerasw.ticketin.server.model.TicketPool;
 import com.sameerasw.ticketin.server.model.Customer;
 import com.sameerasw.ticketin.server.model.Ticket;
 import com.sameerasw.ticketin.server.model.Transaction;

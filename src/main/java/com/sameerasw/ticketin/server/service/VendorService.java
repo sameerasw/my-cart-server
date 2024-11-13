@@ -1,6 +1,6 @@
 package com.sameerasw.ticketin.server.service;
 
-import com.sameerasw.ticketin.server.TicketPool;
+import com.sameerasw.ticketin.server.model.TicketPool;
 import com.sameerasw.ticketin.server.repository.VendorRepository;
 import com.sameerasw.ticketin.server.model.Ticket;
 import com.sameerasw.ticketin.server.model.Vendor;
