@@ -59,6 +59,8 @@ public class Cli {
         while (true) {
             System.out.print("The following commands are available:\n" +
                     "  list-tickets <vendorId>\n" +
+                    "  create vendor\n" +
+                    "  list vendors\n" +
                     "  exit\n" +
                     "Enter a command: ");
             String line = scanner.nextLine();
@@ -78,6 +80,23 @@ public class Cli {
             } else if (parts[0].equalsIgnoreCase("exit")) {
                 System.out.println("Exiting...");
                 break;
+            } else if (parts[0].equalsIgnoreCase("create") && parts.length == 2 && parts[1].equalsIgnoreCase("vendor")) {
+                System.out.print("Enter vendor name: ");
+                String name = scanner.nextLine();
+                System.out.print("Enter max ticket pool size: ");
+                int maxTicketPoolSize = Integer.parseInt(scanner.nextLine());
+                System.out.print("Enter ticket release rate: ");
+                int ticketReleaseRate = Integer.parseInt(scanner.nextLine());
+
+                Vendor vendor = new Vendor(name, maxTicketPoolSize, ticketReleaseRate);
+                vendorService.saveVendor(vendor);
+                System.out.println("Vendor created successfully.");
+            } else if (parts[0].equalsIgnoreCase("list") && parts.length == 2 && parts[1].equalsIgnoreCase("vendors")) {
+                List<Vendor> vendors = vendorService.getAllVendors();
+                System.out.println("Vendors:");
+                for (Vendor vendor : vendors) {
+                    System.out.println("  ID: " + vendor.getId() + ", Name: " + vendor.getName());
+                }
             } else {
                 System.err.println("Invalid command.");
             }
