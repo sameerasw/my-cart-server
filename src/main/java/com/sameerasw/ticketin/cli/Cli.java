@@ -3,6 +3,7 @@ package com.sameerasw.ticketin.cli;
 import java.util.List;
 import java.util.Scanner;
 
+import com.sameerasw.ticketin.server.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,20 +37,33 @@ public class Cli {
         }
     }
 
+    public void addTicket(long vendorId, double price) {
+        Vendor vendor = vendorService.getVendorById(vendorId);
+        Ticket ticket = new Ticket();
+        ticket.setVendor(vendor);
+        ticket.setPrice(price);
+        ticketService.saveTicket(ticket);
+        System.out.println("Ticket added successfully.");
+    }
+
     public void start() {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.print("The following commands are available:\n" +
-                    "  list-tickets <vendorId>\n" +
-                    "  create vendor\n" +
-                    "  list vendors\n" +
-                    "  exit\n" +
-                    "Enter a command: ");
+                    "  1. List tickets for a vendor {list-tickets <vendorId>}\n" +
+                    "  2. Create a vendor\n" +
+                    "  3. List all vendors\n" +
+                    "  4. Create a customer\n" +
+                    "  5. List all customers\n" +
+                    "  6. Add a ticket to a vendor {add-ticket <vendorId> <price>}\n" +
+                    "  7. Exit\n" +
+                    "Enter a command (number or text): ");
             String line = scanner.nextLine();
             String[] parts = line.split(" ");
 
-            if (parts[0].equalsIgnoreCase("list-tickets")) {
+            String command = parts[0];
+            if (command.equalsIgnoreCase("1") || command.equalsIgnoreCase("list-tickets")) {
                 if (parts.length == 2) {
                     try {
                         long vendorId = Long.parseLong(parts[1]);
@@ -60,10 +74,10 @@ public class Cli {
                 } else {
                     System.err.println("Usage: list-tickets <vendorId>");
                 }
-            } else if (parts[0].equalsIgnoreCase("exit")) {
+            } else if (command.equalsIgnoreCase("7") || command.equalsIgnoreCase("exit")) {
                 System.out.println("Exiting...");
                 break;
-            } else if (parts[0].equalsIgnoreCase("create") && parts.length == 2 && parts[1].equalsIgnoreCase("vendor")) {
+            } else if (command.equalsIgnoreCase("2") || (command.equalsIgnoreCase("create") && parts.length == 2 && parts[1].equalsIgnoreCase("vendor"))) {
                 System.out.print("Enter vendor name: ");
                 String name = scanner.nextLine();
                 System.out.print("Enter max ticket pool size: ");
@@ -74,11 +88,40 @@ public class Cli {
                 Vendor vendor = new Vendor(name, maxTicketPoolSize, ticketReleaseRate);
                 vendorService.saveVendor(vendor);
                 System.out.println("Vendor created successfully.");
-            } else if (parts[0].equalsIgnoreCase("list") && parts.length == 2 && parts[1].equalsIgnoreCase("vendors")) {
+            } else if (command.equalsIgnoreCase("3") || (command.equalsIgnoreCase("list") && parts.length == 2 && parts[1].equalsIgnoreCase("vendors"))) {
                 List<Vendor> vendors = vendorService.getAllVendors();
                 System.out.println("Vendors:");
                 for (Vendor vendor : vendors) {
                     System.out.println("  ID: " + vendor.getId() + ", Name: " + vendor.getName());
+                }
+            } else if (command.equalsIgnoreCase("6") || command.equalsIgnoreCase("add-ticket")) {
+                if (parts.length == 3) {
+                    try {
+                        long vendorId = Long.parseLong(parts[1]);
+                        double price = Double.parseDouble(parts[2]);
+                        addTicket(vendorId, price);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Invalid vendor ID or price.");
+                    }
+                } else {
+                    System.err.println("Usage: add-ticket <vendorId> <price>");
+                }
+            } else if (command.equalsIgnoreCase("4") || (command.equalsIgnoreCase("create") && parts.length == 2 && parts[1].equalsIgnoreCase("customer"))) {
+                System.out.print("Enter customer name: ");
+                String name = scanner.nextLine();
+                System.out.print("Enter customer email: ");
+                String email = scanner.nextLine();
+                System.out.print("Enter ticket retrieval rate: ");
+                int ticketRetrievalRate = Integer.parseInt(scanner.nextLine());
+
+                Customer customer = new Customer(name, email, ticketRetrievalRate);
+                customerService.saveCustomer(customer);
+                System.out.println("Customer created successfully.");
+            } else if (command.equalsIgnoreCase("5") || (command.equalsIgnoreCase("list") && parts.length == 2 && parts[1].equalsIgnoreCase("customers"))) {
+                List<Customer> customers = customerService.getAllCustomers();
+                System.out.println("Customers:");
+                for (Customer customer : customers) {
+                    System.out.println("  ID: " + customer.getId() + ", Name: " + customer.getName());
                 }
             } else {
                 System.err.println("Invalid command.");
