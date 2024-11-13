@@ -8,6 +8,8 @@ import com.sameerasw.ticketin.server.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CustomerService {
 
@@ -44,5 +46,9 @@ public class CustomerService {
             }
         });
         thread.start();
+    }
+
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
     }
 }

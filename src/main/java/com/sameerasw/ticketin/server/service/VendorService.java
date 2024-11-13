@@ -7,6 +7,8 @@ import com.sameerasw.ticketin.server.model.Vendor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class VendorService {
 
@@ -38,5 +40,13 @@ public class VendorService {
             }
         });
         thread.start();
+    }
+
+    public List<Vendor> getAllVendors() {
+        return vendorRepository.findAll();
+    }
+
+    public Vendor getVendorById(long vendorId) {
+        return vendorRepository.findById(vendorId).orElse(null);
     }
 }
