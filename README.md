@@ -1,4 +1,4 @@
-# ticket-in-backend
+# ticket-in-server
 
 OOP Coursework project back-end containing the logic and configuration for the ticket booking system.
 
