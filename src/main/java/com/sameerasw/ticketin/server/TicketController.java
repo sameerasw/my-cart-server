@@ -1,4 +1,4 @@
-package com.sameerasw.ticketin.be;
+package com.sameerasw.ticketin.server;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,15 +1,15 @@
-package com.sameerasw.ticketin.be;
+package com.sameerasw.ticketin.server;
 
 import jakarta.persistence.*;
 
 @Entity
-public class Customer {
+public class Vendor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String email;
-    private String phone;
+    private int maxTicketPoolSize;
+    private int ticketReleaseRate;
 
     // Constructors, getters, and setters
 }

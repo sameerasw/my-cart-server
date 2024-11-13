@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sameerasw</groupId>
-	<artifactId>ticketin.be</artifactId>
+	<artifactId>ticketin.server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ticketin.be</name>
 	<description>Ticket-in backend SpringBoot project</description>

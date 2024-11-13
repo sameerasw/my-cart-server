@@ -1,4 +1,4 @@
-package com.sameerasw.ticketin.be;
+package com.sameerasw.ticketin.server;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
