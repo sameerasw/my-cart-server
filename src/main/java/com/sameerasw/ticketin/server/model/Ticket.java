@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 public class Ticket {
+    private boolean isSimulated;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,6 +19,13 @@ public class Ticket {
     public Ticket(Vendor vendor, double price) {
         this.vendor = vendor;
         this.price = price;
+        this.isSimulated = false;
+    }
+
+    public Ticket(Vendor vendor, double price, boolean isSimulated) {
+        this.vendor = vendor;
+        this.price = price;
+        this.isSimulated = isSimulated;
     }
 
     public Long getId() {

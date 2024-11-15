@@ -3,7 +3,7 @@ package com.sameerasw.ticketin.server.model;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Vendor extends User implements IVendor {
+public class Vendor extends User {
     private int maxTicketPoolSize;
     private int ticketReleaseRate;
 
@@ -11,28 +11,30 @@ public class Vendor extends User implements IVendor {
     public Vendor() {
     }
 
-    public Vendor(String name, int maxTicketPoolSize, int ticketReleaseRate) {
-        super(name);
+    public Vendor(String name, String email) {
+        super(name, email, false);
+        this.maxTicketPoolSize = 0;
+        this.ticketReleaseRate = 0;
+    }
+
+    public Vendor(String name, String email, int maxTicketPoolSize, int ticketReleaseRate) {
+        super(name, email, true);
         this.maxTicketPoolSize = maxTicketPoolSize;
         this.ticketReleaseRate = ticketReleaseRate;
     }
 
-    @Override
     public int getMaxTicketPoolSize() {
         return maxTicketPoolSize;
     }
 
-    @Override
     public void setMaxTicketPoolSize(int maxTicketPoolSize) {
         this.maxTicketPoolSize = maxTicketPoolSize;
     }
 
-    @Override
     public int getTicketReleaseRate() {
         return ticketReleaseRate;
     }
 
-    @Override
     public void setTicketReleaseRate(int ticketReleaseRate) {
         this.ticketReleaseRate = ticketReleaseRate;
     }

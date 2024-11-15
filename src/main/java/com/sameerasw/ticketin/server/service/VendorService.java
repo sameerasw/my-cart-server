@@ -42,8 +42,8 @@ public class VendorService {
         thread.start();
     }
 
-    public List<Vendor> getAllVendors() {
-        return vendorRepository.findAll();
+    public List<Vendor> getAllVendors(boolean isSimulated) {
+        return vendorRepository.findByisSimulated(isSimulated);
     }
 
     public Vendor getVendorById(long vendorId) {

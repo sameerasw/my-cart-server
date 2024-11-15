@@ -16,9 +16,10 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    public List<Ticket> getTicketsByVendorId(long vendorId) {
-        return ticketRepository.findByVendorId(vendorId);
-    }
+    public List<Ticket> getTicketsByVendorId(long vendorId, boolean isSimulated) {
+        // get tikets by vendor id where the vendor isSimulated true
+        return ticketRepository.findByVendorIdAndIsSimulated(vendorId, isSimulated);
 
-    // Add other service methods for Ticket operations
+        // Add other service methods for Ticket operations
+    }
 }

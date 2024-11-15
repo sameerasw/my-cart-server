@@ -3,17 +3,21 @@ package com.sameerasw.ticketin.server.model;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Customer extends User implements ICustomer {
-    private String email;
+public class Customer extends User {
     private int ticketRetrievalRate;
 
     // Constructors, getters, and setters
     public Customer() {
     }
 
+    public Customer(String name, String email) {
+        super(name, email, false);
+        this.ticketRetrievalRate = 0;
+    }
+
+    // simulating a customer
     public Customer(String name, String email, int ticketRetrievalRate) {
-        super(name);
-        this.email = email;
+        super(name, email, true);
         this.ticketRetrievalRate = ticketRetrievalRate;
     }
 
@@ -26,21 +30,11 @@ public class Customer extends User implements ICustomer {
     }
 
     @Override
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Override
     public String toString() {
         return "Customer{" +
                 "id=" + getId() +
                 ", name='" + getName() + '\'' +
-                ", email='" + email + '\'' +
+                ", email='" + super.getEmail() + '\'' +
                 '}';
     }
 }

@@ -8,13 +8,17 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String email;
+    private boolean isSimulated;
 
     // Constructors, getters, and setters
     public User() {
     }
 
-    public User(String name) {
+    public User(String name, String email, boolean isSimulated) {
         this.name = name;
+        this.email = email;
+        this.isSimulated = isSimulated;
     }
 
     public Long getId() {
@@ -29,8 +33,16 @@ public abstract class User {
         return name;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

@@ -48,7 +48,7 @@ public class CustomerService {
         thread.start();
     }
 
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+    public List<Customer> getAllCustomers(boolean isSimulated) {
+        return customerRepository.findByisSimulated(isSimulated);
     }
 }

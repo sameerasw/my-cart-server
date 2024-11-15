@@ -30,7 +30,7 @@ public class Cli {
     }
 
     public void listTickets(long vendorId) {
-        List<Ticket> tickets = ticketService.getTicketsByVendorId(vendorId);
+        List<Ticket> tickets = ticketService.getTicketsByVendorId(vendorId, true);
         System.out.println("Available Tickets for Vendor " + vendorId + ":");
         for (Ticket ticket : tickets) {
             System.out.println("  ID: " + ticket.getId() + ", Price: " + ticket.getPrice());
@@ -39,9 +39,7 @@ public class Cli {
 
     public void addTicket(long vendorId, double price) {
         Vendor vendor = vendorService.getVendorById(vendorId);
-        Ticket ticket = new Ticket();
-        ticket.setVendor(vendor);
-        ticket.setPrice(price);
+        Ticket ticket = new Ticket(vendor, price, true);
         ticketService.saveTicket(ticket);
         System.out.println("Ticket added successfully.");
     }
@@ -50,7 +48,7 @@ public class Cli {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.print("The following commands are available:\n" +
+            System.out.print("\nThe following commands are available:\n" +
                     "  1. List tickets for a vendor {list-tickets <vendorId>}\n" +
                     "  2. Create a vendor\n" +
                     "  3. List all vendors\n" +
@@ -80,16 +78,18 @@ public class Cli {
             } else if (command.equalsIgnoreCase("2") || (command.equalsIgnoreCase("create") && parts.length == 2 && parts[1].equalsIgnoreCase("vendor"))) {
                 System.out.print("Enter vendor name: ");
                 String name = scanner.nextLine();
+                System.out.print("Enter vendor email: ");
+                String email = scanner.nextLine();
                 System.out.print("Enter max ticket pool size: ");
                 int maxTicketPoolSize = Integer.parseInt(scanner.nextLine());
                 System.out.print("Enter ticket release rate: ");
                 int ticketReleaseRate = Integer.parseInt(scanner.nextLine());
 
-                Vendor vendor = new Vendor(name, maxTicketPoolSize, ticketReleaseRate);
+                Vendor vendor = new Vendor(name, email, maxTicketPoolSize, ticketReleaseRate);
                 vendorService.saveVendor(vendor);
                 System.out.println("Vendor created successfully.");
             } else if (command.equalsIgnoreCase("3") || (command.equalsIgnoreCase("list") && parts.length == 2 && parts[1].equalsIgnoreCase("vendors"))) {
-                List<Vendor> vendors = vendorService.getAllVendors();
+                List<Vendor> vendors = vendorService.getAllVendors(true);
                 System.out.println("Vendors:");
                 for (Vendor vendor : vendors) {
                     System.out.println("  ID: " + vendor.getId() + ", Name: " + vendor.getName());
@@ -118,7 +118,7 @@ public class Cli {
                 customerService.saveCustomer(customer);
                 System.out.println("Customer created successfully.");
             } else if (command.equalsIgnoreCase("5") || (command.equalsIgnoreCase("list") && parts.length == 2 && parts[1].equalsIgnoreCase("customers"))) {
-                List<Customer> customers = customerService.getAllCustomers();
+                List<Customer> customers = customerService.getAllCustomers(true);
                 System.out.println("Customers:");
                 for (Customer customer : customers) {
                     System.out.println("  ID: " + customer.getId() + ", Name: " + customer.getName());

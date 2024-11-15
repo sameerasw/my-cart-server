@@ -9,4 +9,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     Ticket findByPrice(double price);
 
     List<Ticket> findByVendorId(long vendorId);
+
+    //find by vendor id and isSimulated
+    List<Ticket> findByVendorIdAndIsSimulated(long vendorId, boolean isSimulated);
 }
