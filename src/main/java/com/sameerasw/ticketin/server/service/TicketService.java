@@ -1,7 +1,7 @@
 package com.sameerasw.ticketin.server.service;
 
-import com.sameerasw.ticketin.server.repository.TicketRepository;
 import com.sameerasw.ticketin.server.model.Ticket;
+import com.sameerasw.ticketin.server.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +16,8 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    public List<Ticket> getTicketsByVendorId(long vendorId, boolean isSimulated) {
-        // get tikets by vendor id where the vendor isSimulated true
-        return ticketRepository.findByVendorIdAndIsSimulated(vendorId, isSimulated);
-
-        // Add other service methods for Ticket operations
+    public List<Ticket> getTicketsByEventId(Long eventItemId) {
+        return ticketRepository.findByEventItemId(eventItemId);
     }
+
 }

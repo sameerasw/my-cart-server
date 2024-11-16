@@ -1,9 +1,13 @@
 package com.sameerasw.ticketin.server.service;
 
-import com.sameerasw.ticketin.server.model.TicketPool;
-import com.sameerasw.ticketin.server.repository.VendorRepository;
+import com.sameerasw.ticketin.server.model.EventItem;
 import com.sameerasw.ticketin.server.model.Ticket;
+import com.sameerasw.ticketin.server.model.TicketPool;
 import com.sameerasw.ticketin.server.model.Vendor;
+import com.sameerasw.ticketin.server.repository.EventRepository;
+import com.sameerasw.ticketin.server.repository.TicketPoolRepository;
+import com.sameerasw.ticketin.server.repository.TicketRepository;
+import com.sameerasw.ticketin.server.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,35 +15,43 @@ import java.util.List;
 
 @Service
 public class VendorService {
-
-    @Autowired
-    private TicketPool ticketPool;
-
     @Autowired
     private VendorRepository vendorRepository;
+    @Autowired
+    private EventRepository eventRepository;
+    @Autowired
+    private TicketRepository ticketRepository;
+    @Autowired
+    private TicketPoolService ticketPoolService;
+    @Autowired
+    private EventService eventService;
+    @Autowired
+    private TicketPoolRepository ticketPoolRepository;
 
-    public Vendor saveVendor(Vendor vendor) {
+    public Vendor createVendor(Vendor vendor) {
         return vendorRepository.save(vendor);
     }
 
-    // Add other service methods for Vendor operations
-
-    public void releaseTickets(Vendor vendor) {
-        Thread thread = new Thread(() -> {
-            while (true) { // Simulate continuous ticket release
-                try {
-                    for (int i = 0; i < vendor.getTicketReleaseRate(); i++) {
-                        Ticket newTicket = new Ticket();
-                        newTicket.setVendor(vendor);
-                        ticketPool.addTicket(newTicket);
-                    }
-                    Thread.sleep(vendor.getTicketReleaseRate() * 1000); // Adjust release rate
-                } catch (InterruptedException e) {
-                    // Handle interruption
+    public void releaseTickets(Vendor vendor, Long eventId) {
+        EventItem eventItem = eventRepository.findById(eventId).orElse(null);
+        if (eventItem != null) {
+            TicketPool ticketPool = eventItem.getTicketPool();
+            if (ticketPool != null) {
+                if (ticketPool.getAvailableTickets() < ticketPool.getMaxPoolSize()) {
+                    Ticket ticket = new Ticket(eventItem, true);
+                    ticketRepository.save(ticket);
+                    ticketPoolService.addTicket(ticketPool, ticket);
+                    ticketPoolRepository.save(ticketPool);
+                    System.out.println("Ticket released successfully");
+                } else {
+                    System.out.println("Ticket pool is full");
                 }
+            } else {
+                System.out.println("Ticket pool not found");
             }
-        });
-        thread.start();
+        } else {
+            System.out.println("Event not found");
+        }
     }
 
     public List<Vendor> getAllVendors(boolean isSimulated) {

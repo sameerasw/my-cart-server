@@ -2,14 +2,11 @@ package com.sameerasw.ticketin.server.repository;
 
 import com.sameerasw.ticketin.server.model.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
-    Ticket findByPrice(double price);
-
-    List<Ticket> findByVendorId(long vendorId);
-
-    //find by vendor id and isSimulated
-    List<Ticket> findByVendorIdAndIsSimulated(long vendorId, boolean isSimulated);
+    List<Ticket> findByEventItemId(Long eventItemId);
 }

@@ -1,51 +1,29 @@
 package com.sameerasw.ticketin.server.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
 
 @Entity
 public class Vendor extends User {
-    private int maxTicketPoolSize;
     private int ticketReleaseRate;
 
+    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EventItem> events;
+
     // Constructors, getters, and setters
-    public Vendor() {
-    }
+    public Vendor() {}
 
-    public Vendor(String name, String email) {
-        super(name, email, false);
-        this.maxTicketPoolSize = 0;
-        this.ticketReleaseRate = 0;
-    }
-
-    public Vendor(String name, String email, int maxTicketPoolSize, int ticketReleaseRate) {
-        super(name, email, true);
-        this.maxTicketPoolSize = maxTicketPoolSize;
+    public Vendor(String name, String email, int ticketReleaseRate) {
+        super(name, email, true); // Assume simulated vendors
         this.ticketReleaseRate = ticketReleaseRate;
     }
 
-    public int getMaxTicketPoolSize() {
-        return maxTicketPoolSize;
-    }
-
-    public void setMaxTicketPoolSize(int maxTicketPoolSize) {
-        this.maxTicketPoolSize = maxTicketPoolSize;
-    }
-
-    public int getTicketReleaseRate() {
+    public long getTicketReleaseRate() {
         return ticketReleaseRate;
     }
 
-    public void setTicketReleaseRate(int ticketReleaseRate) {
-        this.ticketReleaseRate = ticketReleaseRate;
-    }
-
-    @Override
-    public String toString() {
-        return "Vendor{" +
-                "id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", maxTicketPoolSize=" + maxTicketPoolSize +
-                ", ticketReleaseRate=" + ticketReleaseRate +
-                '}';
-    }
+    // ... getters and setters ...
 }
