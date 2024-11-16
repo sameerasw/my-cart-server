@@ -4,7 +4,6 @@ import com.sameerasw.ticketin.server.model.Customer;
 import com.sameerasw.ticketin.server.model.Ticket;
 import com.sameerasw.ticketin.server.model.TicketPool;
 import com.sameerasw.ticketin.server.repository.TicketPoolRepository;
-import com.sameerasw.ticketin.server.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ public class TicketPoolService {
 
     public synchronized Ticket removeTicket(TicketPool ticketPool, Customer customer) {
         if (ticketPool.getAvailableTickets() > 0) {
-            Ticket ticket = ticketPool.getTickets().remove(0); // Remove from the list
+            Ticket ticket = ticketPool.getTickets().remove(0);
             if (ticket != null) {
                 ticket.setCustomer(customer);
                 ticket.sellTicket();

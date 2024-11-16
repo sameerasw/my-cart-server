@@ -6,20 +6,21 @@ import com.sameerasw.ticketin.server.model.Ticket;
 import com.sameerasw.ticketin.server.model.TicketPool;
 import com.sameerasw.ticketin.server.repository.CustomerRepository;
 import com.sameerasw.ticketin.server.repository.EventRepository;
-import com.sameerasw.ticketin.server.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 @Service
 public class CustomerService {
+    private static final Logger logger = LoggerFactory.getLogger(CustomerService.class);
+
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
     private EventRepository eventRepository;
-    @Autowired
-    private TicketRepository ticketRepository;
     @Autowired
     private TicketPoolService ticketPoolService;
     @Autowired
@@ -36,9 +37,9 @@ public class CustomerService {
             Ticket ticket = ticketPoolService.removeTicket(ticketPool, customer);
             if (ticket != null) {
                 ticketService.saveTicket(ticket);
-                System.out.println("Ticket purchased successfully");
+                logger.info("Ticket purchased successfully");
             } else {
-                System.out.println("No tickets available for the event");
+                logger.info("No tickets available for the event");
             }
         }
     }

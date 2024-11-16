@@ -10,11 +10,15 @@ import com.sameerasw.ticketin.server.repository.TicketRepository;
 import com.sameerasw.ticketin.server.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 @Service
 public class VendorService {
+    private static final Logger logger = LoggerFactory.getLogger(VendorService.class);
+
     @Autowired
     private VendorRepository vendorRepository;
     @Autowired
@@ -23,8 +27,6 @@ public class VendorService {
     private TicketRepository ticketRepository;
     @Autowired
     private TicketPoolService ticketPoolService;
-    @Autowired
-    private EventService eventService;
     @Autowired
     private TicketPoolRepository ticketPoolRepository;
 
@@ -42,15 +44,15 @@ public class VendorService {
                     ticketRepository.save(ticket);
                     ticketPoolService.addTicket(ticketPool, ticket);
                     ticketPoolRepository.save(ticketPool);
-                    System.out.println("Ticket released successfully");
+                    logger.info("Ticket released successfully");
                 } else {
-                    System.out.println("Ticket pool is full");
+                    logger.info("Ticket pool is full");
                 }
             } else {
-                System.out.println("Ticket pool not found");
+                logger.info("Ticket pool not found");
             }
         } else {
-            System.out.println("Event not found");
+            logger.info("Event not found");
         }
     }
 
