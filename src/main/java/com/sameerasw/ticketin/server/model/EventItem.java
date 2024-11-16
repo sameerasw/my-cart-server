@@ -19,7 +19,7 @@ public class EventItem {
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name = "pool_id")
     private TicketPool ticketPool;
 

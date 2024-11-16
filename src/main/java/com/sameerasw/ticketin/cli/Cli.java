@@ -211,18 +211,15 @@ public class Cli implements CommandLineRunner {
 
     private void listTicketsForEvent() {
         long eventId = getLongInput("Enter event ID: ");
-        HttpEntity<Void> entity = new HttpEntity<>(null, new HttpHeaders());
-        String url = "http://localhost:8081/tickets/events/" + eventId;
-        ResponseEntity<List<Ticket>> response = restTemplate.exchange(url, HttpMethod.GET, entity, new ParameterizedTypeReference<List<Ticket>>() {});
-
-        if (response.getStatusCode().is2xxSuccessful()) {
-            List<Ticket> tickets = response.getBody();
-            System.out.println("Tickets for Event " + eventId + ":");
+        EventItem eventItem = eventService.getEventById(eventId);
+        if (eventItem != null) {
+            List<Ticket> tickets = eventItem.getTicketPool().getTickets();
+            System.out.println("Tickets for event " + eventItem.getEventName() + ":");
             for (Ticket ticket : tickets) {
-                System.out.println("  ID: " + ticket.getId() + ", Price: " + ticket.getTicketPrice());
+                System.out.println("  ID: " + ticket.getId() + ", Status: " + ticket.isAvailable());
             }
         } else {
-            System.err.println("Error fetching tickets: " + response.getStatusCode());
+            System.out.println("Event not found.");
         }
 
     }

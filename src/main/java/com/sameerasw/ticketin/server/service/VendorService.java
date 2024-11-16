@@ -38,9 +38,9 @@ public class VendorService {
                             System.out.println("Ticket created: " + ticket);
                             ticketRepository.save(ticket);
                             System.out.println("Ticket saved: " + ticket);
-//                            eventItem.getTicketPool().addTicket(ticket);
-//                            System.out.println("Ticket added to pool: " + ticket);
-//                            System.out.println("Ticket release completed: " + ticket);
+                            eventItem.getTicketPool().addTicket(ticket);
+                            System.out.println("Ticket added to pool: " + ticket);
+                            System.out.println("Ticket release completed: " + ticket);
 //                        Thread.sleep(vendor.getTicketReleaseRate() * 1000L);
             });
             thread.start();

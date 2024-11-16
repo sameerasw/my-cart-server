@@ -55,5 +55,9 @@ public class TicketPool {
         return poolId;
     }
 
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
     // ... getters and setters ...
 }
