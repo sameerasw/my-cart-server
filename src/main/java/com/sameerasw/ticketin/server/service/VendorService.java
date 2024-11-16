@@ -34,20 +34,14 @@ public class VendorService {
         EventItem eventItem = eventRepository.findById(eventId).orElse(null);
         if (eventItem != null) {
             Thread thread = new Thread(() -> {
-                while (true) {
-                    try {
                             Ticket ticket = new Ticket(eventItem, true);
                             System.out.println("Ticket created: " + ticket);
-                            eventItem.getTicketPool().addTicket(ticket);
-                            System.out.println("Ticket added to pool: " + ticket);
                             ticketRepository.save(ticket);
                             System.out.println("Ticket saved: " + ticket);
-                            System.out.println("Ticket release completed: " + ticket);
-                        Thread.sleep(vendor.getTicketReleaseRate() * 1000L);
-                    } catch (InterruptedException e) {
-                        //Handle interruption
-                    }
-                }
+//                            eventItem.getTicketPool().addTicket(ticket);
+//                            System.out.println("Ticket added to pool: " + ticket);
+//                            System.out.println("Ticket release completed: " + ticket);
+//                        Thread.sleep(vendor.getTicketReleaseRate() * 1000L);
             });
             thread.start();
         } else {
