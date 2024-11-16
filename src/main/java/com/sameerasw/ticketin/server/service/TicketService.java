@@ -19,4 +19,5 @@ public class TicketService {
     public List<Ticket> getTicketsByEventId(Long eventItemId) {
         return ticketRepository.findByEventItemId(eventItemId);
     }
+
 }

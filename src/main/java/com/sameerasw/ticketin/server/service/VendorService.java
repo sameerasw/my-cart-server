@@ -33,17 +33,13 @@ public class VendorService {
     public void releaseTickets(Vendor vendor, Long eventId) {
         EventItem eventItem = eventRepository.findById(eventId).orElse(null);
         if (eventItem != null) {
-            Thread thread = new Thread(() -> {
-                            Ticket ticket = new Ticket(eventItem, true);
-                            System.out.println("Ticket created: " + ticket);
-                            ticketRepository.save(ticket);
-                            System.out.println("Ticket saved: " + ticket);
-                            eventItem.getTicketPool().addTicket(ticket);
-                            System.out.println("Ticket added to pool: " + ticket);
-                            System.out.println("Ticket release completed: " + ticket);
-//                        Thread.sleep(vendor.getTicketReleaseRate() * 1000L);
-            });
-            thread.start();
+            Ticket ticket = new Ticket(eventItem, true);
+            System.out.println("Ticket created: " + ticket);
+            ticketRepository.save(ticket);
+            System.out.println("Ticket saved: " + ticket);
+            eventItem.getTicketPool().addTicket(ticket);
+            System.out.println("Ticket added to pool: " + ticket);
+            System.out.println("Ticket release completed: " + ticket);
         } else {
             System.out.println("Event not found or ticket pool not created");
         }

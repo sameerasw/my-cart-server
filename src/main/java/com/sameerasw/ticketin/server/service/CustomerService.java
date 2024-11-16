@@ -42,4 +42,8 @@ public class CustomerService {
     public List<Customer> getAllCustomers(boolean isSimulated) {
         return customerRepository.findByisSimulated(isSimulated);
     }
+
+    public Customer getCustomerById(long customerId) {
+        return customerRepository.findById(customerId).orElse(null);
+    }
 }

@@ -227,7 +227,7 @@ public class Cli implements CommandLineRunner {
     private void buyTicket() {
         long customerId = getLongInput("Enter customer ID: ");
         long eventId = getLongInput("Enter event ID: ");
-        customerService.purchaseTicket(customerService.createCustomer(new Customer("test", "test@test.com", 1)), eventId);
+        customerService.purchaseTicket(customerService.getCustomerById(customerId), eventId);
         System.out.println("Ticket purchased successfully.");
     }
 
@@ -242,8 +242,7 @@ public class Cli implements CommandLineRunner {
         long eventId = getLongInput("Enter event ID: ");
         EventItem eventItem = eventService.getEventById(eventId);
         if (eventItem != null) {
-            TicketPool ticketPool = eventItem.getTicketPool();
-            System.out.println(ticketPool);
+            System.out.println(eventItem);
         } else {
             System.out.println("Event not found.");
         }

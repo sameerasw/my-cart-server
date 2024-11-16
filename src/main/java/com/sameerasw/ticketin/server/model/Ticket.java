@@ -44,8 +44,8 @@ public class Ticket {
         return isSold ? "No" : "Yes";
     }
 
-    public boolean getIsSold() {
-        return isSold;
+    public void sellTicket() {
+        isSold = true;
     }
     // ... getters and setters ...
 }

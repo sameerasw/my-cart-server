@@ -25,7 +25,7 @@ public class TicketPool {
     public TicketPool(int maxPoolSize, EventItem eventItem) {
         this.maxPoolSize = maxPoolSize;
         this.eventItem = eventItem;
-        this.availableTickets = maxPoolSize;
+        this.availableTickets = 0;
     }
 
     public synchronized Ticket removeTicket(Customer customer) {
@@ -33,14 +33,17 @@ public class TicketPool {
             Ticket ticket = tickets.remove(0); // Remove from the list
             if (ticket != null) {
                 ticket.setCustomer(customer);
+                ticket.sellTicket();
                 availableTickets--;
+                //remove from the pool table
+                tickets.remove(ticket);
                 return ticket;
             }
         }
         return null;
     }
 
-    public synchronized void addTicket(Ticket ticket) {
+    public void addTicket(Ticket ticket) {
         if (availableTickets < maxPoolSize) {
             tickets.add(ticket);
             availableTickets++;
@@ -58,6 +61,15 @@ public class TicketPool {
     public List<Ticket> getTickets() {
         return tickets;
     }
+
+    public String getAvailableTickets() {
+        return availableTickets + "/" + maxPoolSize;
+    }
+
+    public void setAvailableTickets(int availableTickets) {
+        this.availableTickets = availableTickets;
+    }
+
 
     // ... getters and setters ...
 }

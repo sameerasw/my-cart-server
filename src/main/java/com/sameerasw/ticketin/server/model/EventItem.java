@@ -78,5 +78,20 @@ public class EventItem {
         this.ticketPool = ticketPool;
     }
 
+    @Override
+    public String toString() {
+        return "EventItem{" +
+                "eventId=" + eventId +
+                ", eventName='" + eventName + '\'' +
+                ", eventLocation='" + eventLocation + '\'' +
+                ", eventDate='" + eventDate + '\'' +
+                ", eventTime='" + eventTime + '\'' +
+                ", ticketPrice=" + ticketPrice +
+                ", isSimulated=" + isSimulated +
+                ", vendor=" + vendor.getName() +
+                ", availableTickets=" + ticketPool.getAvailableTickets() +
+                '}';
+    }
+
     // ... getters and setters ...
 }
