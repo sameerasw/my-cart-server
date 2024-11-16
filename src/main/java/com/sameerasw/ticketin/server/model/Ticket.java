@@ -19,8 +19,6 @@ public class Ticket {
     @ManyToOne
     private Customer customer; // Link to Customer
 
-    private String status = "Available";
-
     // Constructors, getters, and setters
     public Ticket() {}
 
@@ -43,13 +41,11 @@ public class Ticket {
     }
 
     public String isAvailable() {
-        return status;
+        return isSold ? "No" : "Yes";
     }
 
-    public void setSold() {
-        this.isSold = true;
-        this.status = "Sold";
+    public boolean getIsSold() {
+        return isSold;
     }
-
     // ... getters and setters ...
 }

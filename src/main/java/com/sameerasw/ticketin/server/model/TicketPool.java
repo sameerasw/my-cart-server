@@ -16,7 +16,7 @@ public class TicketPool {
     @JoinColumn(name = "event_item_id") // Changed to event_item_id
     private EventItem eventItem;
 
-    @OneToMany(mappedBy = "ticketPool", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "ticketPool", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Ticket> tickets;
 
     // Constructors, getters, and setters
