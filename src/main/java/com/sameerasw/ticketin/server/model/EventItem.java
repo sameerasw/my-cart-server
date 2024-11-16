@@ -74,5 +74,9 @@ public class EventItem {
         return this.eventId;
     }
 
+    public void setTicketPool(TicketPool ticketPool) {
+        this.ticketPool = ticketPool;
+    }
+
     // ... getters and setters ...
 }

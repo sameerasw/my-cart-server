@@ -1,69 +1,58 @@
 package com.sameerasw.ticketin.server.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.List;
 
 @Entity
 public class TicketPool {
-    private int maxPoolSize;
-    private ConcurrentLinkedQueue<Ticket> tickets = new ConcurrentLinkedQueue<>();
-    @ManyToOne
-    @JoinColumn(name = "event_id")
-    private EventItem eventItem;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long poolId;
+    private int maxPoolSize;
+    private int availableTickets;
 
-    public EventItem getEvent() {
-        return eventItem;
-    }
+    @ManyToOne
+    @JoinColumn(name = "event_item_id") // Changed to event_item_id
+    private EventItem eventItem;
 
-    public void setEvent(EventItem eventItem) {
-        this.eventItem = eventItem;
-    }
+    @OneToMany(mappedBy = "ticketPool", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Ticket> tickets;
 
+    // Constructors, getters, and setters
     public TicketPool() {}
 
     public TicketPool(int maxPoolSize, EventItem eventItem) {
         this.maxPoolSize = maxPoolSize;
         this.eventItem = eventItem;
+        this.availableTickets = maxPoolSize;
     }
 
     public synchronized Ticket removeTicket(Customer customer) {
-        Ticket ticket = tickets.poll();
-        if (ticket != null) {
-            ticket.setCustomer(customer);
-            return ticket;
+        if (availableTickets > 0) {
+            Ticket ticket = tickets.remove(0); // Remove from the list
+            if (ticket != null) {
+                ticket.setCustomer(customer);
+                availableTickets--;
+                return ticket;
+            }
         }
         return null;
     }
 
-    public void addTicket(Ticket ticket) {
-        if (tickets.size() < maxPoolSize) {
-            tickets.offer(ticket);
-            System.out.println("Ticket added to pool: " + ticket);
+    public synchronized void addTicket(Ticket ticket) {
+        if (availableTickets < maxPoolSize) {
+            tickets.add(ticket);
+            availableTickets++;
         }
     }
 
-    public void setPoolId(Long poolId) {
-        this.poolId = poolId;
+    public int getMaxPoolSize() {
+        return maxPoolSize;
     }
 
     public Long getPoolId() {
         return poolId;
-    }
-
-    @Override
-    public String toString() {
-        return "TicketPool{" +
-                "maxPoolSize=" + maxPoolSize +
-                ", tickets=" + tickets +
-                ", eventItem=" + eventItem +
-                ", poolId=" + poolId +
-                '}';
     }
 
     // ... getters and setters ...

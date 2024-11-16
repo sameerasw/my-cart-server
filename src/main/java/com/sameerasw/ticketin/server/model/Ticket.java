@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 
 @Entity
 public class Ticket {
+
+    @ManyToOne
+    private TicketPool ticketPool;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +25,7 @@ public class Ticket {
     public Ticket(EventItem eventItem, boolean isSimulated) {
         this.eventItem = eventItem;
         this.isSimulated = isSimulated;
+        this.ticketPool = eventItem.getTicketPool();
     }
 
     public void setCustomer(Customer customer) {

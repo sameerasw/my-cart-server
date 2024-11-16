@@ -22,18 +22,19 @@ public class CustomerService {
     private TicketRepository ticketRepository;
     @Autowired
     private TicketPool ticketPool;
+    @Autowired
+    private TicketService ticketService;
 
     public Customer createCustomer(Customer customer) {
         return customerRepository.save(customer);
     }
 
-    public void purchaseTicket(Customer customer, long eventId) {
-        EventItem eventItem = eventRepository.findById(eventId).orElse(null);
+    public void purchaseTicket(Customer customer, long eventItemId) {
+        EventItem eventItem = eventRepository.findById(eventItemId).orElse(null);
         if (eventItem != null && eventItem.getTicketPool() != null) {
             Ticket ticket = eventItem.getTicketPool().removeTicket(customer);
             if (ticket != null) {
-                ticket.setCustomer(customer);
-                ticketRepository.save(ticket);
+                ticketService.saveTicket(ticket); // Save to persist changes
             }
         }
     }

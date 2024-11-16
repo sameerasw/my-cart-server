@@ -16,7 +16,7 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    public List<Ticket> getTicketsByEventId(Long eventId) {
-        return ticketRepository.findByEventItemId(eventId);
+    public List<Ticket> getTicketsByEventId(Long eventItemId) {
+        return ticketRepository.findByEventItemId(eventItemId);
     }
 }

@@ -22,6 +22,8 @@ public class VendorService {
     private TicketRepository ticketRepository;
     @Autowired
     private TicketPool ticketPool;
+    @Autowired
+    private EventService eventService;
 
 
     public Vendor createVendor(Vendor vendor) {
@@ -30,16 +32,17 @@ public class VendorService {
 
     public void releaseTickets(Vendor vendor, Long eventId) {
         EventItem eventItem = eventRepository.findById(eventId).orElse(null);
-        if (eventItem != null && eventItem.getTicketPool() != null) {
+        if (eventItem != null) {
             Thread thread = new Thread(() -> {
                 while (true) {
                     try {
-                        for (int i = 0; i < vendor.getTicketReleaseRate(); i++) {
                             Ticket ticket = new Ticket(eventItem, true);
+                            System.out.println("Ticket created: " + ticket);
                             eventItem.getTicketPool().addTicket(ticket);
+                            System.out.println("Ticket added to pool: " + ticket);
                             ticketRepository.save(ticket);
-                            System.out.println("Ticket released: " + ticket);
-                        }
+                            System.out.println("Ticket saved: " + ticket);
+                            System.out.println("Ticket release completed: " + ticket);
                         Thread.sleep(vendor.getTicketReleaseRate() * 1000L);
                     } catch (InterruptedException e) {
                         //Handle interruption

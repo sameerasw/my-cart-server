@@ -196,7 +196,7 @@ public class Cli implements CommandLineRunner {
         int maxPoolSize = getIntegerInput("Enter max pool size: ");
 
         EventItem eventItem = new EventItem(eventName, eventLocation, eventDate, eventTime, ticketPrice, vendorService.getVendorById(vendorId), true);
-        eventService.createEvent(eventItem);
+        eventService.createEvent(eventItem, maxPoolSize);
         eventItem.createTicketPool(maxPoolSize);
         System.out.println("Event created successfully.");
     }
