@@ -38,6 +38,7 @@ public class VendorService {
                             Ticket ticket = new Ticket(eventItem, true);
                             eventItem.getTicketPool().addTicket(ticket);
                             ticketRepository.save(ticket);
+                            System.out.println("Ticket released: " + ticket);
                         }
                         Thread.sleep(vendor.getTicketReleaseRate() * 1000L);
                     } catch (InterruptedException e) {
@@ -46,10 +47,16 @@ public class VendorService {
                 }
             });
             thread.start();
+        } else {
+            System.out.println("Event not found or ticket pool not created");
         }
     }
 
     public List<Vendor> getAllVendors(boolean isSimulated) {
         return vendorRepository.findByisSimulated(isSimulated);
+    }
+
+    public Vendor getVendorById(long vendorId) {
+        return vendorRepository.findById(vendorId).orElse(null);
     }
 }

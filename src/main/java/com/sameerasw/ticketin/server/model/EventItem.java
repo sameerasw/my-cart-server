@@ -26,27 +26,28 @@ public class EventItem {
     // Constructors, getters, and setters
     public EventItem() {}
 
-    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, Vendor vendor, int maxPoolSize) {
+    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, Vendor vendor ) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.eventDate = eventDate;
         this.eventTime = eventTime;
         this.ticketPrice = ticketPrice;
         this.vendor = vendor;
-        this.ticketPool = new TicketPool(maxPoolSize, this); // Create pool when event is created
         this.isSimulated = false;
     }
 
-
-    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, Vendor vendor, int maxPoolSize, boolean isSimulated) {
+    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, Vendor vendor, boolean isSimulated) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.eventDate = eventDate;
         this.eventTime = eventTime;
         this.ticketPrice = ticketPrice;
         this.vendor = vendor;
-        this.ticketPool = new TicketPool(maxPoolSize, this); // Create pool when event is created
         this.isSimulated = isSimulated;
+    }
+
+    public void createTicketPool(int maxPoolSize) {
+        this.ticketPool = new TicketPool(maxPoolSize, this);
     }
 
     public void setVendor(Vendor vendor) {

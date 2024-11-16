@@ -3,6 +3,7 @@ package com.sameerasw.ticketin.cli;
 import java.util.List;
 import java.util.Scanner;
 
+import com.sameerasw.ticketin.server.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.ParameterizedTypeReference;
@@ -13,10 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.sameerasw.ticketin.server.model.Customer;
-import com.sameerasw.ticketin.server.model.EventItem;
-import com.sameerasw.ticketin.server.model.Ticket;
-import com.sameerasw.ticketin.server.model.Vendor;
 import com.sameerasw.ticketin.server.service.CustomerService;
 import com.sameerasw.ticketin.server.service.EventService;
 import com.sameerasw.ticketin.server.service.TicketService;
@@ -83,6 +80,9 @@ public class Cli implements CommandLineRunner {
                 releaseTickets();
                 break;
             case 10:
+                viewTicketPool();
+                break;
+            case 11:
                 System.out.println("Exiting...");
                 scanner.close();
                 System.exit(0);
@@ -104,7 +104,8 @@ public class Cli implements CommandLineRunner {
         System.out.println("7. List Tickets for Event");
         System.out.println("8. Buy Ticket");
         System.out.println("9. Release Tickets");
-        System.out.println("10. Exit");
+        System.out.println("10. View TicketPool");
+        System.out.println("11. Exit");
     }
 
     //Helper function to get integer input from the console
@@ -194,8 +195,9 @@ public class Cli implements CommandLineRunner {
         double ticketPrice = getDoubleInput("Enter ticket price: ");
         int maxPoolSize = getIntegerInput("Enter max pool size: ");
 
-        EventItem eventItem = new EventItem(eventName, eventLocation, eventDate, eventTime, ticketPrice, vendorService.createVendor(new Vendor("test", "test@test.com", 1)), maxPoolSize);
+        EventItem eventItem = new EventItem(eventName, eventLocation, eventDate, eventTime, ticketPrice, vendorService.getVendorById(vendorId), true);
         eventService.createEvent(eventItem);
+        eventItem.createTicketPool(maxPoolSize);
         System.out.println("Event created successfully.");
     }
 
@@ -235,8 +237,20 @@ public class Cli implements CommandLineRunner {
     private void releaseTickets() {
         long vendorId = getLongInput("Enter vendor ID: ");
         long eventId = getLongInput("Enter event ID: ");
-        vendorService.releaseTickets(vendorService.createVendor(new Vendor("test", "test@test.com", 1)), eventId);
+        vendorService.releaseTickets(vendorService.getVendorById(vendorId), eventId);
         System.out.println("Tickets released successfully.");
+    }
+
+    private void viewTicketPool() {
+        long eventId = getLongInput("Enter event ID: ");
+        EventItem eventItem = eventService.getEventById(eventId);
+        if (eventItem != null) {
+            TicketPool ticketPool = eventItem.getTicketPool();
+            System.out.println(ticketPool);
+        } else {
+            System.out.println("Event not found.");
+        }
+
     }
 
 }

@@ -41,9 +41,10 @@ public class TicketPool {
         return null;
     }
 
-    public synchronized void addTicket(Ticket ticket) {
+    public void addTicket(Ticket ticket) {
         if (tickets.size() < maxPoolSize) {
             tickets.offer(ticket);
+            System.out.println("Ticket added to pool: " + ticket);
         }
     }
 
@@ -53,6 +54,16 @@ public class TicketPool {
 
     public Long getPoolId() {
         return poolId;
+    }
+
+    @Override
+    public String toString() {
+        return "TicketPool{" +
+                "maxPoolSize=" + maxPoolSize +
+                ", tickets=" + tickets +
+                ", eventItem=" + eventItem +
+                ", poolId=" + poolId +
+                '}';
     }
 
     // ... getters and setters ...
