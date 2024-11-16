@@ -54,6 +54,10 @@ public class EventItem {
         this.vendor = vendor;
     }
 
+    public Vendor getVendor() {
+        return this.vendor;
+    }
+
     public TicketPool getTicketPool() {
         return ticketPool;
     }
@@ -92,6 +96,7 @@ public class EventItem {
                 ", availableTickets=" + ticketPool.getAvailableTickets() +
                 '}';
     }
+
 
     // ... getters and setters ...
 }

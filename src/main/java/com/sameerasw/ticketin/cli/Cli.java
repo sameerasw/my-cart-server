@@ -216,7 +216,7 @@ public class Cli implements CommandLineRunner {
             List<Ticket> tickets = eventItem.getTicketPool().getTickets();
             System.out.println("Tickets for event " + eventItem.getEventName() + ":");
             for (Ticket ticket : tickets) {
-                System.out.println("  ID: " + ticket.getId() + ", Status: " + ticket.isAvailable());
+                System.out.println("  ID: " + ticket.getId() + ", Available?: " + ticket.isAvailable());
             }
         } else {
             System.out.println("Event not found.");
@@ -227,15 +227,29 @@ public class Cli implements CommandLineRunner {
     private void buyTicket() {
         long customerId = getLongInput("Enter customer ID: ");
         long eventId = getLongInput("Enter event ID: ");
-        customerService.purchaseTicket(customerService.getCustomerById(customerId), eventId);
-        System.out.println("Ticket purchased successfully.");
+        Customer customer = customerService.getCustomerById(customerId);
+        EventItem eventItem = eventService.getEventById(eventId);
+
+        if (customer != null && eventItem != null) {
+            System.out.println("Ticket purchase requested.");
+            customerService.purchaseTicket(customer, eventId);
+        } else {
+            System.out.println("Customer or Event not found.");
+        }
     }
 
     private void releaseTickets() {
         long vendorId = getLongInput("Enter vendor ID: ");
         long eventId = getLongInput("Enter event ID: ");
-        vendorService.releaseTickets(vendorService.getVendorById(vendorId), eventId);
-        System.out.println("Tickets released successfully.");
+        Vendor vendor = vendorService.getVendorById(vendorId);
+        EventItem eventItem = eventService.getEventById(eventId);
+
+        if (vendor != null && eventItem != null && eventItem.getVendor().getId().equals(vendorId)) {
+            System.out.println("Tickets release requested.");
+            vendorService.releaseTickets(vendor, eventId);
+        } else {
+            System.out.println("Vendor or Event not found, or they are not related.");
+        }
     }
 
     private void viewTicketPool() {

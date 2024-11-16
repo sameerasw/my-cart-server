@@ -1,7 +1,10 @@
 package com.sameerasw.ticketin.server.service;
 
+import com.sameerasw.ticketin.server.model.Customer;
+import com.sameerasw.ticketin.server.model.Ticket;
 import com.sameerasw.ticketin.server.model.TicketPool;
 import com.sameerasw.ticketin.server.repository.TicketPoolRepository;
+import com.sameerasw.ticketin.server.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +17,29 @@ public class TicketPoolService {
         return ticketPoolRepository.save(ticketPool);
     }
 
-    public TicketPool getTicketPoolByEventItemId(Long eventItemId) { // Changed method name
-        return ticketPoolRepository.findByEventItemId(eventItemId); // Changed method call
+    public TicketPool getTicketPoolByEventItemId(Long eventItemId) {
+        return ticketPoolRepository.findByEventItemId(eventItemId);
     }
 
-    // other methods as needed
+    public synchronized Ticket removeTicket(TicketPool ticketPool, Customer customer) {
+        if (ticketPool.getAvailableTickets() > 0) {
+            Ticket ticket = ticketPool.getTickets().remove(0); // Remove from the list
+            if (ticket != null) {
+                ticket.setCustomer(customer);
+                ticket.sellTicket();
+                ticketPool.setAvailableTickets(ticketPool.getAvailableTickets() - 1);
+                ticketPool.getTickets().remove(ticket);
+                ticketPoolRepository.save(ticketPool);
+                return ticket;
+            }
+        }
+        return null;
+    }
+
+    public void addTicket(TicketPool ticketPool, Ticket ticket) {
+        if (ticketPool.getAvailableTickets() < ticketPool.getMaxPoolSize()) {
+            ticketPool.getTickets().add(ticket);
+            ticketPool.setAvailableTickets(ticketPool.getAvailableTickets() + 1);
+        }
+    }
 }

@@ -21,7 +21,7 @@ public class CustomerService {
     @Autowired
     private TicketRepository ticketRepository;
     @Autowired
-    private TicketPool ticketPool;
+    private TicketPoolService ticketPoolService;
     @Autowired
     private TicketService ticketService;
 
@@ -32,9 +32,13 @@ public class CustomerService {
     public void purchaseTicket(Customer customer, long eventItemId) {
         EventItem eventItem = eventRepository.findById(eventItemId).orElse(null);
         if (eventItem != null && eventItem.getTicketPool() != null) {
-            Ticket ticket = eventItem.getTicketPool().removeTicket(customer);
+            TicketPool ticketPool = eventItem.getTicketPool();
+            Ticket ticket = ticketPoolService.removeTicket(ticketPool, customer);
             if (ticket != null) {
-                ticketService.saveTicket(ticket); // Save to persist changes
+                ticketService.saveTicket(ticket);
+                System.out.println("Ticket purchased successfully");
+            } else {
+                System.out.println("No tickets available for the event");
             }
         }
     }

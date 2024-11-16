@@ -40,8 +40,8 @@ public class Ticket {
         return eventItem.getTicketPrice();
     }
 
-    public String isAvailable() {
-        return isSold ? "No" : "Yes";
+    public boolean isAvailable() {
+        return !isSold;
     }
 
     public void sellTicket() {
