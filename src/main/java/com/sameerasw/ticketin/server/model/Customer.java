@@ -1,46 +1,25 @@
 package com.sameerasw.ticketin.server.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
 
 @Entity
-public class Customer extends User implements ICustomer {
-    private String email;
+public class Customer extends User {
     private int ticketRetrievalRate;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Ticket> tickets;
+
     // Constructors, getters, and setters
-    public Customer() {
-    }
+    public Customer() {}
 
     public Customer(String name, String email, int ticketRetrievalRate) {
-        super(name);
-        this.email = email;
+        super(name, email, true); // Assume simulated customers
         this.ticketRetrievalRate = ticketRetrievalRate;
     }
 
-    public int getTicketRetrievalRate() {
-        return ticketRetrievalRate;
-    }
-
-    public void setTicketRetrievalRate(int ticketRetrievalRate) {
-        this.ticketRetrievalRate = ticketRetrievalRate;
-    }
-
-    @Override
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
+    // ... getters and setters ...
 }

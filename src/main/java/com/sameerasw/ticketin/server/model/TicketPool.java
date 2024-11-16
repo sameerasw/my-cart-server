@@ -1,27 +1,49 @@
 package com.sameerasw.ticketin.server.model;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
+import java.util.List;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-@Component
+@Entity
 public class TicketPool {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long poolId;
+    private int maxPoolSize;
+    private int availableTickets;
 
-    private ConcurrentHashMap<Long, ConcurrentLinkedQueue<Ticket>> ticketPools = new ConcurrentHashMap<>();
+    @ManyToOne
+    @JoinColumn(name = "event_item_id")
+    private EventItem eventItem;
 
-    public synchronized void addTicket(Ticket ticket) {
-        long vendorId = ticket.getVendor().getId();
-        ticketPools.computeIfAbsent(vendorId, k -> new ConcurrentLinkedQueue<>()).add(ticket);
+    @OneToMany(mappedBy = "ticketPool", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Ticket> tickets;
+
+    // Constructors, getters, and setters
+    public TicketPool() {}
+
+    public TicketPool(int maxPoolSize, EventItem eventItem) {
+        this.maxPoolSize = maxPoolSize;
+        this.eventItem = eventItem;
+        this.availableTickets = 0;
     }
 
-    public synchronized Ticket removeTicket(long vendorId) {
-        ConcurrentLinkedQueue<Ticket> vendorPool = ticketPools.get(vendorId);
-        if (vendorPool != null) {
-            return vendorPool.poll();
-        }
-        return null;
+    public int getMaxPoolSize() {
+        return maxPoolSize;
     }
 
-    // Other methods like getting available tickets for a vendor, etc.
+    public Long getPoolId() {
+        return poolId;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public int getAvailableTickets() {
+        return availableTickets;
+    }
+
+    public void setAvailableTickets(int availableTickets) {
+        this.availableTickets = availableTickets;
+    }
 }

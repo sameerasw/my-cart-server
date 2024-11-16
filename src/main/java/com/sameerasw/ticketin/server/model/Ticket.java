@@ -4,52 +4,48 @@ import jakarta.persistence.*;
 
 @Entity
 public class Ticket {
+
+    @ManyToOne
+    private TicketPool ticketPool;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private boolean isSold = false;
+    private boolean isSimulated;
+
     @ManyToOne
-    private Vendor vendor; // Relationship to Vendor
-    private double price;
+    private EventItem eventItem; // Link to Event
+    @ManyToOne
+    private Customer customer; // Link to Customer
 
     // Constructors, getters, and setters
-    public Ticket() {
+    public Ticket() {}
+
+    public Ticket(EventItem eventItem, boolean isSimulated) {
+        this.eventItem = eventItem;
+        this.isSimulated = isSimulated;
+        this.ticketPool = eventItem.getTicketPool();
     }
 
-    public Ticket(Vendor vendor, double price) {
-        this.vendor = vendor;
-        this.price = price;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public double getTicketPrice() {
+        return eventItem.getTicketPrice();
     }
 
-    public Vendor getVendor() {
-        return vendor;
+    public boolean isAvailable() {
+        return !isSold;
     }
 
-    public void setVendor(Vendor vendor) {
-        this.vendor = vendor;
+    public void sellTicket() {
+        isSold = true;
     }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    @Override
-    public String toString() {
-        return "Ticket{" +
-                "id=" + id +
-                ", vendor=" + vendor +
-                ", price=" + price +
-                '}';
-    }
+    // ... getters and setters ...
 }
