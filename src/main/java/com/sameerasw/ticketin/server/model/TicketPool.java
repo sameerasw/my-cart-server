@@ -48,4 +48,8 @@ public class TicketPool {
     public void setAvailableTickets(int availableTickets) {
         this.availableTickets = availableTickets;
     }
+
+    public String getEventName() {
+        return eventItem.getName();
+    }
 }

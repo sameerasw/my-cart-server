@@ -39,7 +39,7 @@ public class TicketPoolService {
                     ticket.sellTicket();
                     return ticket;
                 } else {
-                    logger.info("No tickets available for the event, purchase denied. Try again later.");
+                    logger.info("No tickets available for the event: " + ticketPool.getEventName());
                 }
             }
         } finally {

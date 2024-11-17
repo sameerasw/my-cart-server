@@ -37,9 +37,9 @@ public class CustomerService {
             Ticket ticket = ticketPoolService.removeTicket(ticketPool, customer);
             if (ticket != null) {
                 ticketService.saveTicket(ticket);
-                logger.info("Ticket " + ticket.getId() + " purchased successfully by customer: " + customer.getName() + " for event: " + eventItem.getName());
+                logger.info(customer.getName() + " - Ticket " + ticket.getId() + " purchased for " + eventItem.getName());
             } else {
-                logger.info("No tickets available for the event, purchase denied. Try again later.");
+                logger.info(customer.getName() + " - No tickets available for: " + eventItem.getName());
             }
         }
     }
