@@ -21,5 +21,9 @@ public class Customer extends User {
         this.ticketRetrievalRate = ticketRetrievalRate;
     }
 
+    public long getTicketRetrievalRate() {
+        return this.ticketRetrievalRate;
+    }
+
     // ... getters and setters ...
 }

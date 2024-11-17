@@ -5,11 +5,8 @@ import java.util.Scanner;
 
 import com.sameerasw.ticketin.server.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.sameerasw.ticketin.server.service.CustomerService;
 import com.sameerasw.ticketin.server.service.EventService;
@@ -17,8 +14,7 @@ import com.sameerasw.ticketin.server.service.TicketService;
 import com.sameerasw.ticketin.server.service.VendorService;
 
 @Component
-public class Cli implements CommandLineRunner {
-    private static final Logger logger = LoggerFactory.getLogger(Cli.class);
+public class Cli {
 
     @Autowired
     private VendorService vendorService;
@@ -33,13 +29,8 @@ public class Cli implements CommandLineRunner {
 
     private Scanner scanner = new Scanner(System.in);
 
-    @Override
-    public void run(String... args) throws Exception {
-        start();
-    }
-
     public void start() {
-        logger.info("TicketIn CLI - Started");
+        System.out.println("TicketIn CLI - Started");
         while (true) {
             displayMenu();
             int choice = getIntegerInput("Enter your choice: ");
@@ -80,64 +71,106 @@ public class Cli implements CommandLineRunner {
                 viewTicketPool();
                 break;
             case 11:
-                logger.info("Exiting...");
+                System.out.println("Exiting...");
                 scanner.close();
                 System.exit(0);
                 break;
+            case 12:
+                startSimulation();
+                break;
             default:
-                logger.info("Invalid choice.");
+                System.out.println("Invalid choice.");
         }
     }
 
+private void startSimulation() {
+    System.out.println("Starting simulation... Press Enter to stop.");
+    List<Customer> customers = customerService.getAllCustomers(true);
+    List<Vendor> vendors = vendorService.getAllVendors(true);
+    List<EventItem> events = eventService.getAllEvents(true);
+
+    for (Vendor vendor : vendors) {
+        new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    Thread.sleep(vendor.getTicketReleaseRate() * 1000);
+                    vendorService.releaseTickets(vendor, events.get((int) (Math.random() * events.size())).getId());
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }).start();
+    }
+
+    for (Customer customer : customers) {
+        new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    Thread.sleep(customer.getTicketRetrievalRate() * 1000);
+                    customerService.purchaseTicket(customer, events.get((int) (Math.random() * events.size())).getId());
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }).start();
+    }
+
+    System.out.println("Running threads: " + Thread.activeCount());
+    scanner.nextLine();
+    System.out.println("Stopping simulation...");
+    Thread.getAllStackTraces().keySet().forEach(Thread::interrupt);
+}
+
     private void displayMenu() {
-        logger.info("\n--- TicketIn CLI Menu ---");
-        logger.info("1. Create Vendor");
-        logger.info("2. List Vendors");
-        logger.info("3. Create Customer");
-        logger.info("4. List Customers");
-        logger.info("5. Create Event");
-        logger.info("6. List Events");
-        logger.info("7. List Tickets for Event");
-        logger.info("8. Buy Ticket");
-        logger.info("9. Release Tickets");
-        logger.info("10. View TicketPool");
-        logger.info("11. Exit");
+        System.out.println("\n--- TicketIn CLI Menu ---\n" +
+                "1. Create Vendor\n" +
+                "2. List Vendors\n" +
+                "3. Create Customer\n" +
+                "4. List Customers\n" +
+                "5. Create Event\n" +
+                "6. List Events\n" +
+                "7. List Tickets for Event\n" +
+                "8. Buy Ticket\n" +
+                "9. Release Tickets\n" +
+                "10. View TicketPool\n" +
+                "11. Exit\n" +
+                "12. Start Simulation");
     }
 
     private int getIntegerInput(String prompt) {
         while (true) {
-            logger.info(prompt);
+            System.out.println(prompt);
             try {
                 return Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
-                logger.info("Invalid input. Please enter a number.");
+                System.out.println("Invalid input. Please enter a number.");
             }
         }
     }
 
     private String getStringInput(String prompt) {
-        logger.info(prompt);
+        System.out.println(prompt);
         return scanner.nextLine();
     }
 
     private long getLongInput(String prompt) {
         while (true) {
-            logger.info(prompt);
+            System.out.println(prompt);
             try {
                 return Long.parseLong(scanner.nextLine());
             } catch (NumberFormatException e) {
-                logger.info("Invalid input. Please enter a number.");
+                System.out.println("Invalid input. Please enter a number.");
             }
         }
     }
 
     private double getDoubleInput(String prompt) {
         while (true) {
-            logger.info(prompt);
+            System.out.println(prompt);
             try {
                 return Double.parseDouble(scanner.nextLine());
             } catch (NumberFormatException e) {
-                logger.info("Invalid input. Please enter a number.");
+                System.out.println("Invalid input. Please enter a number.");
             }
         }
     }
@@ -148,14 +181,14 @@ public class Cli implements CommandLineRunner {
         int ticketReleaseRate = getIntegerInput("Enter ticket release rate: ");
         Vendor vendor = new Vendor(name, email, ticketReleaseRate);
         vendorService.createVendor(vendor);
-        logger.info("Vendor created successfully.");
+        System.out.println("Vendor created successfully.");
     }
 
     private void listVendors() {
         List<Vendor> vendors = vendorService.getAllVendors(true);
-        logger.info("Vendors:");
+        System.out.println("Vendors:");
         for (Vendor vendor : vendors) {
-            logger.info("  ID: " + vendor.getId() + ", Name: " + vendor.getName());
+            System.out.println("  ID: " + vendor.getId() + ", Name: " + vendor.getName());
         }
     }
 
@@ -165,14 +198,14 @@ public class Cli implements CommandLineRunner {
         int ticketRetrievalRate = getIntegerInput("Enter ticket retrieval rate: ");
         Customer customer = new Customer(name, email, ticketRetrievalRate);
         customerService.createCustomer(customer);
-        logger.info("Customer created successfully.");
+        System.out.println("Customer created successfully.");
     }
 
     private void listCustomers() {
         List<Customer> customers = customerService.getAllCustomers(true);
-        logger.info("Customers:");
+        System.out.println("Customers:");
         for (Customer customer : customers) {
-            logger.info("  ID: " + customer.getId() + ", Name: " + customer.getName());
+            System.out.println("  ID: " + customer.getId() + ", Name: " + customer.getName());
         }
     }
 
@@ -188,14 +221,14 @@ public class Cli implements CommandLineRunner {
         EventItem eventItem = new EventItem(eventName, eventLocation, eventDate, eventTime, ticketPrice, vendorService.getVendorById(vendorId), true);
         eventService.createEvent(eventItem, maxPoolSize);
         eventItem.createTicketPool(maxPoolSize);
-        logger.info("Event created successfully.");
+        System.out.println("Event created successfully.");
     }
 
     private void listEvents() {
         List<EventItem> eventItems = eventService.getAllEvents(true);
-        logger.info("Events:");
+        System.out.println("Events:");
         for (EventItem eventItem : eventItems) {
-            logger.info("  ID: " + eventItem.getId() + ", Name: " + eventItem.getEventName());
+            System.out.println("  ID: " + eventItem.getId() + ", Name: " + eventItem.getEventName());
         }
     }
 
@@ -204,12 +237,12 @@ public class Cli implements CommandLineRunner {
         EventItem eventItem = eventService.getEventById(eventId);
         if (eventItem != null) {
             List<Ticket> tickets = eventItem.getTicketPool().getTickets();
-            logger.info("Tickets for event " + eventItem.getEventName() + ":");
+            System.out.println("Tickets for event " + eventItem.getEventName() + ":");
             for (Ticket ticket : tickets) {
-                logger.info("  ID: " + ticket.getId() + ", Available?: " + ticket.isAvailable());
+                System.out.println("  ID: " + ticket.getId() + ", Available?: " + ticket.isAvailable());
             }
         } else {
-            logger.info("Event not found.");
+            System.out.println("Event not found.");
         }
     }
 
@@ -220,10 +253,10 @@ public class Cli implements CommandLineRunner {
         EventItem eventItem = eventService.getEventById(eventId);
 
         if (customer != null && eventItem != null) {
-            logger.info("Ticket purchase requested.");
+            System.out.println("Ticket purchase requested.");
             customerService.purchaseTicket(customer, eventId);
         } else {
-            logger.info("Customer or Event not found.");
+            System.out.println("Customer or Event not found.");
         }
     }
 
@@ -234,10 +267,10 @@ public class Cli implements CommandLineRunner {
         EventItem eventItem = eventService.getEventById(eventId);
 
         if (vendor != null && eventItem != null && eventItem.getVendor().getId().equals(vendorId)) {
-            logger.info("Tickets release requested.");
+            System.out.println("Tickets release requested.");
             vendorService.releaseTickets(vendor, eventId);
         } else {
-            logger.info("Vendor or Event not found, or they are not related.");
+            System.out.println("Vendor or Event not found, or they are not related.");
         }
     }
 
@@ -245,9 +278,9 @@ public class Cli implements CommandLineRunner {
         long eventId = getLongInput("Enter event ID: ");
         EventItem eventItem = eventService.getEventById(eventId);
         if (eventItem != null) {
-            logger.info(eventItem.toString());
+            System.out.println(eventItem.toString());
         } else {
-            logger.info("Event not found.");
+            System.out.println("Event not found.");
         }
     }
 }

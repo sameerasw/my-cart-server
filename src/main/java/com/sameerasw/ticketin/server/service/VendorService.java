@@ -44,15 +44,15 @@ public class VendorService {
                     ticketRepository.save(ticket);
                     ticketPoolService.addTicket(ticketPool, ticket);
                     ticketPoolRepository.save(ticketPool);
-                    logger.info("Ticket released successfully");
+                    System.out.println("Ticket released successfully");
                 } else {
-                    logger.info("Ticket pool is full");
+                    System.out.println("Ticket pool is full");
                 }
             } else {
-                logger.info("Ticket pool not found");
+                System.out.println("Ticket pool not found");
             }
         } else {
-            logger.info("Event not found");
+            System.out.println("Event not found");
         }
     }
 

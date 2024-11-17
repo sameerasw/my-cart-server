@@ -24,7 +24,6 @@ public class TicketPool {
     public TicketPool(int maxPoolSize, EventItem eventItem) {
         this.maxPoolSize = maxPoolSize;
         this.eventItem = eventItem;
-        this.availableTickets = 0;
     }
 
     public int getMaxPoolSize() {
@@ -40,7 +39,10 @@ public class TicketPool {
     }
 
     public int getAvailableTickets() {
-        return availableTickets;
+//        return availableTickets;
+        // query the database to get the available tickets with isSold = false
+        return (int) tickets.stream().filter(ticket -> ticket.isAvailable()).count();
+
     }
 
     public void setAvailableTickets(int availableTickets) {

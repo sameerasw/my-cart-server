@@ -17,18 +17,18 @@ public class TicketPoolService {
     }
 
     public TicketPool getTicketPoolByEventItemId(Long eventItemId) {
-        return ticketPoolRepository.findByEventItemId(eventItemId);
+        return ticketPoolRepository.findByEventItemIdAndTicketsIsSoldFalse(eventItemId);
     }
 
     public synchronized Ticket removeTicket(TicketPool ticketPool, Customer customer) {
         if (ticketPool.getAvailableTickets() > 0) {
-            Ticket ticket = ticketPool.getTickets().remove(0);
+            Ticket ticket = ticketPool.getTickets().removeFirst();
             if (ticket != null) {
                 ticket.setCustomer(customer);
                 ticket.sellTicket();
-                ticketPool.setAvailableTickets(ticketPool.getAvailableTickets() - 1);
-                ticketPool.getTickets().remove(ticket);
-                ticketPoolRepository.save(ticketPool);
+//                ticketPool.setAvailableTickets(ticketPool.getAvailableTickets() - 1);
+//                ticketPool.getTickets().remove(ticket);
+//                ticketPoolRepository.save(ticketPool);
                 return ticket;
             }
         }
@@ -38,7 +38,7 @@ public class TicketPoolService {
     public void addTicket(TicketPool ticketPool, Ticket ticket) {
         if (ticketPool.getAvailableTickets() < ticketPool.getMaxPoolSize()) {
             ticketPool.getTickets().add(ticket);
-            ticketPool.setAvailableTickets(ticketPool.getAvailableTickets() + 1);
+//            ticketPool.setAvailableTickets(ticketPool.getAvailableTickets() + 1);
         }
     }
 }

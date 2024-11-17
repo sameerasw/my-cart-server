@@ -37,9 +37,9 @@ public class CustomerService {
             Ticket ticket = ticketPoolService.removeTicket(ticketPool, customer);
             if (ticket != null) {
                 ticketService.saveTicket(ticket);
-                logger.info("Ticket purchased successfully");
+                System.out.println("Ticket purchased successfully");
             } else {
-                logger.info("No tickets available for the event");
+                System.out.println("No tickets available for the event");
             }
         }
     }
