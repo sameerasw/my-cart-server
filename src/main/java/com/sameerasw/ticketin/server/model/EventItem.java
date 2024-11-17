@@ -97,6 +97,10 @@ public class EventItem {
                 '}';
     }
 
+    public String getName() {
+        return this.eventName;
+    }
+
 
     // ... getters and setters ...
 }

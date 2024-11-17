@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.sameerasw.ticketin.server.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -15,6 +17,7 @@ import com.sameerasw.ticketin.server.service.VendorService;
 
 @Component
 public class Cli {
+    private static final Logger logger = LoggerFactory.getLogger(Cli.class);
 
     @Autowired
     private VendorService vendorService;
@@ -83,43 +86,58 @@ public class Cli {
         }
     }
 
-private void startSimulation() {
-    System.out.println("Starting simulation... Press Enter to stop.");
-    List<Customer> customers = customerService.getAllCustomers(true);
-    List<Vendor> vendors = vendorService.getAllVendors(true);
-    List<EventItem> events = eventService.getAllEvents(true);
+    private void startSimulation() {
+        System.out.println("Starting simulation... Press Enter to stop.");
+        List<Customer> customers = customerService.getAllCustomers(true);
+        List<Vendor> vendors = vendorService.getAllVendors(true);
+        List<EventItem> events = eventService.getAllEvents(true);
 
-    for (Vendor vendor : vendors) {
-        new Thread(() -> {
-            while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    Thread.sleep(vendor.getTicketReleaseRate() * 1000);
+        for (Vendor vendor : vendors) {
+            new Thread(() -> {
+                final Long releaseRate = vendor.getTicketReleaseRate();
+                while (!Thread.currentThread().isInterrupted()) {
+                    try {
+                        Thread.sleep(releaseRate * 1000);
+                    } catch (InterruptedException e) {
+                        logger.info("Thread interrupted.");
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
                     vendorService.releaseTickets(vendor, events.get((int) (Math.random() * events.size())).getId());
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                 }
-            }
-        }).start();
-    }
+            }).start();
+        }
 
-    for (Customer customer : customers) {
-        new Thread(() -> {
-            while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    Thread.sleep(customer.getTicketRetrievalRate() * 1000);
+        for (Customer customer : customers) {
+            final Long retrievalRate = customer.getTicketRetrievalRate();
+            Thread customerThread = new Thread(() -> {
+                while (!Thread.currentThread().isInterrupted()) {
                     customerService.purchaseTicket(customer, events.get((int) (Math.random() * events.size())).getId());
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
+                    try {
+                        Thread.sleep(retrievalRate * 1000);
+                    } catch (InterruptedException e) {
+                        logger.info("Thread interrupted.");
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
                 }
-            }
-        }).start();
-    }
+            });
+            customerThread.start();
+        }
 
-    System.out.println("Running threads: " + Thread.activeCount());
-    scanner.nextLine();
-    System.out.println("Stopping simulation...");
-    Thread.getAllStackTraces().keySet().forEach(Thread::interrupt);
-}
+        System.out.println("Running threads: " + Thread.activeCount());
+        scanner.nextLine();
+        System.out.println("Stopping simulation...");
+        Thread.getAllStackTraces().keySet().stream()
+                .filter(thread -> !thread.equals(Thread.currentThread()))
+                .forEach(thread -> {
+                    try {
+                        thread.interrupt();
+                    } catch (Exception e) {
+                        logger.error("Error stopping thread: " + thread.getName(), e);
+                    }
+                });
+    }
 
     private void displayMenu() {
         System.out.println("\n--- TicketIn CLI Menu ---\n" +

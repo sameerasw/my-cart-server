@@ -30,16 +30,16 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
-    public void purchaseTicket(Customer customer, long eventItemId) {
+    public synchronized void purchaseTicket(Customer customer, long eventItemId) {
         EventItem eventItem = eventRepository.findById(eventItemId).orElse(null);
         if (eventItem != null && eventItem.getTicketPool() != null) {
             TicketPool ticketPool = eventItem.getTicketPool();
             Ticket ticket = ticketPoolService.removeTicket(ticketPool, customer);
             if (ticket != null) {
                 ticketService.saveTicket(ticket);
-                System.out.println("Ticket purchased successfully");
+                logger.info("Ticket " + ticket.getId() + " purchased successfully by customer: " + customer.getName() + " for event: " + eventItem.getName());
             } else {
-                System.out.println("No tickets available for the event");
+                logger.info("No tickets available for the event, purchase denied. Try again later.");
             }
         }
     }

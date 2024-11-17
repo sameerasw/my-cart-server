@@ -2,6 +2,7 @@ package com.sameerasw.ticketin.server.model;
 
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class TicketPool {
@@ -35,12 +36,11 @@ public class TicketPool {
     }
 
     public List<Ticket> getTickets() {
-        return tickets;
+        return tickets.stream().filter(Ticket::isAvailable).collect(Collectors.toList());
     }
 
     public int getAvailableTickets() {
 //        return availableTickets;
-        // query the database to get the available tickets with isSold = false
         return (int) tickets.stream().filter(ticket -> ticket.isAvailable()).count();
 
     }
