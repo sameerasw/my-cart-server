@@ -197,7 +197,7 @@ public class Cli {
         String name = getStringInput("Enter vendor name: ");
         String email = getStringInput("Enter vendor email: ");
         int ticketReleaseRate = getIntegerInput("Enter ticket release rate: ");
-        Vendor vendor = new Vendor(name, email, ticketReleaseRate);
+        Vendor vendor = new Vendor(name, ticketReleaseRate);
         vendorService.createVendor(vendor);
         System.out.println("Vendor created successfully.");
     }
@@ -214,7 +214,7 @@ public class Cli {
         String name = getStringInput("Enter customer name: ");
         String email = getStringInput("Enter customer email: ");
         int ticketRetrievalRate = getIntegerInput("Enter ticket retrieval rate: ");
-        Customer customer = new Customer(name, email, ticketRetrievalRate);
+        Customer customer = new Customer(name, ticketRetrievalRate);
         customerService.createCustomer(customer);
         System.out.println("Customer created successfully.");
     }

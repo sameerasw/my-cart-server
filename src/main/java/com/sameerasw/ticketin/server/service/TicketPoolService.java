@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static com.sameerasw.ticketin.server.Application.ANSI_RESET;
+import static com.sameerasw.ticketin.server.Application.ANSI_YELLOW;
+
 @Service
 public class TicketPoolService {
     private static final Logger logger = LoggerFactory.getLogger(TicketPoolService.class);
@@ -39,7 +42,7 @@ public class TicketPoolService {
                     ticket.sellTicket();
                     return ticket;
                 } else {
-                    logger.info("No tickets available for the event: " + ticketPool.getEventName());
+                    logger.info(ANSI_YELLOW + "No tickets available for the event: " + ticketPool.getEventName() + ANSI_RESET);
                 }
             }
         } finally {

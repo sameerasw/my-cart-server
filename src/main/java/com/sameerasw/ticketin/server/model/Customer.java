@@ -16,8 +16,12 @@ public class Customer extends User {
     // Constructors, getters, and setters
     public Customer() {}
 
-    public Customer(String name, String email, int ticketRetrievalRate) {
-        super(name, email, true); // Assume simulated customers
+    public Customer(String name, String email) {
+        super(name, email);
+    }
+
+    public Customer(String name, int ticketRetrievalRate) {
+        super(name, true);
         this.ticketRetrievalRate = ticketRetrievalRate;
     }
 
