@@ -32,7 +32,9 @@ public class TicketPoolService {
         return ticketPoolRepository.findByEventItemIdAndTicketsIsSoldFalse(eventItemId);
     }
 
-    public Ticket removeTicket(TicketPool ticketPool, Customer customer) {
+    public synchronized Ticket removeTicket(TicketPool ticketPool, Customer customer) {
+        // display the running thread count
+        System.out.println("Running threads: " + Thread.activeCount());
         lock.lock();
         try {
             if (ticketPool.getAvailableTickets() > 0) {

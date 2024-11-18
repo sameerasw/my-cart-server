@@ -84,9 +84,16 @@ public class Cli {
             case 13:
                 configureSimulation();
                 break;
+            case 14:
+                howManyThreads();
+                break;
             default:
                 System.out.println("Invalid choice.");
         }
+    }
+
+    private void howManyThreads() {
+        System.out.println("Running threads: " + Thread.activeCount());
     }
 
     private void startSimulation() {
@@ -94,19 +101,21 @@ public class Cli {
         List<Customer> customers = customerService.getAllCustomers(true);
         List<Vendor> vendors = vendorService.getAllVendors(true);
         List<EventItem> events = eventService.getAllEvents(true);
+        final boolean[] isSimulating = {true};
 
         for (Vendor vendor : vendors) {
             new Thread(() -> {
                 final Long releaseRate = vendor.getTicketReleaseRate();
-                while (!Thread.currentThread().isInterrupted()) {
+                while (isSimulating[0]) {
                     try {
                         Thread.sleep(releaseRate * 1000);
+                        if (!isSimulating[0]) break;
+                        vendorService.releaseTickets(vendor, events.get((int) (Math.random() * events.size())).getId());
                     } catch (InterruptedException e) {
                         logger.info("Thread interrupted.");
                         Thread.currentThread().interrupt();
                         break;
                     }
-                    vendorService.releaseTickets(vendor, events.get((int) (Math.random() * events.size())).getId());
                 }
             }).start();
         }
@@ -114,10 +123,11 @@ public class Cli {
         for (Customer customer : customers) {
             final Long retrievalRate = customer.getTicketRetrievalRate();
             Thread customerThread = new Thread(() -> {
-                while (!Thread.currentThread().isInterrupted()) {
-                    customerService.purchaseTicket(customer, events.get((int) (Math.random() * events.size())).getId());
+                while (isSimulating[0]) {
                     try {
+                        customerService.purchaseTicket(customer, events.get((int) (Math.random() * events.size())).getId());
                         Thread.sleep(retrievalRate * 1000);
+                        if (!isSimulating[0]) break;
                     } catch (InterruptedException e) {
                         logger.info("Thread interrupted.");
                         Thread.currentThread().interrupt();
@@ -131,15 +141,17 @@ public class Cli {
         System.out.println("Running threads: " + Thread.activeCount());
         scanner.nextLine();
         System.out.println("Stopping simulation...");
-        Thread.getAllStackTraces().keySet().stream()
-                .filter(thread -> !thread.equals(Thread.currentThread()))
-                .forEach(thread -> {
-                    try {
-                        thread.interrupt();
-                    } catch (Exception e) {
-                        logger.error("Error stopping thread: " + thread.getName(), e);
-                    }
-                });
+        isSimulating[0] = false;
+
+        // Give threads some time to finish their current transactions
+//        try {
+//            Thread.sleep(10);
+//        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+//        }
+
+        // Interrupt all threads to ensure they stop
+//        Thread.getAllStackTraces().keySet().forEach(Thread::interrupt);
     }
 
     private void displayMenu() {
@@ -156,7 +168,8 @@ public class Cli {
                 "10. View TicketPool\n" +
                 "11. Exit\n" +
                 "12. Start Simulation\n" +
-                "13. Configure the simulation"
+                "13. Configure the simulation\n" +
+                "14. How many threads are running?"
                 );
     }
 
@@ -169,17 +182,23 @@ public class Cli {
 //        int ticketReleaseRate = getIntegerInput("Enter the ticket release rate: ");
 //        int ticketRetrievalRate = getIntegerInput("Enter the ticket retrieval rate: ");
 
+        System.out.println("Creating simulation data... Please wait. This may take a while.");
+
         for (int i = 0; i < numVendors; i++) {
             int ticketReleaseRate = (int) (Math.random() * 5) + 1;
             Vendor vendor = new Vendor("Vendor " + i, ticketReleaseRate);
             vendorService.createVendor(vendor);
+//            logger.info("Vendor created: " + vendor.getId() + vendor.getName());
         }
+        logger.info("Vendors created");
 
         for (int i = 0; i < numCustomers; i++) {
             int ticketRetrievalRate = (int) (Math.random() * 5) + 1;
             Customer customer = new Customer("Customer " + i, ticketRetrievalRate);
             customerService.createCustomer(customer);
+//            logger.info("Customer created: " + customer.getId() + customer.getName());
         }
+        logger.info("Customers created");
 
         for (int i = 0; i < numVendors; i++) {
             int numTicketsPerEvent = (int) (Math.random() * 10) + 1;
@@ -187,6 +206,7 @@ public class Cli {
             EventItem eventItem = new EventItem("Event " + i, vendor, true);
             eventService.createEvent(eventItem, numTicketsPerEvent);
             eventItem.createTicketPool(numTicketsPerEvent);
+//            logger.info("Event created: " + eventItem.getId() + eventItem.getEventName());
         }
 
         System.out.println("Created " + numVendors + " vendors, " + numCustomers + " customers, and " + numVendors + " events.\n Simulation is ready.");
