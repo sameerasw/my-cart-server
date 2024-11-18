@@ -46,9 +46,9 @@ public class VendorService {
                     ticketRepository.save(ticket);
                     ticketPoolService.addTicket(ticketPool, ticket);
                     ticketPoolRepository.save(ticketPool);
-                    logger.info(ANSI_CYAN + "Ticket released successfully by vendor: " + vendor.getName() + " for event: " + eventItem.getName() + ANSI_RESET);
+                    logger.info(ANSI_CYAN + vendor.getName() + " - Released ticket: " + ticket.getId() + " for: " + eventItem.getName() + ANSI_RESET);
                 } else {
-                    logger.info(ANSI_YELLOW + "Ticket pool is full for: " + eventItem.getName() + ANSI_RESET);
+                    logger.info(ANSI_YELLOW + vendor.getName() + " - Ticket pool is full for: " + eventItem.getName() + ANSI_RESET);
                 }
             } else {
                 logger.info("Ticket pool not found");

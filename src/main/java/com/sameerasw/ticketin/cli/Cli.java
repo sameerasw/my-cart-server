@@ -81,6 +81,9 @@ public class Cli {
             case 12:
                 startSimulation();
                 break;
+            case 13:
+                configureSimulation();
+                break;
             default:
                 System.out.println("Invalid choice.");
         }
@@ -152,7 +155,41 @@ public class Cli {
                 "9. Release Tickets\n" +
                 "10. View TicketPool\n" +
                 "11. Exit\n" +
-                "12. Start Simulation");
+                "12. Start Simulation\n" +
+                "13. Configure the simulation"
+                );
+    }
+
+    private void configureSimulation() {
+        System.out.println("Configure the simulation");
+        int numVendors = getIntegerInput("Enter the number of vendors: ");
+        int numCustomers = getIntegerInput("Enter the number of customers: ");
+//        int numEvents = getIntegerInput("Enter the number of events: ");
+//        int numTicketsPerEvent = getIntegerInput("Enter the number of tickets per event: ");
+//        int ticketReleaseRate = getIntegerInput("Enter the ticket release rate: ");
+//        int ticketRetrievalRate = getIntegerInput("Enter the ticket retrieval rate: ");
+
+        for (int i = 0; i < numVendors; i++) {
+            int ticketReleaseRate = (int) (Math.random() * 5) + 1;
+            Vendor vendor = new Vendor("Vendor " + i, ticketReleaseRate);
+            vendorService.createVendor(vendor);
+        }
+
+        for (int i = 0; i < numCustomers; i++) {
+            int ticketRetrievalRate = (int) (Math.random() * 5) + 1;
+            Customer customer = new Customer("Customer " + i, ticketRetrievalRate);
+            customerService.createCustomer(customer);
+        }
+
+        for (int i = 0; i < numVendors; i++) {
+            int numTicketsPerEvent = (int) (Math.random() * 10) + 1;
+            Vendor vendor = vendorService.getAllVendors(true).get((int) (Math.random() * numVendors));
+            EventItem eventItem = new EventItem("Event " + i, vendor, true);
+            eventService.createEvent(eventItem, numTicketsPerEvent);
+            eventItem.createTicketPool(numTicketsPerEvent);
+        }
+
+        System.out.println("Created " + numVendors + " vendors, " + numCustomers + " customers, and " + numVendors + " events.\n Simulation is ready.");
     }
 
     private int getIntegerInput(String prompt) {
