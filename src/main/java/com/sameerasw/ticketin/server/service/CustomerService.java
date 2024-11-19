@@ -42,11 +42,11 @@ public class CustomerService {
             EventItem eventItem = eventRepository.findById(eventItemId).orElse(null);
             if (eventItem != null && eventItem.getTicketPool() != null) {
 //                TicketPool ticketPool = eventItem.getTicketPool();
-                boolean response = ticketPoolService.removeTicket(eventItemId, customer);
+                ticketPoolService.removeTicket(eventItemId, customer);
 //
-                if (!response) {
-                    logger.info(ANSI_YELLOW + customer.getName() + " - No tickets available for: " + eventItem.getName() + ANSI_RESET);
-                }
+//                if (!response) {
+//                    logger.info(ANSI_YELLOW + customer.getName() + " - No tickets available for: " + eventItem.getName() + ANSI_RESET);
+//                }
             }
         } finally {
             lock.unlock();

@@ -4,6 +4,7 @@ import com.sameerasw.ticketin.server.model.Customer;
 import com.sameerasw.ticketin.server.model.Ticket;
 import com.sameerasw.ticketin.server.model.TicketPool;
 import com.sameerasw.ticketin.server.repository.TicketPoolRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +30,15 @@ public class TicketPoolService {
         return ticketPoolRepository.save(ticketPool);
     }
 
-    public TicketPool getTicketPoolByEventItemId(Long eventItemId) {
+    public  TicketPool getTicketPoolByEventItemId(Long eventItemId) {
         return ticketPoolRepository.findByEventItemIdAndTicketsIsSoldFalse(eventItemId);
     }
 
-    public boolean removeTicket(Long eventItemId, Customer customer) {
+    public void removeTicket(Long eventItemId, Customer customer) {
         lock.lock();
         try {
-            TicketPool ticketPool = getTicketPoolByEventItemId(eventItemId);
+//            TicketPool ticketPool = getTicketPoolByEventItemId(eventItemId);
+            TicketPool ticketPool = ticketPoolRepository.findByEventItemIdAndTicketsIsSoldFalse(eventItemId);
             if (ticketPool != null && ticketPool.getAvailableTickets() > 0) {
                 Ticket ticket = ticketPool.getTickets().stream().filter(Ticket::isAvailable).findFirst().orElse(null);
                 if (ticket != null) {
@@ -44,7 +46,7 @@ public class TicketPoolService {
                     ticket.setCustomer(customer);
                     ticketService.saveTicket(ticket);
                     logger.info(ANSI_GREEN + customer.getName() + " - Ticket " + ticket.getId() + " purchased for " + ticketPool.getEventName() + ANSI_RESET);
-                    return true;
+//                    return true;
                 } else {
                     logger.info(ANSI_YELLOW + "No tickets available for the event: " + ticketPool.getEventName() + ANSI_RESET);
                 }
@@ -52,7 +54,7 @@ public class TicketPoolService {
         } finally {
             lock.unlock();
         }
-        return false;
+//        return false;
     }
 
     public void addTicket(TicketPool ticketPool, Ticket ticket) {
