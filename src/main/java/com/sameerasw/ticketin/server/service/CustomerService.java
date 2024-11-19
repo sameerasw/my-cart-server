@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static com.sameerasw.ticketin.server.Application.*;
+
 @Service
 public class CustomerService {
     private static final Logger logger = LoggerFactory.getLogger(CustomerService.class);
@@ -30,16 +32,16 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
-    public void purchaseTicket(Customer customer, long eventItemId) {
+    public synchronized void purchaseTicket(Customer customer, long eventItemId) {
         EventItem eventItem = eventRepository.findById(eventItemId).orElse(null);
         if (eventItem != null && eventItem.getTicketPool() != null) {
             TicketPool ticketPool = eventItem.getTicketPool();
             Ticket ticket = ticketPoolService.removeTicket(ticketPool, customer);
             if (ticket != null) {
                 ticketService.saveTicket(ticket);
-                logger.info("Ticket purchased successfully");
+                logger.info(ANSI_GREEN + customer.getName() + " - Ticket " + ticket.getId() + " purchased for " + eventItem.getName() + ANSI_RESET);
             } else {
-                logger.info("No tickets available for the event");
+                logger.info(ANSI_YELLOW + customer.getName() + " - No tickets available for: " + eventItem.getName() + ANSI_RESET);
             }
         }
     }

@@ -2,6 +2,7 @@ package com.sameerasw.ticketin.server.model;
 
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class TicketPool {
@@ -24,7 +25,6 @@ public class TicketPool {
     public TicketPool(int maxPoolSize, EventItem eventItem) {
         this.maxPoolSize = maxPoolSize;
         this.eventItem = eventItem;
-        this.availableTickets = 0;
     }
 
     public int getMaxPoolSize() {
@@ -36,14 +36,20 @@ public class TicketPool {
     }
 
     public List<Ticket> getTickets() {
-        return tickets;
+        return tickets.stream().filter(Ticket::isAvailable).collect(Collectors.toList());
     }
 
     public int getAvailableTickets() {
-        return availableTickets;
+//        return availableTickets;
+        return (int) tickets.stream().filter(ticket -> ticket.isAvailable()).count();
+
     }
 
     public void setAvailableTickets(int availableTickets) {
         this.availableTickets = availableTickets;
+    }
+
+    public String getEventName() {
+        return eventItem.getName();
     }
 }

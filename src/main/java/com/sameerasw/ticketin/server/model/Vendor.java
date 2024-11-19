@@ -16,8 +16,13 @@ public class Vendor extends User {
     // Constructors, getters, and setters
     public Vendor() {}
 
-    public Vendor(String name, String email, int ticketReleaseRate) {
-        super(name, email, true); // Assume simulated vendors
+
+    public Vendor(String name, String email) {
+        super(name, email);
+    }
+
+    public Vendor(String name, int ticketReleaseRate) {
+        super(name, true); // Assume simulated vendors
         this.ticketReleaseRate = ticketReleaseRate;
     }
 

@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static com.sameerasw.ticketin.server.Application.*;
+
 @Service
 public class VendorService {
     private static final Logger logger = LoggerFactory.getLogger(VendorService.class);
@@ -44,9 +46,9 @@ public class VendorService {
                     ticketRepository.save(ticket);
                     ticketPoolService.addTicket(ticketPool, ticket);
                     ticketPoolRepository.save(ticketPool);
-                    logger.info("Ticket released successfully");
+                    logger.info(ANSI_CYAN + vendor.getName() + " - Released ticket: " + ticket.getId() + " for: " + eventItem.getName() + ANSI_RESET);
                 } else {
-                    logger.info("Ticket pool is full");
+                    logger.info(ANSI_YELLOW + vendor.getName() + " - Ticket pool is full for: " + eventItem.getName() + ANSI_RESET);
                 }
             } else {
                 logger.info("Ticket pool not found");

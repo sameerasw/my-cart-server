@@ -17,9 +17,14 @@ public abstract class User {
     // Constructors, getters, and setters
     public User() {}
 
-    public User(String name, String email, boolean isSimulated) {
+    public User(String name, String email) {
         this.name = name;
         this.email = email;
+        this.isSimulated = false;
+    }
+
+    public User(String name, boolean isSimulated) {
+        this.name = name;
         this.isSimulated = isSimulated;
     }
 

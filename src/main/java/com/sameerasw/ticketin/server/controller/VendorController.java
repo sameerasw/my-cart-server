@@ -28,7 +28,7 @@ public class VendorController {
 
     @PostMapping("/{vendorId}/events")
     public ResponseEntity<EventItem> createEvent(@PathVariable long vendorId, @RequestBody EventItem eventItem) {
-        eventItem.setVendor(vendorService.createVendor(new Vendor("test", "test@test.com", 1)));
+        eventItem.setVendor(vendorService.createVendor(new Vendor("test", 1)));
         return new ResponseEntity<>(eventService.createEvent(eventItem), HttpStatus.CREATED);
     }
 
@@ -40,7 +40,7 @@ public class VendorController {
 
     @PostMapping("/{vendorId}/events/{eventId}/tickets")
     public ResponseEntity<String> releaseTickets(@PathVariable long vendorId, @PathVariable long eventId) {
-        Vendor vendor = vendorService.createVendor(new Vendor("test", "test@test.com", 1));
+        Vendor vendor = vendorService.createVendor(new Vendor("test", 1));
         vendorService.releaseTickets(vendor, eventId);
         return new ResponseEntity<>("Tickets released", HttpStatus.OK);
     }
