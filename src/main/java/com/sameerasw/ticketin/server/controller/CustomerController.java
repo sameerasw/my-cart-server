@@ -23,7 +23,7 @@ public class CustomerController {
 
     @PostMapping("/{customerId}/events/{eventId}/buy")
     public ResponseEntity<String> buyTicket(@PathVariable long customerId, @PathVariable long eventId) {
-        Customer customer = customerService.createCustomer(new Customer("test", "test@test.com", 1));
+        Customer customer = customerService.createCustomer(new Customer("test", 1));
         customerService.purchaseTicket(customer, eventId);
         return new ResponseEntity<>("Ticket purchased", HttpStatus.OK);
     }

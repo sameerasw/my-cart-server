@@ -36,12 +36,8 @@ public class EventItem {
         this.isSimulated = false;
     }
 
-    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, Vendor vendor, boolean isSimulated) {
+    public EventItem(String eventName, Vendor vendor, boolean isSimulated) {
         this.eventName = eventName;
-        this.eventLocation = eventLocation;
-        this.eventDate = eventDate;
-        this.eventTime = eventTime;
-        this.ticketPrice = ticketPrice;
         this.vendor = vendor;
         this.isSimulated = isSimulated;
     }
@@ -95,6 +91,10 @@ public class EventItem {
                 ", vendor=" + vendor.getName() +
                 ", availableTickets=" + ticketPool.getAvailableTickets() +
                 '}';
+    }
+
+    public String getName() {
+        return this.eventName;
     }
 
 
