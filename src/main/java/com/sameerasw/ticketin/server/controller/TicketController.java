@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/tickets")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TicketController {
     @Autowired
     private TicketService ticketService;
@@ -19,6 +20,12 @@ public class TicketController {
     @GetMapping("/events/{eventId}")
     public ResponseEntity<List<Ticket>> getTicketsByEventId(@PathVariable Long eventId) {
         List<Ticket> tickets = ticketService.getTicketsByEventId(eventId);
+        return tickets != null ? new ResponseEntity<>(tickets, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<Ticket>> getAllTickets() {
+        List<Ticket> tickets = ticketService.getAllTickets();
         return tickets != null ? new ResponseEntity<>(tickets, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

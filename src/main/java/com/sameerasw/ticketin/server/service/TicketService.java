@@ -22,4 +22,7 @@ public class TicketService {
         return ticketRepository.findByEventItemId(eventItemId);
     }
 
+    public List<Ticket> getAllTickets() {
+        return ticketRepository.findAll();
+    }
 }
