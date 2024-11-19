@@ -14,7 +14,8 @@ public class Vendor extends User {
     private List<EventItem> events;
 
     // Constructors, getters, and setters
-    public Vendor() {}
+    public Vendor() {
+    }
 
 
     public Vendor(String name, String email) {

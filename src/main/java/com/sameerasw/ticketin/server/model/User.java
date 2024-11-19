@@ -15,7 +15,8 @@ public abstract class User {
     private boolean isSimulated;
 
     // Constructors, getters, and setters
-    public User() {}
+    public User() {
+    }
 
     public User(String name, String email) {
         this.name = name;

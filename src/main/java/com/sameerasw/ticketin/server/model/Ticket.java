@@ -20,7 +20,8 @@ public class Ticket {
     private Customer customer; // Link to Customer
 
     // Constructors, getters, and setters
-    public Ticket() {}
+    public Ticket() {
+    }
 
     public Ticket(EventItem eventItem, boolean isSimulated) {
         this.eventItem = eventItem;

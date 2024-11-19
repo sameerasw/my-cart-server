@@ -2,20 +2,16 @@ package com.sameerasw.ticketin.server.service;
 
 import com.sameerasw.ticketin.server.model.Customer;
 import com.sameerasw.ticketin.server.model.EventItem;
-import com.sameerasw.ticketin.server.model.Ticket;
-import com.sameerasw.ticketin.server.model.TicketPool;
 import com.sameerasw.ticketin.server.repository.CustomerRepository;
 import com.sameerasw.ticketin.server.repository.EventRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
-import static com.sameerasw.ticketin.server.Application.*;
 
 @Service
 public class CustomerService {
@@ -36,7 +32,7 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
-    public  void purchaseTicket(Customer customer, long eventItemId) {
+    public void purchaseTicket(Customer customer, long eventItemId) {
         lock.lock();
         try {
             EventItem eventItem = eventRepository.findById(eventItemId).orElse(null);

@@ -4,7 +4,6 @@ import com.sameerasw.ticketin.server.model.Customer;
 import com.sameerasw.ticketin.server.model.Ticket;
 import com.sameerasw.ticketin.server.model.TicketPool;
 import com.sameerasw.ticketin.server.repository.TicketPoolRepository;
-import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +17,17 @@ import static com.sameerasw.ticketin.server.Application.*;
 @Service
 public class TicketPoolService {
     private static final Logger logger = LoggerFactory.getLogger(TicketPoolService.class);
-
+    private final Lock lock = new ReentrantLock();
     @Autowired
     private TicketPoolRepository ticketPoolRepository;
     @Autowired
     private TicketService ticketService;
 
-    private final Lock lock = new ReentrantLock();
-
     public TicketPool createTicketPool(TicketPool ticketPool) {
         return ticketPoolRepository.save(ticketPool);
     }
 
-    public  TicketPool getTicketPoolByEventItemId(Long eventItemId) {
+    public TicketPool getTicketPoolByEventItemId(Long eventItemId) {
         return ticketPoolRepository.findByEventItemIdAndTicketsIsSoldFalse(eventItemId);
     }
 

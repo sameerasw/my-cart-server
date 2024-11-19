@@ -8,10 +8,10 @@ import com.sameerasw.ticketin.server.repository.EventRepository;
 import com.sameerasw.ticketin.server.repository.TicketPoolRepository;
 import com.sameerasw.ticketin.server.repository.TicketRepository;
 import com.sameerasw.ticketin.server.repository.VendorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

@@ -14,7 +14,8 @@ public class Customer extends User {
     private List<Ticket> tickets;
 
     // Constructors, getters, and setters
-    public Customer() {}
+    public Customer() {
+    }
 
     public Customer(String name, String email) {
         super(name, email);

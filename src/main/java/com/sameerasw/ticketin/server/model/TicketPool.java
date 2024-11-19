@@ -1,6 +1,7 @@
 package com.sameerasw.ticketin.server.model;
 
 import jakarta.persistence.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,8 @@ public class TicketPool {
     private List<Ticket> tickets;
 
     // Constructors, getters, and setters
-    public TicketPool() {}
+    public TicketPool() {
+    }
 
     public TicketPool(int maxPoolSize, EventItem eventItem) {
         this.maxPoolSize = maxPoolSize;

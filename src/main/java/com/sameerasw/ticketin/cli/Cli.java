@@ -1,19 +1,21 @@
 package com.sameerasw.ticketin.cli;
 
-import java.util.List;
-import java.util.Scanner;
-
-import com.sameerasw.ticketin.server.model.*;
+import com.sameerasw.ticketin.server.model.Customer;
+import com.sameerasw.ticketin.server.model.EventItem;
+import com.sameerasw.ticketin.server.model.Ticket;
+import com.sameerasw.ticketin.server.model.Vendor;
+import com.sameerasw.ticketin.server.service.CustomerService;
+import com.sameerasw.ticketin.server.service.EventService;
+import com.sameerasw.ticketin.server.service.TicketService;
+import com.sameerasw.ticketin.server.service.VendorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.sameerasw.ticketin.server.service.CustomerService;
-import com.sameerasw.ticketin.server.service.EventService;
-import com.sameerasw.ticketin.server.service.TicketService;
-import com.sameerasw.ticketin.server.service.VendorService;
+import java.util.List;
+import java.util.Scanner;
 
 @Component
 public class Cli {
@@ -147,7 +149,7 @@ public class Cli {
 //        try {
 //            Thread.sleep(10);
 //        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+        Thread.currentThread().interrupt();
 //        }
 
         // Interrupt all threads to ensure they stop
@@ -170,7 +172,7 @@ public class Cli {
                 "12. Start Simulation\n" +
                 "13. Configure the simulation\n" +
                 "14. How many threads are running?"
-                );
+        );
     }
 
     private void configureSimulation() {

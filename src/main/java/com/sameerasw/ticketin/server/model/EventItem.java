@@ -24,9 +24,10 @@ public class EventItem {
     private TicketPool ticketPool;
 
     // Constructors, getters, and setters
-    public EventItem() {}
+    public EventItem() {
+    }
 
-    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, Vendor vendor ) {
+    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, Vendor vendor) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.eventDate = eventDate;
@@ -46,16 +47,20 @@ public class EventItem {
         this.ticketPool = new TicketPool(maxPoolSize, this);
     }
 
-    public void setVendor(Vendor vendor) {
-        this.vendor = vendor;
-    }
-
     public Vendor getVendor() {
         return this.vendor;
     }
 
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
     public TicketPool getTicketPool() {
         return ticketPool;
+    }
+
+    public void setTicketPool(TicketPool ticketPool) {
+        this.ticketPool = ticketPool;
     }
 
     public double getTicketPrice() {
@@ -72,10 +77,6 @@ public class EventItem {
 
     public Long getEventId() {
         return this.eventId;
-    }
-
-    public void setTicketPool(TicketPool ticketPool) {
-        this.ticketPool = ticketPool;
     }
 
     @Override
