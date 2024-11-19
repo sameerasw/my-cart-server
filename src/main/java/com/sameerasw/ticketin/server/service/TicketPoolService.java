@@ -34,7 +34,7 @@ public class TicketPoolService {
 
     public synchronized Ticket removeTicket(TicketPool ticketPool, Customer customer) {
         // display the running thread count
-        System.out.println("Running threads: " + Thread.activeCount());
+//        System.out.println("Running threads: " + Thread.activeCount());
         lock.lock();
         try {
             if (ticketPool.getAvailableTickets() > 0) {
