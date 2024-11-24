@@ -23,6 +23,12 @@ public class Ticket {
     public Ticket() {
     }
 
+    public Ticket(EventItem eventItem) {
+        this.eventItem = eventItem;
+        this.isSimulated = false;
+        this.ticketPool = eventItem.getTicketPool();
+    }
+
     public Ticket(EventItem eventItem, boolean isSimulated) {
         this.eventItem = eventItem;
         this.isSimulated = isSimulated;

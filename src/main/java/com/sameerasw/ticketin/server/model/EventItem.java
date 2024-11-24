@@ -14,6 +14,8 @@ public class EventItem {
     private String eventTime;
     private double ticketPrice;
     private boolean isSimulated;
+    private String details;
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "vendor_id")
@@ -27,13 +29,15 @@ public class EventItem {
     public EventItem() {
     }
 
-    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, Vendor vendor) {
+    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, Vendor vendor, String details, String image) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.eventDate = eventDate;
         this.eventTime = eventTime;
         this.ticketPrice = ticketPrice;
         this.vendor = vendor;
+        this.details = details;
+        this.image = image;
         this.isSimulated = false;
     }
 
@@ -77,6 +81,30 @@ public class EventItem {
 
     public Long getEventId() {
         return this.eventId;
+    }
+
+    public String getEventLocation() {
+        return this.eventLocation;
+    }
+
+    public String getEventDate() {
+        return this.eventDate;
+    }
+
+    public String getEventTime() {
+        return this.eventTime;
+    }
+
+    public boolean isSimulated() {
+        return this.isSimulated;
+    }
+
+    public String getDetails() {
+        return this.details;
+    }
+
+    public String getImage() {
+        return this.image;
     }
 
     @Override

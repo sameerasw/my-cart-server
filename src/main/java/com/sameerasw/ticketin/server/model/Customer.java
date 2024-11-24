@@ -1,12 +1,14 @@
 package com.sameerasw.ticketin.server.model;
 
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 
 import java.util.List;
 
 @Entity
+@DiscriminatorValue("CUSTOMER")
 public class Customer extends User {
     private int ticketRetrievalRate;
 
@@ -17,8 +19,9 @@ public class Customer extends User {
     public Customer() {
     }
 
-    public Customer(String name, String email) {
+    public Customer(String name, String email, String password) {
         super(name, email);
+        this.setPassword(password);
     }
 
     public Customer(String name, int ticketRetrievalRate) {
