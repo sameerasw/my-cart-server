@@ -1,19 +1,21 @@
 package com.sameerasw.ticketin.cli;
 
-import java.util.List;
-import java.util.Scanner;
-
-import com.sameerasw.ticketin.server.model.*;
+import com.sameerasw.ticketin.server.model.Customer;
+import com.sameerasw.ticketin.server.model.EventItem;
+import com.sameerasw.ticketin.server.model.Ticket;
+import com.sameerasw.ticketin.server.model.Vendor;
+import com.sameerasw.ticketin.server.service.CustomerService;
+import com.sameerasw.ticketin.server.service.EventService;
+import com.sameerasw.ticketin.server.service.TicketService;
+import com.sameerasw.ticketin.server.service.VendorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.sameerasw.ticketin.server.service.CustomerService;
-import com.sameerasw.ticketin.server.service.EventService;
-import com.sameerasw.ticketin.server.service.TicketService;
-import com.sameerasw.ticketin.server.service.VendorService;
+import java.util.List;
+import java.util.Scanner;
 
 @Component
 public class Cli {
@@ -104,38 +106,11 @@ public class Cli {
         final boolean[] isSimulating = {true};
 
         for (Vendor vendor : vendors) {
-            new Thread(() -> {
-                final Long releaseRate = vendor.getTicketReleaseRate();
-                while (isSimulating[0]) {
-                    try {
-                        Thread.sleep(releaseRate * 1000);
-                        if (!isSimulating[0]) break;
-                        vendorService.releaseTickets(vendor, events.get((int) (Math.random() * events.size())).getId());
-                    } catch (InterruptedException e) {
-                        logger.info("Thread interrupted.");
-                        Thread.currentThread().interrupt();
-                        break;
-                    }
-                }
-            }).start();
+            new Thread(new VendorSimulation(vendor, events, vendorService, isSimulating)).start();
         }
 
         for (Customer customer : customers) {
-            final Long retrievalRate = customer.getTicketRetrievalRate();
-            Thread customerThread = new Thread(() -> {
-                while (isSimulating[0]) {
-                    try {
-                        customerService.purchaseTicket(customer, events.get((int) (Math.random() * events.size())).getId());
-                        Thread.sleep(retrievalRate * 1000);
-                        if (!isSimulating[0]) break;
-                    } catch (InterruptedException e) {
-                        logger.info("Thread interrupted.");
-                        Thread.currentThread().interrupt();
-                        break;
-                    }
-                }
-            });
-            customerThread.start();
+            new Thread(new CustomerSimulation(customer, events, customerService, isSimulating)).start();
         }
 
         System.out.println("Running threads: " + Thread.activeCount());
@@ -143,15 +118,7 @@ public class Cli {
         System.out.println("Stopping simulation...");
         isSimulating[0] = false;
 
-        // Give threads some time to finish their current transactions
-//        try {
-//            Thread.sleep(10);
-//        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-//        }
-
-        // Interrupt all threads to ensure they stop
-//        Thread.getAllStackTraces().keySet().forEach(Thread::interrupt);
+        Thread.currentThread().interrupt();
     }
 
     private void displayMenu() {
@@ -170,7 +137,7 @@ public class Cli {
                 "12. Start Simulation\n" +
                 "13. Configure the simulation\n" +
                 "14. How many threads are running?"
-                );
+        );
     }
 
     private void configureSimulation() {

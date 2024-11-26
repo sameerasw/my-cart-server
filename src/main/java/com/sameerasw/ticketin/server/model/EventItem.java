@@ -14,6 +14,8 @@ public class EventItem {
     private String eventTime;
     private double ticketPrice;
     private boolean isSimulated;
+    private String details;
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "vendor_id")
@@ -24,15 +26,18 @@ public class EventItem {
     private TicketPool ticketPool;
 
     // Constructors, getters, and setters
-    public EventItem() {}
+    public EventItem() {
+    }
 
-    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, Vendor vendor ) {
+    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, Vendor vendor, String details, String image) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.eventDate = eventDate;
         this.eventTime = eventTime;
         this.ticketPrice = ticketPrice;
         this.vendor = vendor;
+        this.details = details;
+        this.image = image;
         this.isSimulated = false;
     }
 
@@ -46,16 +51,20 @@ public class EventItem {
         this.ticketPool = new TicketPool(maxPoolSize, this);
     }
 
-    public void setVendor(Vendor vendor) {
-        this.vendor = vendor;
-    }
-
     public Vendor getVendor() {
         return this.vendor;
     }
 
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
     public TicketPool getTicketPool() {
         return ticketPool;
+    }
+
+    public void setTicketPool(TicketPool ticketPool) {
+        this.ticketPool = ticketPool;
     }
 
     public double getTicketPrice() {
@@ -74,8 +83,28 @@ public class EventItem {
         return this.eventId;
     }
 
-    public void setTicketPool(TicketPool ticketPool) {
-        this.ticketPool = ticketPool;
+    public String getEventLocation() {
+        return this.eventLocation;
+    }
+
+    public String getEventDate() {
+        return this.eventDate;
+    }
+
+    public String getEventTime() {
+        return this.eventTime;
+    }
+
+    public boolean isSimulated() {
+        return this.isSimulated;
+    }
+
+    public String getDetails() {
+        return this.details;
+    }
+
+    public String getImage() {
+        return this.image;
     }
 
     @Override

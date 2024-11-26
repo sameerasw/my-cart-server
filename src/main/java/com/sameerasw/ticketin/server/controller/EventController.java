@@ -8,8 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/events")
+@CrossOrigin(origins = "http://localhost:3000")
 public class EventController {
     @Autowired
     private EventService eventService;
@@ -23,5 +26,11 @@ public class EventController {
     @PostMapping
     public ResponseEntity<EventItem> createEvent(@RequestBody EventItem eventItem) {
         return new ResponseEntity<>(eventService.createEvent(eventItem), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<EventItem>> getAllEvents() {
+        List<EventItem> events = eventService.getAllEvents(true);
+        return events != null ? new ResponseEntity<>(events, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

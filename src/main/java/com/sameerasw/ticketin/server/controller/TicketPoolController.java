@@ -18,9 +18,9 @@ public class TicketPoolController {
         return new ResponseEntity<>(ticketPoolService.createTicketPool(ticketPool), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{eventItemId}") // Changed path variable name
-    public ResponseEntity<TicketPool> getTicketPoolByEventItemId(@PathVariable Long eventItemId) { // Changed method name
-        TicketPool ticketPool = ticketPoolService.getTicketPoolByEventItemId(eventItemId); // Changed method call
+    @GetMapping("/{eventItemId}")
+    public ResponseEntity<TicketPool> getTicketPoolByEventItemId(@PathVariable Long eventItemId) {
+        TicketPool ticketPool = ticketPoolService.getTicketPoolByEventItemId(eventItemId);
         return ticketPool != null ? new ResponseEntity<>(ticketPool, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

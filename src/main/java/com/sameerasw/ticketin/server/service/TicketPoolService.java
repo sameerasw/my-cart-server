@@ -12,17 +12,16 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.sameerasw.ticketin.server.Application.ANSI_RESET;
-import static com.sameerasw.ticketin.server.Application.ANSI_YELLOW;
+import static com.sameerasw.ticketin.server.Application.*;
 
 @Service
 public class TicketPoolService {
     private static final Logger logger = LoggerFactory.getLogger(TicketPoolService.class);
-
+    private final Lock lock = new ReentrantLock();
     @Autowired
     private TicketPoolRepository ticketPoolRepository;
-
-    private final Lock lock = new ReentrantLock();
+    @Autowired
+    private TicketService ticketService;
 
     public TicketPool createTicketPool(TicketPool ticketPool) {
         return ticketPoolRepository.save(ticketPool);
@@ -32,17 +31,19 @@ public class TicketPoolService {
         return ticketPoolRepository.findByEventItemIdAndTicketsIsSoldFalse(eventItemId);
     }
 
-    public synchronized Ticket removeTicket(TicketPool ticketPool, Customer customer) {
-        // display the running thread count
-//        System.out.println("Running threads: " + Thread.activeCount());
+    public void removeTicket(Long eventItemId, Customer customer) {
         lock.lock();
         try {
-            if (ticketPool.getAvailableTickets() > 0) {
-                Ticket ticket = ticketPool.getTickets().get(0);
+//            TicketPool ticketPool = getTicketPoolByEventItemId(eventItemId);
+            TicketPool ticketPool = ticketPoolRepository.findByEventItemIdAndTicketsIsSoldFalse(eventItemId);
+            if (ticketPool != null && ticketPool.getAvailableTickets() > 0) {
+                Ticket ticket = ticketPool.getTickets().stream().filter(Ticket::isAvailable).findFirst().orElse(null);
                 if (ticket != null) {
-                    ticket.setCustomer(customer);
                     ticket.sellTicket();
-                    return ticket;
+                    ticket.setCustomer(customer);
+                    ticketService.saveTicket(ticket);
+                    logger.info(ANSI_GREEN + customer.getName() + " - Ticket " + ticket.getId() + " purchased for " + ticketPool.getEventName() + ANSI_RESET);
+//                    return true;
                 } else {
                     logger.info(ANSI_YELLOW + "No tickets available for the event: " + ticketPool.getEventName() + ANSI_RESET);
                 }
@@ -50,7 +51,7 @@ public class TicketPoolService {
         } finally {
             lock.unlock();
         }
-        return null;
+//        return false;
     }
 
     public void addTicket(TicketPool ticketPool, Ticket ticket) {
