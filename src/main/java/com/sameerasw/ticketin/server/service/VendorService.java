@@ -8,10 +8,11 @@ import com.sameerasw.ticketin.server.repository.EventRepository;
 import com.sameerasw.ticketin.server.repository.TicketPoolRepository;
 import com.sameerasw.ticketin.server.repository.TicketRepository;
 import com.sameerasw.ticketin.server.repository.VendorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,10 +33,12 @@ public class VendorService {
     @Autowired
     private TicketPoolRepository ticketPoolRepository;
 
+    @Transactional
     public Vendor createVendor(Vendor vendor) {
         return vendorRepository.save(vendor);
     }
 
+    @Transactional
     public void releaseTickets(Vendor vendor, Long eventId) {
         EventItem eventItem = eventRepository.findById(eventId).orElse(null);
         if (eventItem != null) {
