@@ -106,38 +106,11 @@ public class Cli {
         final boolean[] isSimulating = {true};
 
         for (Vendor vendor : vendors) {
-            new Thread(() -> {
-                final Long releaseRate = vendor.getTicketReleaseRate();
-                while (isSimulating[0]) {
-                    try {
-                        Thread.sleep(releaseRate * 1000);
-                        if (!isSimulating[0]) break;
-                        vendorService.releaseTickets(vendor, events.get((int) (Math.random() * events.size())).getId());
-                    } catch (InterruptedException e) {
-                        logger.info("Thread interrupted.");
-                        Thread.currentThread().interrupt();
-                        break;
-                    }
-                }
-            }).start();
+            new Thread(new VendorSimulation(vendor, events, vendorService, isSimulating)).start();
         }
 
         for (Customer customer : customers) {
-            final Long retrievalRate = customer.getTicketRetrievalRate();
-            Thread customerThread = new Thread(() -> {
-                while (isSimulating[0]) {
-                    try {
-                        customerService.purchaseTicket(customer, events.get((int) (Math.random() * events.size())).getId());
-                        Thread.sleep(retrievalRate * 1000);
-                        if (!isSimulating[0]) break;
-                    } catch (InterruptedException e) {
-                        logger.info("Thread interrupted.");
-                        Thread.currentThread().interrupt();
-                        break;
-                    }
-                }
-            });
-            customerThread.start();
+            new Thread(new CustomerSimulation(customer, events, customerService, isSimulating)).start();
         }
 
         System.out.println("Running threads: " + Thread.activeCount());
@@ -145,15 +118,7 @@ public class Cli {
         System.out.println("Stopping simulation...");
         isSimulating[0] = false;
 
-        // Give threads some time to finish their current transactions
-//        try {
-//            Thread.sleep(10);
-//        } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
-//        }
-
-        // Interrupt all threads to ensure they stop
-//        Thread.getAllStackTraces().keySet().forEach(Thread::interrupt);
     }
 
     private void displayMenu() {

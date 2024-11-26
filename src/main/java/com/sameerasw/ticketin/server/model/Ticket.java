@@ -11,6 +11,10 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Version
+    private Long version;
+
     private boolean isSold = false;
     private boolean isSimulated;
 
@@ -53,6 +57,13 @@ public class Ticket {
 
     public void sellTicket() {
         isSold = true;
+    }
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
     // ... getters and setters ...
 }

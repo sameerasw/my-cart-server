@@ -32,7 +32,6 @@ public class VendorController {
         return new ResponseEntity<>(eventService.createEvent(eventItem), HttpStatus.CREATED);
     }
 
-
     @GetMapping
     public ResponseEntity<List<Vendor>> getAllVendors() {
         return new ResponseEntity<>(vendorService.getAllVendors(true), HttpStatus.OK);
