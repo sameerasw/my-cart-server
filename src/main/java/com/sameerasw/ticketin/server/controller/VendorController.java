@@ -1,9 +1,8 @@
 package com.sameerasw.ticketin.server.controller;
 
-
-import com.sameerasw.ticketin.server.model.EventItem;
+import com.sameerasw.ticketin.server.dto.VendorDTO;
 import com.sameerasw.ticketin.server.model.Vendor;
-import com.sameerasw.ticketin.server.service.EventService;
+import com.sameerasw.ticketin.server.service.MappingService;
 import com.sameerasw.ticketin.server.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/vendors")
@@ -19,28 +19,20 @@ public class VendorController {
     private VendorService vendorService;
 
     @Autowired
-    private EventService eventService;
+    private MappingService mappingService;
 
     @PostMapping
-    public ResponseEntity<Vendor> createVendor(@RequestBody Vendor vendor) {
-        return new ResponseEntity<>(vendorService.createVendor(vendor), HttpStatus.CREATED);
-    }
-
-    @PostMapping("/{vendorId}/events")
-    public ResponseEntity<EventItem> createEvent(@PathVariable long vendorId, @RequestBody EventItem eventItem) {
-        eventItem.setVendor(vendorService.createVendor(new Vendor("test", 1)));
-        return new ResponseEntity<>(eventService.createEvent(eventItem), HttpStatus.CREATED);
+    public ResponseEntity<VendorDTO> createVendor(@RequestBody VendorDTO vendorDTO) {
+        Vendor vendor = new Vendor(vendorDTO.getName(), vendorDTO.getEmail());
+        return new ResponseEntity<>(mappingService.mapToVendorDTO(vendorService.createVendor(vendor)), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Vendor>> getAllVendors() {
-        return new ResponseEntity<>(vendorService.getAllVendors(true), HttpStatus.OK);
-    }
-
-    @PostMapping("/{vendorId}/events/{eventId}/tickets")
-    public ResponseEntity<String> releaseTickets(@PathVariable long vendorId, @PathVariable long eventId) {
-        Vendor vendor = vendorService.createVendor(new Vendor("test", 1));
-        vendorService.releaseTickets(vendor, eventId);
-        return new ResponseEntity<>("Tickets released", HttpStatus.OK);
+    public ResponseEntity<List<VendorDTO>> getAllVendors() {
+        List<VendorDTO> vendors = vendorService.getAllVendors(true)
+                .stream()
+                .map(mappingService::mapToVendorDTO)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(vendors, HttpStatus.OK);
     }
 }

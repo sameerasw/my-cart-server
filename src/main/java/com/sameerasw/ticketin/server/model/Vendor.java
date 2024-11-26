@@ -28,7 +28,7 @@ public class Vendor extends User {
         this.ticketReleaseRate = ticketReleaseRate;
     }
 
-    public long getTicketReleaseRate() {
+    public int getTicketReleaseRate() {
         return ticketReleaseRate;
     }
 

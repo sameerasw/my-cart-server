@@ -54,4 +54,8 @@ public class TicketPool {
     public String getEventName() {
         return eventItem.getName();
     }
+
+    public EventItem getEventItem() {
+        return this.eventItem;
+    }
 }

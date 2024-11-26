@@ -29,7 +29,11 @@ public class Customer extends User {
         this.ticketRetrievalRate = ticketRetrievalRate;
     }
 
-    public long getTicketRetrievalRate() {
+    public Customer(String name, String email) {
+        super(name, email);
+    }
+
+    public int getTicketRetrievalRate() {
         return this.ticketRetrievalRate;
     }
 

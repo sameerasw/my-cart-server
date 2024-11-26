@@ -47,6 +47,29 @@ public class EventItem {
         this.isSimulated = isSimulated;
     }
 
+    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, String details, String image) {
+        this.eventName = eventName;
+        this.eventLocation = eventLocation;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.ticketPrice = ticketPrice;
+        this.details = details;
+        this.image = image;
+        this.isSimulated = false;
+    }
+
+    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, String details, String image, Long vendorId, String vendorName) {
+        this.eventName = eventName;
+        this.eventLocation = eventLocation;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.ticketPrice = ticketPrice;
+        this.details = details;
+        this.image = image;
+        this.isSimulated = false;
+        this.vendor = getVendor();
+    }
+
     public void createTicketPool(int maxPoolSize) {
         this.ticketPool = new TicketPool(maxPoolSize, this);
     }
@@ -124,6 +147,10 @@ public class EventItem {
 
     public String getName() {
         return this.eventName;
+    }
+
+    public int getAvailableTickets() {
+        return ticketPool.getAvailableTickets();
     }
 
 
