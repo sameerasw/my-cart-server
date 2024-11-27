@@ -19,7 +19,7 @@ import static com.sameerasw.ticketin.cli.Cli.logger;
 
 @RestController
 @RequestMapping("/events")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class EventController {
     @Autowired
     private EventService eventService;

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/ticketpools")
+@CrossOrigin(origins = "*")
 public class TicketPoolController {
     @Autowired
     private TicketPoolService ticketPoolService;
