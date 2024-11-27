@@ -1,5 +1,8 @@
 package com.sameerasw.ticketin.server.model;
 
+import com.sameerasw.ticketin.server.repository.VendorRepository;
+import com.sameerasw.ticketin.server.service.UserService;
+import com.sameerasw.ticketin.server.service.VendorService;
 import jakarta.persistence.*;
 
 @Entity
@@ -29,7 +32,7 @@ public class EventItem {
     public EventItem() {
     }
 
-    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, Vendor vendor, String details, String image) {
+    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, String details, String image, Vendor vendor) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.eventDate = eventDate;
@@ -67,7 +70,6 @@ public class EventItem {
         this.details = details;
         this.image = image;
         this.isSimulated = false;
-        this.vendor = getVendor();
     }
 
     public void createTicketPool(int maxPoolSize) {

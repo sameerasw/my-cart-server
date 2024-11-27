@@ -29,6 +29,11 @@ public class TicketPool {
         this.eventItem = eventItem;
     }
 
+    public TicketPool(EventItem eventItem) {
+        this.maxPoolSize = 0;
+        this.eventItem = eventItem;
+    }
+
     public int getMaxPoolSize() {
         return maxPoolSize;
     }

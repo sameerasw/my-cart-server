@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.sameerasw.ticketin.cli.Cli.logger;
+
 @Service
 public class EventService {
     @Autowired
@@ -34,6 +36,7 @@ public class EventService {
         TicketPool ticketPool = new TicketPool(maxPoolSize, savedEventItem);
         ticketPoolService.createTicketPool(ticketPool);
         savedEventItem.setTicketPool(ticketPool); // Assign the saved TicketPool to the EventItem
+        logger.info("TicketPool created for EventItem: " + savedEventItem.getId());
         return eventRepository.save(savedEventItem); // Save the updated EventItem
     }
 
@@ -42,9 +45,10 @@ public class EventService {
         EventItem savedEventItem = eventRepository.save(eventItem);
 
         // Now, create and save the TicketPool
-        TicketPool ticketPool = new TicketPool(eventItem.getTicketPool().getMaxPoolSize(), savedEventItem);
+        TicketPool ticketPool = new TicketPool(savedEventItem);
         ticketPoolService.createTicketPool(ticketPool);
         savedEventItem.setTicketPool(ticketPool); // Assign the saved TicketPool to the EventItem
+        logger.info("TicketPool created for EventItem: " + savedEventItem.getId());
         return eventRepository.save(savedEventItem); // Save the updated EventItem
     }
 
