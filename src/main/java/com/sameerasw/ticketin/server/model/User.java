@@ -33,6 +33,13 @@ public abstract class User {
         this.isSimulated = false;
     }
 
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.isSimulated = false;
+    }
+
     public User(String name, boolean isSimulated) {
         this.name = name;
         this.isSimulated = isSimulated;

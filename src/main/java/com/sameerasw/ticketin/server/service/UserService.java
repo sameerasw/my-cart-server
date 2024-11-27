@@ -1,20 +1,28 @@
+// src/main/java/com/sameerasw/ticketin/server/service/UserService.java
 package com.sameerasw.ticketin.server.service;
 
 import com.sameerasw.ticketin.server.model.Customer;
+import com.sameerasw.ticketin.server.model.Vendor;
 import com.sameerasw.ticketin.server.repository.CustomerRepository;
+import com.sameerasw.ticketin.server.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 
-// src/main/java/com/sameerasw/ticketin/server/service/UserService.java
 @Service
 public class UserService {
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private VendorRepository vendorRepository;
 
-    public Customer findByEmail(String email) {
+    public Customer findCustomerByEmail(String email) {
         return customerRepository.findByEmail(email);
+    }
+
+    public Vendor findVendorByEmail(String email) {
+        return vendorRepository.findByEmail(email);
     }
 
     public String generateSimpleToken(Long userId) {

@@ -19,8 +19,8 @@ public class Vendor extends User {
     public Vendor() {
     }
 
-    public Vendor(String name, String email) {
-        super(name, email);
+    public Vendor(String name, String email, String password) {
+        super(name, email, password);
     }
 
     public Vendor(String name, int ticketReleaseRate) {

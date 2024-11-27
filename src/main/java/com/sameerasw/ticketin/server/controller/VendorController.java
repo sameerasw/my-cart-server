@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/vendors")
+@CrossOrigin(origins = "http://localhost:3000")
 public class VendorController {
     @Autowired
     private VendorService vendorService;
@@ -23,7 +24,7 @@ public class VendorController {
 
     @PostMapping
     public ResponseEntity<VendorDTO> createVendor(@RequestBody VendorDTO vendorDTO) {
-        Vendor vendor = new Vendor(vendorDTO.getName(), vendorDTO.getEmail());
+        Vendor vendor = new Vendor(vendorDTO.getName(), vendorDTO.getEmail(), vendorDTO.getPassword());
         return new ResponseEntity<>(mappingService.mapToVendorDTO(vendorService.createVendor(vendor)), HttpStatus.CREATED);
     }
 

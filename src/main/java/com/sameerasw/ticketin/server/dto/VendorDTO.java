@@ -4,6 +4,7 @@ public class VendorDTO {
     private Long id;
     private String name;
     private String email;
+    private String password;
     private int ticketReleaseRate;
 
     // Getters and setters
@@ -21,6 +22,14 @@ public class VendorDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
