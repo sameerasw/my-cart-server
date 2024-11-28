@@ -20,8 +20,7 @@ public class Customer extends User {
     }
 
     public Customer(String name, String email, String password) {
-        super(name, email);
-        this.setPassword(password);
+        super(name, email, password);
     }
 
     public Customer(String name, int ticketRetrievalRate) {
@@ -29,7 +28,11 @@ public class Customer extends User {
         this.ticketRetrievalRate = ticketRetrievalRate;
     }
 
-    public long getTicketRetrievalRate() {
+    public Customer(String name, String email) {
+        super(name, email);
+    }
+
+    public int getTicketRetrievalRate() {
         return this.ticketRetrievalRate;
     }
 

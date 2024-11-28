@@ -41,11 +41,12 @@ public class VendorService {
     @Transactional
     public void releaseTickets(Vendor vendor, Long eventId) {
         EventItem eventItem = eventRepository.findById(eventId).orElse(null);
+        boolean isSimulated = eventItem.isSimulated();
         if (eventItem != null) {
             TicketPool ticketPool = eventItem.getTicketPool();
             if (ticketPool != null) {
-                if (ticketPool.getAvailableTickets() < ticketPool.getMaxPoolSize()) {
-                    Ticket ticket = new Ticket(eventItem, true);
+                if (ticketPool.getAvailableTickets() < ticketPool.getMaxPoolSize() || !isSimulated) {
+                    Ticket ticket = new Ticket(eventItem, isSimulated);
                     ticketRepository.save(ticket);
                     ticketPoolService.addTicket(ticketPool, ticket);
                     ticketPoolRepository.save(ticketPool);
@@ -67,5 +68,14 @@ public class VendorService {
 
     public Vendor getVendorById(long vendorId) {
         return vendorRepository.findById(vendorId).orElse(null);
+    }
+
+    public Vendor getVendorByEventId(long eventId) {
+        EventItem eventItem = eventRepository.findById(eventId).orElse(null);
+        if (eventItem != null) {
+            return eventItem.getVendor();
+        } else {
+            return null;
+        }
     }
 }

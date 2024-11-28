@@ -1,5 +1,8 @@
 package com.sameerasw.ticketin.server.model;
 
+import com.sameerasw.ticketin.server.repository.VendorRepository;
+import com.sameerasw.ticketin.server.service.UserService;
+import com.sameerasw.ticketin.server.service.VendorService;
 import jakarta.persistence.*;
 
 @Entity
@@ -29,7 +32,7 @@ public class EventItem {
     public EventItem() {
     }
 
-    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, Vendor vendor, String details, String image) {
+    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, String details, String image, Vendor vendor) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.eventDate = eventDate;
@@ -45,6 +48,28 @@ public class EventItem {
         this.eventName = eventName;
         this.vendor = vendor;
         this.isSimulated = isSimulated;
+    }
+
+    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, String details, String image) {
+        this.eventName = eventName;
+        this.eventLocation = eventLocation;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.ticketPrice = ticketPrice;
+        this.details = details;
+        this.image = image;
+        this.isSimulated = false;
+    }
+
+    public EventItem(String eventName, String eventLocation, String eventDate, String eventTime, double ticketPrice, String details, String image, Long vendorId, String vendorName) {
+        this.eventName = eventName;
+        this.eventLocation = eventLocation;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.ticketPrice = ticketPrice;
+        this.details = details;
+        this.image = image;
+        this.isSimulated = false;
     }
 
     public void createTicketPool(int maxPoolSize) {
@@ -124,6 +149,10 @@ public class EventItem {
 
     public String getName() {
         return this.eventName;
+    }
+
+    public int getAvailableTickets() {
+        return ticketPool.getAvailableTickets();
     }
 
 

@@ -24,7 +24,7 @@ public class CustomerSimulation implements Runnable {
 
     @Override
     public void run() {
-        final Long retrievalRate = customer.getTicketRetrievalRate();
+        final int retrievalRate = customer.getTicketRetrievalRate();
         while (isSimulating[0]) {
             try {
                 customerService.purchaseTicket(customer, events.get((int) (Math.random() * events.size())).getId());
