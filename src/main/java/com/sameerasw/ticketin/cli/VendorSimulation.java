@@ -25,7 +25,7 @@ public class VendorSimulation implements Runnable {
 
     @Override
     public void run() {
-        final Long releaseRate = vendor.getTicketReleaseRate();
+        final int releaseRate = vendor.getTicketReleaseRate();
         while (isSimulating[0]) {
             try {
                 Thread.sleep(releaseRate * 1000);

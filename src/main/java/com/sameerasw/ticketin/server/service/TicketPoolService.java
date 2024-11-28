@@ -4,7 +4,7 @@ import com.sameerasw.ticketin.server.model.Customer;
 import com.sameerasw.ticketin.server.model.Ticket;
 import com.sameerasw.ticketin.server.model.TicketPool;
 import com.sameerasw.ticketin.server.repository.TicketPoolRepository;
-import org.slf4j.Logger;
+import static com.sameerasw.ticketin.cli.Cli.logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,6 @@ import static com.sameerasw.ticketin.server.Application.*;
 
 @Service
 public class TicketPoolService {
-    private static final Logger logger = LoggerFactory.getLogger(TicketPoolService.class);
     private final Lock lock = new ReentrantLock();
     @Autowired
     private TicketPoolRepository ticketPoolRepository;

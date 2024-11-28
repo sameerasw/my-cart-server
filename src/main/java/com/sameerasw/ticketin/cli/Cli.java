@@ -19,7 +19,7 @@ import java.util.Scanner;
 
 @Component
 public class Cli {
-    private static final Logger logger = LoggerFactory.getLogger(Cli.class);
+    public static final Logger logger = LoggerFactory.getLogger(Cli.class);
 
     @Autowired
     private VendorService vendorService;

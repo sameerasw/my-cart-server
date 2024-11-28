@@ -58,6 +58,7 @@ public class Ticket {
     public void sellTicket() {
         isSold = true;
     }
+
     public Long getVersion() {
         return version;
     }
@@ -65,5 +66,14 @@ public class Ticket {
     public void setVersion(Long version) {
         this.version = version;
     }
+
+    public Customer getCustomer() {
+        return this.customer;
+    }
+
+    public EventItem getEventItem() {
+        return this.eventItem;
+    }
+
     // ... getters and setters ...
 }
