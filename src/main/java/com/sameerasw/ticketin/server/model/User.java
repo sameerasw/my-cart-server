@@ -65,5 +65,9 @@ public abstract class User {
         this.password = password;
     }
 
+    public boolean isSimulated() {
+        return this.isSimulated;
+    }
+
     // ... getters and setters ...
 }

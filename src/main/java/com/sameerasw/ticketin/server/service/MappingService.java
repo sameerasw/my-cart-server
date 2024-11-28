@@ -46,6 +46,7 @@ public class MappingService {
         dto.setImage(eventItem.getImage());
         dto.setVendorId(eventItem.getVendor().getId());
         dto.setVendorName(eventItem.getVendor().getName());
+        dto.setAvailableTickets(eventItem.getTicketPool().getAvailableTickets());
         return dto;
     }
 

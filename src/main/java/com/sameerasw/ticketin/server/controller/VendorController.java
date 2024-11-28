@@ -36,4 +36,22 @@ public class VendorController {
                 .collect(Collectors.toList());
         return new ResponseEntity<>(vendors, HttpStatus.OK);
     }
+
+    @GetMapping("/{eventId}/release")
+    public ResponseEntity<String> releaseTickets(@PathVariable long eventId, @RequestParam int ticketCount) {
+        try {
+            Vendor vendor = vendorService.getVendorByEventId(eventId);
+            if (vendor == null) {
+                return new ResponseEntity<>("Vendor not found", HttpStatus.NOT_FOUND);
+            } else if (vendor.isSimulated()) {
+                return new ResponseEntity<>("Vendor is simulated", HttpStatus.BAD_REQUEST);
+            }
+            for (int i = 0; i < ticketCount; i++) {
+                vendorService.releaseTickets(vendor, eventId);
+            }
+            return new ResponseEntity<>("Tickets released", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error releasing tickets", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

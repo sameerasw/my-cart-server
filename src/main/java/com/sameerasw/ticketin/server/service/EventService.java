@@ -6,6 +6,7 @@ import com.sameerasw.ticketin.server.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.sameerasw.ticketin.cli.Cli.logger;
@@ -54,5 +55,9 @@ public class EventService {
 
     public List<EventItem> getAllEvents(boolean b) {
         return eventRepository.findByisSimulated(b);
+    }
+
+    public List<EventItem> getVendorEvents(long vendorId) {
+        return eventRepository.findByVendorId(vendorId);
     }
 }

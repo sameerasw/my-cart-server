@@ -56,4 +56,13 @@ public class EventController {
                 .collect(Collectors.toList());
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
+
+    @GetMapping("/{vendorId}/list")
+    public ResponseEntity<List<EventItemDTO>> getVendorEvents(@PathVariable long vendorId) {
+        List<EventItemDTO> events = eventService.getVendorEvents(vendorId)
+                .stream()
+                .map(mappingService::mapToEventItemDTO)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(events, HttpStatus.OK);
+    }
 }
