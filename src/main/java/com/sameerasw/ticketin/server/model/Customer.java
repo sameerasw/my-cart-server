@@ -1,11 +1,13 @@
 package com.sameerasw.ticketin.server.model;
 
+import com.sameerasw.ticketin.server.dto.TicketDTO;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @DiscriminatorValue("CUSTOMER")
@@ -34,6 +36,17 @@ public class Customer extends User {
 
     public int getTicketRetrievalRate() {
         return this.ticketRetrievalRate;
+    }
+
+    public List<TicketDTO> getTickets() {
+        return tickets.stream()
+                .map(ticket -> new TicketDTO(
+                        ticket.getEventItem().getName(),
+                        ticket.getTicketId().toString(),
+                        ticket.getEventItem().getImageUrl(),
+                        ticket.getEventItem().getDateTime(),
+                        ticket.getEventItem().getEventId().toString()))
+                .collect(Collectors.toList());
     }
 
     // ... getters and setters ...

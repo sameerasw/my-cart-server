@@ -1,6 +1,7 @@
 package com.sameerasw.ticketin.server.controller;
 
 import com.sameerasw.ticketin.server.dto.CustomerDTO;
+import com.sameerasw.ticketin.server.dto.TicketDTO;
 import com.sameerasw.ticketin.server.model.Customer;
 import com.sameerasw.ticketin.server.service.CustomerService;
 import com.sameerasw.ticketin.server.service.MappingService;
@@ -23,6 +24,7 @@ public class CustomerController {
     @Autowired
     private MappingService mappingService;
 
+    // Create a new customer
     @PostMapping
     public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
         try {
@@ -33,15 +35,7 @@ public class CustomerController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
-        List<CustomerDTO> customers = customerService.getAllCustomers(true)
-                .stream()
-                .map(mappingService::mapToCustomerDTO)
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(customers, HttpStatus.OK);
-    }
-
+    // Buy a ticket
     @GetMapping("/{customerId}/buy/{eventItemId}")
     public ResponseEntity<String> purchaseTicket(@PathVariable long customerId, @PathVariable long eventItemId) {
         try {
@@ -55,6 +49,20 @@ public class CustomerController {
             return new ResponseEntity<>("Ticket purchased", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error purchasing ticket", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Get all purchased tickets
+    @GetMapping("/{customerId}/tickets")
+    public ResponseEntity<List<TicketDTO>> getTickets(@PathVariable long customerId) {
+        try {
+            Customer customer = customerService.getCustomerById(customerId);
+            if (customer == null) {
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(customer.getTickets(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -41,6 +41,7 @@ public class MappingService {
         dto.setEventLocation(eventItem.getEventLocation());
         dto.setEventDate(eventItem.getEventDate());
         dto.setEventTime(eventItem.getEventTime());
+        dto.setEventId(eventItem.getEventId());
         dto.setTicketPrice(eventItem.getTicketPrice());
         dto.setDetails(eventItem.getDetails());
         dto.setImage(eventItem.getImage());

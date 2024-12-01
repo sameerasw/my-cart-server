@@ -75,5 +75,9 @@ public class Ticket {
         return this.eventItem;
     }
 
+    public Object getTicketId() {
+        return this.id;
+    }
+
     // ... getters and setters ...
 }
