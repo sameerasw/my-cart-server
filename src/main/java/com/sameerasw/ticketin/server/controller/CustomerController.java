@@ -26,7 +26,7 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
         try {
-            Customer customer = new Customer(customerDTO.getName(), customerDTO.getEmail());
+            Customer customer = new Customer(customerDTO.getName(), customerDTO.getEmail(), customerDTO.getPassword());
             return new ResponseEntity<>(mappingService.mapToCustomerDTO(customerService.createCustomer(customer)), HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
