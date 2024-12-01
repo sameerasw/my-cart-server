@@ -11,14 +11,27 @@ public class EventItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long eventId;
+
+    @Column(length = 500)
     private String eventName;
+
+    @Column(length = 500)
     private String eventLocation;
+
+    @Column(length = 500)
     private String eventDate;
+
+    @Column(length = 500)
     private String eventTime;
-    private double ticketPrice;
-    private boolean isSimulated;
-    private String details;
+
+    @Column(length = 1000)
     private String image;
+
+    @Column(length = 2000)
+    private String details;
+
+    private boolean isSimulated;
+    private double ticketPrice;
 
     @ManyToOne
     @JoinColumn(name = "vendor_id")
@@ -153,6 +166,14 @@ public class EventItem {
 
     public int getAvailableTickets() {
         return ticketPool.getAvailableTickets();
+    }
+
+    public String getImageUrl() {
+        return this.image;
+    }
+
+    public String getDateTime() {
+        return this.eventDate + " " + this.eventTime;
     }
 
 

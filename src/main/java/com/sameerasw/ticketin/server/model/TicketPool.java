@@ -45,10 +45,10 @@ public class TicketPool {
         return tickets.stream().filter(Ticket::isAvailable).collect(Collectors.toList());
     }
 
-    public int getAvailableTickets() {
-        int availableTickets = (int) tickets.stream().filter(ticket -> ticket.isAvailable()).count();
-        return availableTickets;
-    }
+public int getAvailableTickets() {
+    int availableTickets = (tickets == null) ? 0 : (int) tickets.stream().filter(ticket -> ticket.isAvailable()).count();
+    return availableTickets;
+}
 
     public String getEventName() {
         return eventItem.getName();

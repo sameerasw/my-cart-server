@@ -6,6 +6,7 @@ import com.sameerasw.ticketin.server.model.Vendor;
 import com.sameerasw.ticketin.server.repository.CustomerRepository;
 import com.sameerasw.ticketin.server.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
@@ -23,6 +24,10 @@ public class UserService {
 
     public Vendor findVendorByEmail(String email) {
         return vendorRepository.findByEmail(email);
+    }
+
+    public boolean emailExists(String email) {
+        return customerRepository.findByEmail(email) != null || vendorRepository.findByEmail(email) != null;
     }
 
     public String generateSimpleToken(Long userId) {
