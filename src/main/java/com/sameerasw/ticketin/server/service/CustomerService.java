@@ -4,9 +4,11 @@ import com.sameerasw.ticketin.server.model.Customer;
 import com.sameerasw.ticketin.server.model.EventItem;
 import com.sameerasw.ticketin.server.repository.CustomerRepository;
 import com.sameerasw.ticketin.server.repository.EventRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,8 +29,14 @@ public class CustomerService {
     private TicketPoolService ticketPoolService;
     @Autowired
     private TicketService ticketService;
+    @Autowired
+    private UserService userService;
 
+    @Transactional
     public Customer createCustomer(Customer customer) {
+        if (userService.emailExists(customer.getEmail())) {
+            throw new DataIntegrityViolationException("Email already exists");
+        }
         return customerRepository.save(customer);
     }
 

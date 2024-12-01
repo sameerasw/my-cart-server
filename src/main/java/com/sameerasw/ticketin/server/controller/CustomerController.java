@@ -5,6 +5,7 @@ import com.sameerasw.ticketin.server.model.Customer;
 import com.sameerasw.ticketin.server.service.CustomerService;
 import com.sameerasw.ticketin.server.service.MappingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,12 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
-        Customer customer = new Customer(customerDTO.getName(), customerDTO.getEmail());
-        return new ResponseEntity<>(mappingService.mapToCustomerDTO(customerService.createCustomer(customer)), HttpStatus.CREATED);
+        try {
+            Customer customer = new Customer(customerDTO.getName(), customerDTO.getEmail(), customerDTO.getPassword());
+            return new ResponseEntity<>(mappingService.mapToCustomerDTO(customerService.createCustomer(customer)), HttpStatus.CREATED);
+        } catch (DataIntegrityViolationException e) {
+            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+        }
     }
 
     @GetMapping
