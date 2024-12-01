@@ -5,16 +5,18 @@ public class TicketDTO {
     private String ticketId;
     private String imageUrl;
     private String dateTime;
+    private String eventId;
 
     // Constructors, getters, and setters
     public TicketDTO() {
     }
 
-    public TicketDTO(String eventName, String ticketId, String imageUrl, String dateTime) {
+    public TicketDTO(String eventName, String ticketId, String imageUrl, String dateTime, String eventId) {
         this.eventName = eventName;
         this.ticketId = ticketId;
         this.imageUrl = imageUrl;
         this.dateTime = dateTime;
+        this.eventId = eventId;
     }
 
     public String getEventName() {
@@ -47,6 +49,10 @@ public class TicketDTO {
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getEventId() {
+        return eventId;
     }
 
     public void setId(Long id) {

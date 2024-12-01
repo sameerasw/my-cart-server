@@ -44,7 +44,8 @@ public class Customer extends User {
                         ticket.getEventItem().getName(),
                         ticket.getTicketId().toString(),
                         ticket.getEventItem().getImageUrl(),
-                        ticket.getEventItem().getDateTime()))
+                        ticket.getEventItem().getDateTime(),
+                        ticket.getEventItem().getEventId().toString()))
                 .collect(Collectors.toList());
     }
 
