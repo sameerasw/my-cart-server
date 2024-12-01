@@ -168,6 +168,14 @@ public class EventItem {
         return ticketPool.getAvailableTickets();
     }
 
+    public String getImageUrl() {
+        return this.image;
+    }
+
+    public String getDateTime() {
+        return this.eventDate + " " + this.eventTime;
+    }
+
 
     // ... getters and setters ...
 }

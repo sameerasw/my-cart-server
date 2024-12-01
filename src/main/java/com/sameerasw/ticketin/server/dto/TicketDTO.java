@@ -1,41 +1,67 @@
 package com.sameerasw.ticketin.server.dto;
 
 public class TicketDTO {
-    private Long id;
-    private boolean isSold;
-    private Long eventId;
-    private Long customerId;
+    private String eventName;
+    private String ticketId;
+    private String imageUrl;
+    private String dateTime;
 
-    // Getters and setters
-    public Long getId() {
-        return id;
+    // Constructors, getters, and setters
+    public TicketDTO() {
+    }
+
+    public TicketDTO(String eventName, String ticketId, String imageUrl, String dateTime) {
+        this.eventName = eventName;
+        this.ticketId = ticketId;
+        this.imageUrl = imageUrl;
+        this.dateTime = dateTime;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public String getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(String ticketId) {
+        this.ticketId = ticketId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.ticketId = id.toString();
     }
 
-    public boolean isSold() {
-        return isSold;
+    public void setSold(boolean available) {
+        this.ticketId = available ? "Available" : "Sold";
     }
 
-    public void setSold(boolean sold) {
-        isSold = sold;
+    public void setEventId(Long id) {
+        this.eventName = id.toString();
     }
 
-    public Long getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
-    }
-
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public void setCustomerId(Long aLong) {
+        this.eventName = aLong.toString();
     }
 }
