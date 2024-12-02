@@ -25,8 +25,8 @@ public class Customer extends User {
         super(name, email, password);
     }
 
-    public Customer(String name, int ticketRetrievalRate) {
-        super(name, true);
+    public Customer(String name, String email, int ticketRetrievalRate) {
+        super(name, email, true);
         this.ticketRetrievalRate = ticketRetrievalRate;
     }
 
