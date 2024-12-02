@@ -150,7 +150,7 @@ public class Cli {
 
         for (int i = 0; i < numVendors; i++) {
             int ticketReleaseRate = (int) (Math.random() * 5) + 1;
-            Vendor vendor = new Vendor("Vendor " + i, ticketReleaseRate);
+            Vendor vendor = new Vendor("Vendor " + i, getRandomeEmail("Vendor " + i), ticketReleaseRate);
             vendorService.createVendor(vendor);
 //            logger.info("Vendor created: " + vendor.getId() + vendor.getName());
         }
@@ -158,7 +158,7 @@ public class Cli {
 
         for (int i = 0; i < numCustomers; i++) {
             int ticketRetrievalRate = (int) (Math.random() * 5) + 1;
-            Customer customer = new Customer("Customer " + i, ticketRetrievalRate);
+            Customer customer = new Customer("Customer " + i, getRandomeEmail("Customer " + i), ticketRetrievalRate);
             customerService.createCustomer(customer);
 //            logger.info("Customer created: " + customer.getId() + customer.getName());
         }
@@ -214,11 +214,15 @@ public class Cli {
         }
     }
 
+    private String getRandomeEmail(String name) {
+        // Generate a random email address
+        return name.toLowerCase().replace(" ", "") + (int) (Math.random() * 1000) + "@example.com";
+    }
+
     private void createVendor() {
         String name = getStringInput("Enter vendor name: ");
-        String email = getStringInput("Enter vendor email: ");
         int ticketReleaseRate = getIntegerInput("Enter ticket release rate: ");
-        Vendor vendor = new Vendor(name, ticketReleaseRate);
+        Vendor vendor = new Vendor(name, getRandomeEmail(name), ticketReleaseRate);
         vendorService.createVendor(vendor);
         System.out.println("Vendor created successfully.");
     }
@@ -233,9 +237,8 @@ public class Cli {
 
     private void createCustomer() {
         String name = getStringInput("Enter customer name: ");
-        String email = getStringInput("Enter customer email: ");
         int ticketRetrievalRate = getIntegerInput("Enter ticket retrieval rate: ");
-        Customer customer = new Customer(name, ticketRetrievalRate);
+        Customer customer = new Customer(name, getRandomeEmail(name), ticketRetrievalRate);
         customerService.createCustomer(customer);
         System.out.println("Customer created successfully.");
     }
@@ -251,10 +254,6 @@ public class Cli {
     private void createEvent() {
         long vendorId = getLongInput("Enter vendor ID: ");
         String eventName = getStringInput("Enter event name: ");
-        String eventLocation = getStringInput("Enter event location: ");
-        String eventDate = getStringInput("Enter event date (yyyy-MM-dd): ");
-        String eventTime = getStringInput("Enter event time (HH:mm): ");
-        double ticketPrice = getDoubleInput("Enter ticket price: ");
         int maxPoolSize = getIntegerInput("Enter max pool size: ");
 
         EventItem eventItem = new EventItem(eventName, vendorService.getVendorById(vendorId), true);
