@@ -8,10 +8,12 @@ import com.sameerasw.ticketin.server.repository.EventRepository;
 import com.sameerasw.ticketin.server.repository.TicketPoolRepository;
 import com.sameerasw.ticketin.server.repository.TicketRepository;
 import com.sameerasw.ticketin.server.repository.VendorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,18 +33,26 @@ public class VendorService {
     private TicketPoolService ticketPoolService;
     @Autowired
     private TicketPoolRepository ticketPoolRepository;
+    @Autowired
+    private UserService userService;
 
+    @Transactional
     public Vendor createVendor(Vendor vendor) {
+        if (userService.emailExists(vendor.getEmail())) {
+            throw new DataIntegrityViolationException("Email already exists");
+        }
         return vendorRepository.save(vendor);
     }
 
+    @Transactional
     public void releaseTickets(Vendor vendor, Long eventId) {
         EventItem eventItem = eventRepository.findById(eventId).orElse(null);
+        boolean isSimulated = eventItem.isSimulated();
         if (eventItem != null) {
             TicketPool ticketPool = eventItem.getTicketPool();
             if (ticketPool != null) {
-                if (ticketPool.getAvailableTickets() < ticketPool.getMaxPoolSize()) {
-                    Ticket ticket = new Ticket(eventItem, true);
+                if (ticketPool.getAvailableTickets() < ticketPool.getMaxPoolSize() || !isSimulated) {
+                    Ticket ticket = new Ticket(eventItem, isSimulated);
                     ticketRepository.save(ticket);
                     ticketPoolService.addTicket(ticketPool, ticket);
                     ticketPoolRepository.save(ticketPool);
@@ -64,5 +74,14 @@ public class VendorService {
 
     public Vendor getVendorById(long vendorId) {
         return vendorRepository.findById(vendorId).orElse(null);
+    }
+
+    public Vendor getVendorByEventId(long eventId) {
+        EventItem eventItem = eventRepository.findById(eventId).orElse(null);
+        if (eventItem != null) {
+            return eventItem.getVendor();
+        } else {
+            return null;
+        }
     }
 }

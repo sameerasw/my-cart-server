@@ -52,6 +52,7 @@ build
 !/**/src/**/bin
 !/**/src/**/build
 build.log
+*.gz
 dependency-reduced-pom.xml
 dump.rdb
 interpolated*.xml
@@ -66,6 +67,7 @@ secrets.yml
 .sts4-cache
 .git-hooks/
 node_modules
+logs/
 
 ### Local Configuration ###
 .env

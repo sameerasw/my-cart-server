@@ -11,6 +11,10 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Version
+    private Long version;
+
     private boolean isSold = false;
     private boolean isSimulated;
 
@@ -20,7 +24,14 @@ public class Ticket {
     private Customer customer; // Link to Customer
 
     // Constructors, getters, and setters
-    public Ticket() {}
+    public Ticket() {
+    }
+
+    public Ticket(EventItem eventItem) {
+        this.eventItem = eventItem;
+        this.isSimulated = false;
+        this.ticketPool = eventItem.getTicketPool();
+    }
 
     public Ticket(EventItem eventItem, boolean isSimulated) {
         this.eventItem = eventItem;
@@ -47,5 +58,26 @@ public class Ticket {
     public void sellTicket() {
         isSold = true;
     }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public Customer getCustomer() {
+        return this.customer;
+    }
+
+    public EventItem getEventItem() {
+        return this.eventItem;
+    }
+
+    public Object getTicketId() {
+        return this.id;
+    }
+
     // ... getters and setters ...
 }

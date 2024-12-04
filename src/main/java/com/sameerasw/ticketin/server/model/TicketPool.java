@@ -1,6 +1,7 @@
 package com.sameerasw.ticketin.server.model;
 
 import jakarta.persistence.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,7 +11,6 @@ public class TicketPool {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long poolId;
     private int maxPoolSize;
-    private int availableTickets;
 
     @ManyToOne
     @JoinColumn(name = "event_item_id")
@@ -20,10 +20,16 @@ public class TicketPool {
     private List<Ticket> tickets;
 
     // Constructors, getters, and setters
-    public TicketPool() {}
+    public TicketPool() {
+    }
 
     public TicketPool(int maxPoolSize, EventItem eventItem) {
         this.maxPoolSize = maxPoolSize;
+        this.eventItem = eventItem;
+    }
+
+    public TicketPool(EventItem eventItem) {
+        this.maxPoolSize = 0;
         this.eventItem = eventItem;
     }
 
@@ -39,17 +45,16 @@ public class TicketPool {
         return tickets.stream().filter(Ticket::isAvailable).collect(Collectors.toList());
     }
 
-    public int getAvailableTickets() {
-//        return availableTickets;
-        return (int) tickets.stream().filter(ticket -> ticket.isAvailable()).count();
-
-    }
-
-    public void setAvailableTickets(int availableTickets) {
-        this.availableTickets = availableTickets;
-    }
+public int getAvailableTickets() {
+    int availableTickets = (tickets == null) ? 0 : (int) tickets.stream().filter(ticket -> ticket.isAvailable()).count();
+    return availableTickets;
+}
 
     public String getEventName() {
         return eventItem.getName();
+    }
+
+    public EventItem getEventItem() {
+        return this.eventItem;
     }
 }

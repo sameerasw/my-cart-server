@@ -1,23 +1,24 @@
 package com.sameerasw.ticketin.cli;
 
-import java.util.List;
-import java.util.Scanner;
-
-import com.sameerasw.ticketin.server.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-
+import com.sameerasw.ticketin.server.model.Customer;
+import com.sameerasw.ticketin.server.model.EventItem;
+import com.sameerasw.ticketin.server.model.Ticket;
+import com.sameerasw.ticketin.server.model.Vendor;
 import com.sameerasw.ticketin.server.service.CustomerService;
 import com.sameerasw.ticketin.server.service.EventService;
 import com.sameerasw.ticketin.server.service.TicketService;
 import com.sameerasw.ticketin.server.service.VendorService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Scanner;
 
 @Component
 public class Cli {
-    private static final Logger logger = LoggerFactory.getLogger(Cli.class);
+    public static final Logger logger = LoggerFactory.getLogger(Cli.class);
 
     @Autowired
     private VendorService vendorService;
@@ -27,8 +28,6 @@ public class Cli {
     private TicketService ticketService;
     @Autowired
     private CustomerService customerService;
-    @Autowired
-    private RestTemplate restTemplate;
 
     private Scanner scanner = new Scanner(System.in);
 
@@ -104,38 +103,11 @@ public class Cli {
         final boolean[] isSimulating = {true};
 
         for (Vendor vendor : vendors) {
-            new Thread(() -> {
-                final Long releaseRate = vendor.getTicketReleaseRate();
-                while (isSimulating[0]) {
-                    try {
-                        Thread.sleep(releaseRate * 1000);
-                        if (!isSimulating[0]) break;
-                        vendorService.releaseTickets(vendor, events.get((int) (Math.random() * events.size())).getId());
-                    } catch (InterruptedException e) {
-                        logger.info("Thread interrupted.");
-                        Thread.currentThread().interrupt();
-                        break;
-                    }
-                }
-            }).start();
+            new Thread(new VendorSimulation(vendor, events, vendorService, isSimulating)).start();
         }
 
         for (Customer customer : customers) {
-            final Long retrievalRate = customer.getTicketRetrievalRate();
-            Thread customerThread = new Thread(() -> {
-                while (isSimulating[0]) {
-                    try {
-                        customerService.purchaseTicket(customer, events.get((int) (Math.random() * events.size())).getId());
-                        Thread.sleep(retrievalRate * 1000);
-                        if (!isSimulating[0]) break;
-                    } catch (InterruptedException e) {
-                        logger.info("Thread interrupted.");
-                        Thread.currentThread().interrupt();
-                        break;
-                    }
-                }
-            });
-            customerThread.start();
+            new Thread(new CustomerSimulation(customer, events, customerService, isSimulating)).start();
         }
 
         System.out.println("Running threads: " + Thread.activeCount());
@@ -143,15 +115,7 @@ public class Cli {
         System.out.println("Stopping simulation...");
         isSimulating[0] = false;
 
-        // Give threads some time to finish their current transactions
-//        try {
-//            Thread.sleep(10);
-//        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-//        }
-
-        // Interrupt all threads to ensure they stop
-//        Thread.getAllStackTraces().keySet().forEach(Thread::interrupt);
+        Thread.currentThread().interrupt();
     }
 
     private void displayMenu() {
@@ -170,7 +134,7 @@ public class Cli {
                 "12. Start Simulation\n" +
                 "13. Configure the simulation\n" +
                 "14. How many threads are running?"
-                );
+        );
     }
 
     private void configureSimulation() {
@@ -186,7 +150,7 @@ public class Cli {
 
         for (int i = 0; i < numVendors; i++) {
             int ticketReleaseRate = (int) (Math.random() * 5) + 1;
-            Vendor vendor = new Vendor("Vendor " + i, ticketReleaseRate);
+            Vendor vendor = new Vendor("Vendor " + i, getRandomeEmail("Vendor " + i), ticketReleaseRate);
             vendorService.createVendor(vendor);
 //            logger.info("Vendor created: " + vendor.getId() + vendor.getName());
         }
@@ -194,7 +158,7 @@ public class Cli {
 
         for (int i = 0; i < numCustomers; i++) {
             int ticketRetrievalRate = (int) (Math.random() * 5) + 1;
-            Customer customer = new Customer("Customer " + i, ticketRetrievalRate);
+            Customer customer = new Customer("Customer " + i, getRandomeEmail("Customer " + i), ticketRetrievalRate);
             customerService.createCustomer(customer);
 //            logger.info("Customer created: " + customer.getId() + customer.getName());
         }
@@ -250,11 +214,15 @@ public class Cli {
         }
     }
 
+    private String getRandomeEmail(String name) {
+        // Generate a random email address
+        return name.toLowerCase().replace(" ", "") + (int) (Math.random() * 1000) + "@example.com";
+    }
+
     private void createVendor() {
         String name = getStringInput("Enter vendor name: ");
-        String email = getStringInput("Enter vendor email: ");
         int ticketReleaseRate = getIntegerInput("Enter ticket release rate: ");
-        Vendor vendor = new Vendor(name, ticketReleaseRate);
+        Vendor vendor = new Vendor(name, getRandomeEmail(name), ticketReleaseRate);
         vendorService.createVendor(vendor);
         System.out.println("Vendor created successfully.");
     }
@@ -269,9 +237,8 @@ public class Cli {
 
     private void createCustomer() {
         String name = getStringInput("Enter customer name: ");
-        String email = getStringInput("Enter customer email: ");
         int ticketRetrievalRate = getIntegerInput("Enter ticket retrieval rate: ");
-        Customer customer = new Customer(name, ticketRetrievalRate);
+        Customer customer = new Customer(name, getRandomeEmail(name), ticketRetrievalRate);
         customerService.createCustomer(customer);
         System.out.println("Customer created successfully.");
     }
@@ -287,10 +254,6 @@ public class Cli {
     private void createEvent() {
         long vendorId = getLongInput("Enter vendor ID: ");
         String eventName = getStringInput("Enter event name: ");
-        String eventLocation = getStringInput("Enter event location: ");
-        String eventDate = getStringInput("Enter event date (yyyy-MM-dd): ");
-        String eventTime = getStringInput("Enter event time (HH:mm): ");
-        double ticketPrice = getDoubleInput("Enter ticket price: ");
         int maxPoolSize = getIntegerInput("Enter max pool size: ");
 
         EventItem eventItem = new EventItem(eventName, vendorService.getVendorById(vendorId), true);

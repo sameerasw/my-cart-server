@@ -1,12 +1,16 @@
 package com.sameerasw.ticketin.server.model;
 
-import jakarta.persistence.CascadeType;
+import com.sameerasw.ticketin.server.dto.TicketDTO;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
+@DiscriminatorValue("CUSTOMER")
 public class Customer extends User {
     private int ticketRetrievalRate;
 
@@ -14,19 +18,35 @@ public class Customer extends User {
     private List<Ticket> tickets;
 
     // Constructors, getters, and setters
-    public Customer() {}
+    public Customer() {
+    }
+
+    public Customer(String name, String email, String password) {
+        super(name, email, password);
+    }
+
+    public Customer(String name, String email, int ticketRetrievalRate) {
+        super(name, email, true);
+        this.ticketRetrievalRate = ticketRetrievalRate;
+    }
 
     public Customer(String name, String email) {
         super(name, email);
     }
 
-    public Customer(String name, int ticketRetrievalRate) {
-        super(name, true);
-        this.ticketRetrievalRate = ticketRetrievalRate;
+    public int getTicketRetrievalRate() {
+        return this.ticketRetrievalRate;
     }
 
-    public long getTicketRetrievalRate() {
-        return this.ticketRetrievalRate;
+    public List<TicketDTO> getTickets() {
+        return tickets.stream()
+                .map(ticket -> new TicketDTO(
+                        ticket.getEventItem().getName(),
+                        ticket.getTicketId().toString(),
+                        ticket.getEventItem().getImageUrl(),
+                        ticket.getEventItem().getDateTime(),
+                        ticket.getEventItem().getEventId().toString()))
+                .collect(Collectors.toList());
     }
 
     // ... getters and setters ...
