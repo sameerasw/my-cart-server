@@ -150,7 +150,7 @@ public class Cli {
 
         for (int i = 0; i < numVendors; i++) {
             int ticketReleaseRate = (int) (Math.random() * 5) + 1;
-            Vendor vendor = new Vendor("Vendor " + i, getRandomeEmail("Vendor " + i), ticketReleaseRate);
+            Vendor vendor = new Vendor("Simulated_Vendor " + i, getRandomeEmail("Vendor " + i), ticketReleaseRate);
             vendorService.createVendor(vendor);
 //            logger.info("Vendor created: " + vendor.getId() + vendor.getName());
         }
@@ -158,7 +158,7 @@ public class Cli {
 
         for (int i = 0; i < numCustomers; i++) {
             int ticketRetrievalRate = (int) (Math.random() * 5) + 1;
-            Customer customer = new Customer("Customer " + i, getRandomeEmail("Customer " + i), ticketRetrievalRate);
+            Customer customer = new Customer("Simulated_Customer " + i, getRandomeEmail("Customer " + i), ticketRetrievalRate);
             customerService.createCustomer(customer);
 //            logger.info("Customer created: " + customer.getId() + customer.getName());
         }
@@ -167,7 +167,7 @@ public class Cli {
         for (int i = 0; i < numVendors; i++) {
             int numTicketsPerEvent = (int) (Math.random() * 10) + 1;
             Vendor vendor = vendorService.getAllVendors(true).get((int) (Math.random() * numVendors));
-            EventItem eventItem = new EventItem("Event " + i, vendor, true);
+            EventItem eventItem = new EventItem("Simulated_Event " + i, vendor, true);
             eventService.createEvent(eventItem, numTicketsPerEvent);
             eventItem.createTicketPool(numTicketsPerEvent);
 //            logger.info("Event created: " + eventItem.getId() + eventItem.getEventName());
