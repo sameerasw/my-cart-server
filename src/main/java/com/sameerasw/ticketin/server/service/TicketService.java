@@ -1,3 +1,4 @@
+// src/main/java/com/sameerasw/ticketin/server/service/TicketService.java
 package com.sameerasw.ticketin.server.service;
 
 import com.sameerasw.ticketin.server.model.Ticket;
@@ -17,9 +18,9 @@ public class TicketService {
 
     public Ticket saveTicket(Ticket ticket) {
         try {
-            return ticketRepository.save(ticket);
+            Ticket savedTicket = ticketRepository.save(ticket);
+            return savedTicket;
         } catch (OptimisticLockingFailureException e) {
-            // handle the exception, e.g., retry or notify the user
             throw new RuntimeException("Ticket update failed due to concurrent modification", e);
         }
     }
