@@ -1,5 +1,6 @@
 package com.sameerasw.ticketin.server.service;
 
+import com.sameerasw.ticketin.handler.TicketWebSocketHandler;
 import com.sameerasw.ticketin.server.model.EventItem;
 import com.sameerasw.ticketin.server.model.Ticket;
 import com.sameerasw.ticketin.server.model.TicketPool;
@@ -35,6 +36,8 @@ public class VendorService {
     private TicketPoolRepository ticketPoolRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private TicketWebSocketHandler webSocketHandler;
 
     @Transactional
     public Vendor createVendor(Vendor vendor) {
@@ -56,7 +59,8 @@ public class VendorService {
                     ticketRepository.save(ticket);
                     ticketPoolService.addTicket(ticketPool, ticket);
                     ticketPoolRepository.save(ticketPool);
-                    logger.info(ANSI_CYAN + vendor.getName() + " - Released ticket: " + ticket.getId() + " for: " + eventItem.getName() + ANSI_RESET);
+                    logger.info(ANSI_CYAN + vendor.getName() + " - Released ticket: " + ticket.getId() + " for: " + eventItem.getName() + " remaining tickets: " + ticketPool.getAvailableTickets() + ANSI_RESET);
+                    webSocketHandler.sendMessageToEvent(eventId, "Ticket (" + ticket.getId() + ") was released by " + vendor.getName());
                 } else {
                     logger.info(ANSI_YELLOW + vendor.getName() + " - Ticket pool is full for: " + eventItem.getName() + ANSI_RESET);
                 }
