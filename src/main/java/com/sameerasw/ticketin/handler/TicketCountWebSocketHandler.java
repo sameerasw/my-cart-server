@@ -41,6 +41,9 @@ public class TicketCountWebSocketHandler extends TextWebSocketHandler {
     }
 
     private void sendCurrentTicketCount(WebSocketSession session, Long eventId) {
+        if (!session.isOpen()) {
+            return;
+        }
         int availableTickets = 0;
         var ticketPool = ticketPoolService.getTicketPoolByEventItemId(eventId);
         if (ticketPool != null) {
