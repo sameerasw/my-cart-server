@@ -37,6 +37,7 @@ public class CustomerService {
         if (userService.emailExists(customer.getEmail())) {
             throw new DataIntegrityViolationException("Email already exists");
         }
+        logger.info("Customer created: " + customer.getId());
         return customerRepository.save(customer);
     }
 
