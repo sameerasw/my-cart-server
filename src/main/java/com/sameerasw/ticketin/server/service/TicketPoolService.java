@@ -43,7 +43,7 @@ public class TicketPoolService {
                     ticket.sellTicket();
                     ticket.setCustomer(customer);
                     ticketService.saveTicket(ticket);
-                    logger.info(ANSI_GREEN + customer.getName() + " - Ticket " + ticket.getId() + " purchased for " + ticketPool.getEventName() + ANSI_RESET);
+                    logger.info(ANSI_GREEN + customer.getName() + " - Ticket " + ticket.getId() + " purchased for " + ticketPool.getEventName() + " remaining tickets: " + ticketPool.getAvailableTickets() + ANSI_RESET);
                     webSocketHandler.sendMessageToEvent(eventItemId, "Ticket (" + ticket.getId() + ") was purchased by " + customer.getName());
                 } else {
                     logger.info(ANSI_YELLOW + "No tickets available for the event: " + ticketPool.getEventName() + ANSI_RESET);

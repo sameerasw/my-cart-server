@@ -2,6 +2,8 @@
 package com.sameerasw.ticketin.handler;
 
 import com.sameerasw.ticketin.server.service.TicketPoolService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -17,6 +19,8 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class TicketCountWebSocketHandler extends TextWebSocketHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(TicketCountWebSocketHandler.class);
 
     private final Map<Long, CopyOnWriteArrayList<WebSocketSession>> eventSessions = new ConcurrentHashMap<>();
     private final TicketPoolService ticketPoolService;
@@ -51,6 +55,8 @@ public class TicketCountWebSocketHandler extends TextWebSocketHandler {
         }
         try {
             session.sendMessage(new TextMessage("Available tickets: " + availableTickets));
+        } catch (IllegalStateException e) {
+            logger.warn("WebSocket connection closed due to inactivity or request: {}", e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
