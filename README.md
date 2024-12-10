@@ -1,6 +1,6 @@
 # ticket-in-server
 
-This project is the backend for the TicketIn application, a ticket booking system developed as part of a coursework project at the University of Westminster for the OOP module. The backend is built using Java and Spring Boot, and it provides RESTful APIs and WebSocket endpoints for managing events, tickets, customers, and vendors.
+This project is the backend for the TicketIn application, a ticket booking system developed as part of a coursework project at the University of Westminster for the OOP module. The backend is built using Java and Spring Boot, and it provides RESTful APIs and WebSocket endpoints for managing events, tickets, customers, and vendors. [ticket-in-client →](https://github.com/sameerasw/ticket-in-client)
 
 
 ## Technologies Used
