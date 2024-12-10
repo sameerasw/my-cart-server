@@ -28,8 +28,6 @@ public class CustomerService {
     @Autowired
     private TicketPoolService ticketPoolService;
     @Autowired
-    private TicketService ticketService;
-    @Autowired
     private UserService userService;
 
     @Transactional
@@ -37,7 +35,7 @@ public class CustomerService {
         if (userService.emailExists(customer.getEmail())) {
             throw new DataIntegrityViolationException("Email already exists");
         }
-        logger.info("Customer created: " + customer.getId());
+        logger.info("Customer created: (" + customer.getId() + ") " + customer.getName());
         return customerRepository.save(customer);
     }
 

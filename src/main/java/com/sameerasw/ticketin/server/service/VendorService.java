@@ -44,6 +44,7 @@ public class VendorService {
         if (userService.emailExists(vendor.getEmail())) {
             throw new DataIntegrityViolationException("Email already exists");
         }
+        logger.info("Vendor created: (" + vendor.getId() + ") " + vendor.getName());
         return vendorRepository.save(vendor);
     }
 

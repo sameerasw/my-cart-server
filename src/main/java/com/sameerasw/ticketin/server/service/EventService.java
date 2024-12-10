@@ -22,12 +22,6 @@ public class EventService {
         return eventRepository.findById(eventItemId).orElse(null);
     }
 
-//    public EventItem createEvent(EventItem eventItem, int maxPoolSize) {
-//        TicketPool ticketPool = new TicketPool(maxPoolSize, eventItem);
-//        ticketPoolService.createTicketPool(ticketPool);
-//        eventItem.setTicketPool(ticketPool);
-//        return eventRepository.save(eventItem);
-//    }
 
     public EventItem createEvent(EventItem eventItem, int maxPoolSize) {
         // Save the EventItem FIRST
@@ -37,7 +31,7 @@ public class EventService {
         TicketPool ticketPool = new TicketPool(maxPoolSize, savedEventItem);
         ticketPoolService.createTicketPool(ticketPool);
         savedEventItem.setTicketPool(ticketPool); // Assign the saved TicketPool to the EventItem
-        logger.info("TicketPool created for EventItem: " + savedEventItem.getId());
+        logger.info("TicketPool created for EventItem: (" + savedEventItem.getId() + ") - " + savedEventItem.getName());
         return eventRepository.save(savedEventItem); // Save the updated EventItem
     }
 
@@ -49,7 +43,7 @@ public class EventService {
         TicketPool ticketPool = new TicketPool(savedEventItem);
         ticketPoolService.createTicketPool(ticketPool);
         savedEventItem.setTicketPool(ticketPool); // Assign the saved TicketPool to the EventItem
-        logger.info("TicketPool created for EventItem: " + savedEventItem.getId());
+        logger.info("TicketPool created for EventItem: (" + savedEventItem.getId() + ") - " + savedEventItem.getName());
         return eventRepository.save(savedEventItem); // Save the updated EventItem
     }
 
