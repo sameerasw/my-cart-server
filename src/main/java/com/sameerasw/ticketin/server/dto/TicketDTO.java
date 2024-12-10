@@ -7,7 +7,6 @@ public class TicketDTO {
     private String dateTime;
     private String eventId;
 
-    // Constructors, getters, and setters
     public TicketDTO() {
     }
 

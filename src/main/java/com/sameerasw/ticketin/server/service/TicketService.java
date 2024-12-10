@@ -1,4 +1,3 @@
-// src/main/java/com/sameerasw/ticketin/server/service/TicketService.java
 package com.sameerasw.ticketin.server.service;
 
 import com.sameerasw.ticketin.server.model.Ticket;

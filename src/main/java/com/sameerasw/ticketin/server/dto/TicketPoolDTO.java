@@ -6,7 +6,6 @@ public class TicketPoolDTO {
     private int availableTickets;
     private Long eventItemId;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

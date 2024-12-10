@@ -11,5 +11,5 @@ import java.util.List;
 @Transactional
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     List<Customer> findByisSimulated(boolean isSimulated);
-    Customer findByEmail(String email);  // Add this method
+    Customer findByEmail(String email);
 }

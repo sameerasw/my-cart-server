@@ -15,7 +15,6 @@ public class Vendor extends User {
     @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EventItem> events;
 
-    // Constructors, getters, and setters
     public Vendor() {
     }
 
@@ -31,6 +30,4 @@ public class Vendor extends User {
     public int getTicketReleaseRate() {
         return ticketReleaseRate;
     }
-
-    // ... getters and setters ...
 }

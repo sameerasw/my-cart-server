@@ -1,4 +1,3 @@
-// src/main/java/com/sameerasw/ticketin/handler/TicketCountWebSocketHandler.java
 package com.sameerasw.ticketin.handler;
 
 import com.sameerasw.ticketin.server.service.TicketPoolService;

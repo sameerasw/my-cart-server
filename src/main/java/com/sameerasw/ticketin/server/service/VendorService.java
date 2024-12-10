@@ -41,6 +41,7 @@ public class VendorService {
 
     @Transactional
     public Vendor createVendor(Vendor vendor) {
+        // Create a new vendor. Checks if the email already exists.
         if (userService.emailExists(vendor.getEmail())) {
             throw new DataIntegrityViolationException("Email already exists");
         }
@@ -50,6 +51,7 @@ public class VendorService {
 
     @Transactional
     public void releaseTickets(Vendor vendor, Long eventId) {
+        // Release a ticket for an event. Checks if the event exists and if the ticket pool is full.
         EventItem eventItem = eventRepository.findById(eventId).orElse(null);
         boolean isSimulated = eventItem.isSimulated();
         if (eventItem != null) {

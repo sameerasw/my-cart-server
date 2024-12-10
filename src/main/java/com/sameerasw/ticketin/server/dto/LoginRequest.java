@@ -1,4 +1,3 @@
-// src/main/java/com/sameerasw/ticketin/server/dto/LoginRequest.java
 package com.sameerasw.ticketin.server.dto;
 
 public class LoginRequest {
@@ -6,7 +5,6 @@ public class LoginRequest {
     private String password;
     private String userType;
 
-    // Getters and setters
     public String getEmail() {
         return email;
     }

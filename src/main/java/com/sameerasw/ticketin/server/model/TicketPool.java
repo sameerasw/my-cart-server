@@ -19,7 +19,6 @@ public class TicketPool {
     @OneToMany(mappedBy = "ticketPool", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Ticket> tickets;
 
-    // Constructors, getters, and setters
     public TicketPool() {
     }
 

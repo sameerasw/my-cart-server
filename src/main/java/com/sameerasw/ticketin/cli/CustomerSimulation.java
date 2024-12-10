@@ -24,6 +24,7 @@ public class CustomerSimulation implements Runnable {
 
     @Override
     public void run() {
+        // Override the run method to simulate the customer purchasing tickets
         final int retrievalRate = customer.getTicketRetrievalRate();
         while (isSimulating[0]) {
             try {

@@ -115,6 +115,8 @@ public class Cli {
     }
 
     private void configureSimulation() {
+        // Configure the simulation by creating vendors, customers, and events
+
         System.out.println("Configure the simulation");
         int numVendors = getIntegerInput("Enter the number of vendors: ");
         int numCustomers = getIntegerInput("Enter the number of customers: ");
@@ -146,6 +148,8 @@ public class Cli {
     }
 
     private void startSimulation() {
+        // Start the simulation using the created simulated vendors, customers, and events
+
         logger.info(ANSI_GREEN + "Simulation started. Press Enter to stop the simulation." + ANSI_RESET);
         List<Customer> customers = customerService.getAllCustomers(true);
         List<Vendor> vendors = vendorService.getAllVendors(true);
@@ -200,6 +204,7 @@ public class Cli {
     }
 
     private void createVendor() {
+        // Create a simulated vendor
         String name = getStringInput("Enter vendor name: ");
         int ticketReleaseRate = getIntegerInput("Enter ticket release rate: ");
         Vendor vendor = new Vendor(name, getRandomeEmail(name), ticketReleaseRate);
@@ -207,6 +212,7 @@ public class Cli {
     }
 
     private void listVendors() {
+        // List all simulated vendors
         List<Vendor> vendors = vendorService.getAllVendors(true);
         System.out.println("Vendors:");
         for (Vendor vendor : vendors) {
@@ -215,6 +221,7 @@ public class Cli {
     }
 
     private void createCustomer() {
+        // Create a simulated customer
         String name = getStringInput("Enter customer name: ");
         int ticketRetrievalRate = getIntegerInput("Enter ticket retrieval rate: ");
         Customer customer = new Customer(name, getRandomeEmail(name), ticketRetrievalRate);
@@ -222,6 +229,7 @@ public class Cli {
     }
 
     private void listCustomers() {
+        // List all simulated customers
         List<Customer> customers = customerService.getAllCustomers(true);
         System.out.println("Customers:");
         for (Customer customer : customers) {
@@ -230,6 +238,7 @@ public class Cli {
     }
 
     private void createEvent() {
+        // Create a simulated event
         long vendorId = getLongInput("Enter vendor ID: ");
         String eventName = getStringInput("Enter event name: ");
         int maxPoolSize = getIntegerInput("Enter max pool size: ");
@@ -240,6 +249,7 @@ public class Cli {
     }
 
     private void listEvents() {
+        // List all simulated events
         List<EventItem> eventItems = eventService.getAllEvents(true);
         System.out.println("Events:");
         for (EventItem eventItem : eventItems) {
@@ -248,6 +258,7 @@ public class Cli {
     }
 
     private void viewTicketPool() {
+        // View the ticket pool of a simulated event
         long eventId = getLongInput("Enter event ID: ");
         EventItem eventItem = eventService.getEventById(eventId);
         if (eventItem != null) {

@@ -23,7 +23,6 @@ public class Ticket {
     @ManyToOne
     private Customer customer; // Link to Customer
 
-    // Constructors, getters, and setters
     public Ticket() {
     }
 
@@ -79,5 +78,4 @@ public class Ticket {
         return this.id;
     }
 
-    // ... getters and setters ...
 }
