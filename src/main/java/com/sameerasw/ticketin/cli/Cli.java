@@ -82,7 +82,8 @@ public class Cli {
 
     private void displayMenu() {
         System.out.println("\n--- " + ANSI_GREEN + "TicketIn CLI Menu" + ANSI_RESET + " ---\n" +
-                "1. Create Simulated Vendor\n" +
+                ANSI_RED + "<< Server is running. Use the CLI to interact with the server for testing/ simulation purposes. >>\n" + ANSI_RESET +
+                "\n1. Create Simulated Vendor\n" +
                 "2. List Simulated Vendors\n" +
                 "3. Create Simulated Customer\n" +
                 "4. List Simulated Customers\n" +
@@ -94,7 +95,8 @@ public class Cli {
                 "9. Configure Simulation\n" +
                 "10. Start Simulation. [Enter] to stop\n" +
                 "-----------------\n" +
-                "11. Exit"
+                "11. Exit" +
+                "\n-----------------\n"
         );
     }
 
