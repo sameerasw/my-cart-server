@@ -81,9 +81,11 @@ public class Cli {
     }
 
     private void displayMenu() {
-        System.out.println("\n--- " + ANSI_GREEN + "TicketIn CLI Menu" + ANSI_RESET + " ---\n" +
+        System.out.println(
                 ANSI_RED + "<< Server is running. Use the CLI to interact with the server for testing/ simulation purposes. >>\n" + ANSI_RESET +
-                "\n1. Create Simulated Vendor\n" +
+                "\n---- " + ANSI_GREEN + "TicketIn CLI Menu" + ANSI_RESET + " ----\n" +
+                "---------------------------\n" +
+                "1. Create Simulated Vendor\n" +
                 "2. List Simulated Vendors\n" +
                 "3. Create Simulated Customer\n" +
                 "4. List Simulated Customers\n" +
@@ -91,13 +93,25 @@ public class Cli {
                 "6. List Simulated Events\n" +
                 "7. How Many Threads are Running?\n" +
                 "8. View Simulated Ticket Pool\n" +
-                "-----------------\n" +
+                "---------------------------\n" +
                 "9. Configure Simulation\n" +
                 "10. Start Simulation. [Enter] to stop\n" +
-                "-----------------\n" +
+                "---------------------------\n" +
                 "11. Exit" +
-                "\n-----------------\n"
+                "\n---------------------------\n"
         );
+    }
+
+    private int getIntegerInput(String prompt) {
+        while (true) {
+            System.out.println(prompt);
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                displayMenu();
+                System.out.println(ANSI_RED + "Invalid input. Please enter a number." + ANSI_RESET);
+            }
+        }
     }
 
     private void configureSimulation() {
@@ -163,16 +177,6 @@ public class Cli {
         logger.info(ANSI_GREEN + "Running threads: " + Thread.activeCount() + ANSI_RESET);
     }
 
-    private int getIntegerInput(String prompt) {
-        while (true) {
-            System.out.println(prompt);
-            try {
-                return Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println(ANSI_RED + "Invalid input. Please enter a number." + ANSI_RESET);
-            }
-        }
-    }
 
     private String getStringInput(String prompt) {
         System.out.println(prompt);
