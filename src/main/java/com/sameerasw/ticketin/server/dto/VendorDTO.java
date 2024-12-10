@@ -7,7 +7,6 @@ public class VendorDTO {
     private String password;
     private int ticketReleaseRate;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

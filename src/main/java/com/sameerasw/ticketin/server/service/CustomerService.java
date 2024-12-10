@@ -28,20 +28,20 @@ public class CustomerService {
     @Autowired
     private TicketPoolService ticketPoolService;
     @Autowired
-    private TicketService ticketService;
-    @Autowired
     private UserService userService;
 
     @Transactional
     public Customer createCustomer(Customer customer) {
+        // Create a new customer. Check if the email already exists in the database.
         if (userService.emailExists(customer.getEmail())) {
             throw new DataIntegrityViolationException("Email already exists");
         }
-        logger.info("Customer created: " + customer.getId());
+        logger.info("Customer created: (" + customer.getId() + ") " + customer.getName());
         return customerRepository.save(customer);
     }
 
     public void purchaseTicket(Customer customer, long eventItemId) {
+        // Purchase ticket for the customer for the given event. ReentrantLock is used to ensure that only one thread can access the ticket pool at a time.
         lock.lock();
         try {
             EventItem eventItem = eventRepository.findById(eventItemId).orElse(null);

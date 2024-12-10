@@ -6,7 +6,6 @@ import com.sameerasw.ticketin.server.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.sameerasw.ticketin.cli.Cli.logger;
@@ -22,22 +21,16 @@ public class EventService {
         return eventRepository.findById(eventItemId).orElse(null);
     }
 
-//    public EventItem createEvent(EventItem eventItem, int maxPoolSize) {
-//        TicketPool ticketPool = new TicketPool(maxPoolSize, eventItem);
-//        ticketPoolService.createTicketPool(ticketPool);
-//        eventItem.setTicketPool(ticketPool);
-//        return eventRepository.save(eventItem);
-//    }
 
     public EventItem createEvent(EventItem eventItem, int maxPoolSize) {
-        // Save the EventItem FIRST
+        // Save the EventItem first. This is important because the EventItem needs to have an ID before creating the TicketPool
         EventItem savedEventItem = eventRepository.save(eventItem);
 
-        // Now, create and save the TicketPool
+        // Creates and saves the TicketPool
         TicketPool ticketPool = new TicketPool(maxPoolSize, savedEventItem);
         ticketPoolService.createTicketPool(ticketPool);
-        savedEventItem.setTicketPool(ticketPool); // Assign the saved TicketPool to the EventItem
-        logger.info("TicketPool created for EventItem: " + savedEventItem.getId());
+        savedEventItem.setTicketPool(ticketPool);
+        logger.info("TicketPool created for EventItem: (" + savedEventItem.getId() + ") - " + savedEventItem.getName());
         return eventRepository.save(savedEventItem); // Save the updated EventItem
     }
 
@@ -45,11 +38,11 @@ public class EventService {
         // Save the EventItem FIRST
         EventItem savedEventItem = eventRepository.save(eventItem);
 
-        // Now, create and save the TicketPool
+        // Creates and saves the TicketPool
         TicketPool ticketPool = new TicketPool(savedEventItem);
         ticketPoolService.createTicketPool(ticketPool);
-        savedEventItem.setTicketPool(ticketPool); // Assign the saved TicketPool to the EventItem
-        logger.info("TicketPool created for EventItem: " + savedEventItem.getId());
+        savedEventItem.setTicketPool(ticketPool);
+        logger.info("TicketPool created for EventItem: (" + savedEventItem.getId() + ") - " + savedEventItem.getName());
         return eventRepository.save(savedEventItem); // Save the updated EventItem
     }
 

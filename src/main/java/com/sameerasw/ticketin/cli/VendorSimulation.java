@@ -25,6 +25,7 @@ public class VendorSimulation implements Runnable {
 
     @Override
     public void run() {
+        // Override the run method to simulate the vendor releasing tickets
         final int releaseRate = vendor.getTicketReleaseRate();
         while (isSimulating[0]) {
             try {

@@ -1,4 +1,3 @@
-// src/main/java/com/sameerasw/ticketin/server/controller/EventController.java
 package com.sameerasw.ticketin.server.controller;
 
 import com.sameerasw.ticketin.server.dto.EventItemDTO;

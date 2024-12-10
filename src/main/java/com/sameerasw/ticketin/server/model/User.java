@@ -19,7 +19,6 @@ public abstract class User {
     private boolean isSimulated;
     private String password;
 
-    // Constructors, getters, and setters
     public User() {
     }
 
@@ -37,6 +36,7 @@ public abstract class User {
     }
 
     public User(String name, String email, boolean isSimulated) {
+        // Overloaded constructor for simulated users
         this.name = name;
         this.email = email;
         this.isSimulated = isSimulated;
@@ -65,6 +65,4 @@ public abstract class User {
     public boolean isSimulated() {
         return this.isSimulated;
     }
-
-    // ... getters and setters ...
 }

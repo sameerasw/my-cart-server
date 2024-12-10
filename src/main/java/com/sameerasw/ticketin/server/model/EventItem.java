@@ -1,8 +1,5 @@
 package com.sameerasw.ticketin.server.model;
 
-import com.sameerasw.ticketin.server.repository.VendorRepository;
-import com.sameerasw.ticketin.server.service.UserService;
-import com.sameerasw.ticketin.server.service.VendorService;
 import jakarta.persistence.*;
 
 @Entity
@@ -41,7 +38,6 @@ public class EventItem {
     @JoinColumn(name = "pool_id")
     private TicketPool ticketPool;
 
-    // Constructors, getters, and setters
     public EventItem() {
     }
 
@@ -175,7 +171,4 @@ public class EventItem {
     public String getDateTime() {
         return this.eventDate + " " + this.eventTime;
     }
-
-
-    // ... getters and setters ...
 }

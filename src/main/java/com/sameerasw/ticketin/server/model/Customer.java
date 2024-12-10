@@ -17,7 +17,6 @@ public class Customer extends User {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ticket> tickets;
 
-    // Constructors, getters, and setters
     public Customer() {
     }
 
@@ -48,6 +47,4 @@ public class Customer extends User {
                         ticket.getEventItem().getEventId().toString()))
                 .collect(Collectors.toList());
     }
-
-    // ... getters and setters ...
 }

@@ -1,4 +1,3 @@
-// src/main/java/com/sameerasw/ticketin/handler/TicketWebSocketHandler.java
 package com.sameerasw.ticketin.handler;
 
 import org.springframework.stereotype.Component;

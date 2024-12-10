@@ -7,7 +7,6 @@ public class CustomerDTO {
     private String password;
     private int ticketRetrievalRate;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

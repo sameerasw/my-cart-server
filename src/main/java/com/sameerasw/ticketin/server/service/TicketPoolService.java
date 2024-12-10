@@ -1,4 +1,3 @@
-// src/main/java/com/sameerasw/ticketin/server/service/TicketPoolService.java
 package com.sameerasw.ticketin.server.service;
 
 import com.sameerasw.ticketin.handler.TicketWebSocketHandler;
@@ -34,6 +33,7 @@ public class TicketPoolService {
     }
 
     public void removeTicket(Long eventItemId, Customer customer) {
+        // Remove ticket from the ticket pool. ReentrantLock is used to avoid multiple threads accessing the same ticket pool from customer purchases.
         lock.lock();
         try {
             TicketPool ticketPool = ticketPoolRepository.findByEventItemIdAndTicketsIsSoldFalse(eventItemId);
@@ -43,7 +43,7 @@ public class TicketPoolService {
                     ticket.sellTicket();
                     ticket.setCustomer(customer);
                     ticketService.saveTicket(ticket);
-                    logger.info(ANSI_GREEN + customer.getName() + " - Ticket " + ticket.getId() + " purchased for " + ticketPool.getEventName() + ANSI_RESET);
+                    logger.info(ANSI_GREEN + customer.getName() + " - Ticket " + ticket.getId() + " purchased for " + ticketPool.getEventName() + " remaining tickets: " + ticketPool.getAvailableTickets() + ANSI_RESET);
                     webSocketHandler.sendMessageToEvent(eventItemId, "Ticket (" + ticket.getId() + ") was purchased by " + customer.getName());
                 } else {
                     logger.info(ANSI_YELLOW + "No tickets available for the event: " + ticketPool.getEventName() + ANSI_RESET);
