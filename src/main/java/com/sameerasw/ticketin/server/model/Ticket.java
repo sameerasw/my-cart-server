@@ -81,4 +81,7 @@ public class Ticket {
         return this.id;
     }
 
+    public void setCartItem(CartItem cartItem) {
+        this.cartItem = cartItem;
+    }
 }

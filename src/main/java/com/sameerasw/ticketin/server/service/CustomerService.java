@@ -65,8 +65,10 @@ public class CustomerService {
                 int quantity = cartItem.getQuantity();
                 if (eventItem != null && eventItem.getTicketPool() != null && eventItem.getTicketPool().getAvailableTickets() >= quantity) {
                     for (int i = 0; i < quantity; i++) {
-                        ticketPoolService.removeTicket(eventItem.getId(), customer);
+                        ticketPoolService.removeTicket(eventItem.getId(), customer, cartItem);
                     }
+                    customer.updatePurchaseHistory(cartItem);
+                    customer.clearCart();
                 }
             });
         } finally {

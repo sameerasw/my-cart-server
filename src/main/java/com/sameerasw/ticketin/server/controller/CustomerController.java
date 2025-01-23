@@ -52,17 +52,17 @@ public class CustomerController {
         }
     }
 
-    // Get all purchased tickets
-    @GetMapping("/{customerId}/tickets")
-    public ResponseEntity<List<TicketDTO>> getTickets(@PathVariable long customerId) {
-        try {
-            Customer customer = customerService.getCustomerById(customerId);
-            if (customer == null) {
-                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(customer.getTickets(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    // Get all purchased tickets
+//    @GetMapping("/{customerId}/tickets")
+//    public ResponseEntity<List<TicketDTO>> getTickets(@PathVariable long customerId) {
+//        try {
+//            Customer customer = customerService.getCustomerById(customerId);
+//            if (customer == null) {
+//                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//            }
+//            return new ResponseEntity<>(customer.getTickets(), HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 }

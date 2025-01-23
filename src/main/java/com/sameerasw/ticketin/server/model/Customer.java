@@ -1,15 +1,11 @@
 package com.sameerasw.ticketin.server.model;
 
-import com.sameerasw.ticketin.server.dto.TicketDTO;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 
-import java.util.Dictionary;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Entity
 @DiscriminatorValue("CUSTOMER")
@@ -39,6 +35,22 @@ public class Customer extends User {
 
     public int getTicketRetrievalRate() {
         return this.ticketRetrievalRate;
+    }
+
+    public List<CartItem> getCartItems() {
+        return this.cartItems;
+    }
+
+    public List<CartItem> getPurchaseHistory() {
+        return this.purchaseHistory;
+    }
+
+    public void updatePurchaseHistory(CartItem cartItem) {
+        this.purchaseHistory.add(cartItem);
+    }
+
+    public void clearCart() {
+        this.cartItems.clear();
     }
 
 //    public List<TicketDTO> getTickets() {
