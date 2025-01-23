@@ -1,6 +1,5 @@
 package com.sameerasw.ticketin.server.service;
 
-import com.sameerasw.ticketin.handler.TicketWebSocketHandler;
 import com.sameerasw.ticketin.server.model.Customer;
 import com.sameerasw.ticketin.server.model.Ticket;
 import com.sameerasw.ticketin.server.model.TicketPool;
@@ -21,8 +20,6 @@ public class TicketPoolService {
     private TicketPoolRepository ticketPoolRepository;
     @Autowired
     private TicketService ticketService;
-    @Autowired
-    private TicketWebSocketHandler webSocketHandler;
 
     public TicketPool createTicketPool(TicketPool ticketPool) {
         return ticketPoolRepository.save(ticketPool);
@@ -44,7 +41,6 @@ public class TicketPoolService {
                     ticket.setCustomer(customer);
                     ticketService.saveTicket(ticket);
                     logger.info(ANSI_GREEN + customer.getName() + " - Ticket " + ticket.getId() + " purchased for " + ticketPool.getEventName() + " remaining tickets: " + ticketPool.getAvailableTickets() + ANSI_RESET);
-                    webSocketHandler.sendMessageToEvent(eventItemId, "Ticket (" + ticket.getId() + ") was purchased by " + customer.getName());
                 } else {
                     logger.info(ANSI_YELLOW + "No tickets available for the event: " + ticketPool.getEventName() + ANSI_RESET);
                 }
