@@ -54,19 +54,7 @@ public class TicketDTO {
         return eventId;
     }
 
-    public void setId(Long id) {
-        this.ticketId = id.toString();
-    }
-
-    public void setSold(boolean available) {
-        this.ticketId = available ? "Available" : "Sold";
-    }
-
-    public void setEventId(Long id) {
-        this.eventName = id.toString();
-    }
-
-    public void setCustomerId(Long aLong) {
-        this.eventName = aLong.toString();
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 }
