@@ -17,7 +17,7 @@ public class TicketPool {
     private EventItem eventItem;
 
     @OneToMany(mappedBy = "ticketPool", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Ticket> tickets;
+    private List<Item> items;
 
     public TicketPool() {
     }
@@ -40,12 +40,12 @@ public class TicketPool {
         return poolId;
     }
 
-    public List<Ticket> getTickets() {
-        return tickets.stream().filter(Ticket::isAvailable).collect(Collectors.toList());
+    public List<Item> getTickets() {
+        return items.stream().filter(Item::isAvailable).collect(Collectors.toList());
     }
 
 public int getAvailableTickets() {
-    int availableTickets = (tickets == null) ? 0 : (int) tickets.stream().filter(ticket -> ticket.isAvailable()).count();
+    int availableTickets = (items == null) ? 0 : (int) items.stream().filter(ticket -> ticket.isAvailable()).count();
     return availableTickets;
 }
 

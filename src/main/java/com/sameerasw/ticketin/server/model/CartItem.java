@@ -19,7 +19,7 @@ public class CartItem {
     private EventItem eventItem;
 
     @OneToMany(mappedBy = "cartItem", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Ticket> tickets;
+    private List<Item> items;
 
     private int quantity;
 
@@ -44,12 +44,12 @@ public class CartItem {
         this.eventItem = eventItem;
     }
 
-    public List<Ticket> getTickets() {
-        return this.tickets;
+    public List<Item> getTickets() {
+        return this.items;
     }
 
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
+    public void setTickets(List<Item> items) {
+        this.items = items;
     }
 
     public int getQuantity() {

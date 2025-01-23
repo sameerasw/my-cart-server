@@ -2,7 +2,7 @@ package com.sameerasw.ticketin.server.service;
 
 import com.sameerasw.ticketin.server.model.CartItem;
 import com.sameerasw.ticketin.server.model.Customer;
-import com.sameerasw.ticketin.server.model.Ticket;
+import com.sameerasw.ticketin.server.model.Item;
 import com.sameerasw.ticketin.server.model.TicketPool;
 import com.sameerasw.ticketin.server.repository.TicketPoolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class TicketPoolService {
     }
 
     public TicketPool getTicketPoolByEventItemId(Long eventItemId) {
-        return ticketPoolRepository.findByEventItemIdAndTicketsIsSoldFalse(eventItemId);
+        return ticketPoolRepository.findByEventItemIdAndItemsIsSoldFalse(eventItemId);
     }
 
     public boolean removeTicket(Long eventItemId, Customer customer) {
@@ -35,14 +35,14 @@ public class TicketPoolService {
         lock.lock();
         boolean result = false;
         try {
-            TicketPool ticketPool = ticketPoolRepository.findByEventItemIdAndTicketsIsSoldFalse(eventItemId);
+            TicketPool ticketPool = ticketPoolRepository.findByEventItemIdAndItemsIsSoldFalse(eventItemId);
             if (ticketPool != null && ticketPool.getAvailableTickets() > 0) {
-                Ticket ticket = ticketPool.getTickets().stream().filter(Ticket::isAvailable).findFirst().orElse(null);
-                if (ticket != null) {
-                    ticket.sellTicket();
-                    ticket.setCustomer(customer);
-                    ticketService.saveTicket(ticket);
-                    logger.info(ANSI_GREEN + customer.getName() + " - Ticket " + ticket.getId() + " purchased for " + ticketPool.getEventName() + " remaining tickets: " + ticketPool.getAvailableTickets() + ANSI_RESET);
+                Item item = ticketPool.getTickets().stream().filter(Item::isAvailable).findFirst().orElse(null);
+                if (item != null) {
+                    item.sellTicket();
+                    item.setCustomer(customer);
+                    ticketService.saveTicket(item);
+                    logger.info(ANSI_GREEN + customer.getName() + " - Ticket " + item.getId() + " purchased for " + ticketPool.getEventName() + " remaining tickets: " + ticketPool.getAvailableTickets() + ANSI_RESET);
                     result = true;
                 } else {
                     logger.info(ANSI_YELLOW + "No tickets available for the event: " + ticketPool.getEventName() + ANSI_RESET);
@@ -59,15 +59,15 @@ public class TicketPoolService {
         lock.lock();
         boolean result = false;
         try {
-            TicketPool ticketPool = ticketPoolRepository.findByEventItemIdAndTicketsIsSoldFalse(eventItemId);
+            TicketPool ticketPool = ticketPoolRepository.findByEventItemIdAndItemsIsSoldFalse(eventItemId);
             if (ticketPool != null && ticketPool.getAvailableTickets() > 0) {
-                Ticket ticket = ticketPool.getTickets().stream().filter(Ticket::isAvailable).findFirst().orElse(null);
-                if (ticket != null) {
-                    ticket.sellTicket();
-                    ticket.setCustomer(customer);
-                    ticket.setCartItem(cartItem);
-                    ticketService.saveTicket(ticket);
-                    logger.info(ANSI_GREEN + customer.getName() + " - Ticket " + ticket.getId() + " purchased for " + ticketPool.getEventName() + " remaining tickets: " + ticketPool.getAvailableTickets() + ANSI_RESET);
+                Item item = ticketPool.getTickets().stream().filter(Item::isAvailable).findFirst().orElse(null);
+                if (item != null) {
+                    item.sellTicket();
+                    item.setCustomer(customer);
+                    item.setCartItem(cartItem);
+                    ticketService.saveTicket(item);
+                    logger.info(ANSI_GREEN + customer.getName() + " - Ticket " + item.getId() + " purchased for " + ticketPool.getEventName() + " remaining tickets: " + ticketPool.getAvailableTickets() + ANSI_RESET);
                     result = true;
                 } else {
                     logger.info(ANSI_YELLOW + "No tickets available for the event: " + ticketPool.getEventName() + ANSI_RESET);
@@ -79,9 +79,9 @@ public class TicketPoolService {
         return result;
     }
 
-    public void addTicket(TicketPool ticketPool, Ticket ticket) {
+    public void addTicket(TicketPool ticketPool, Item item) {
         if (ticketPool.getAvailableTickets() < ticketPool.getMaxPoolSize()) {
-            ticketPool.getTickets().add(ticket);
+            ticketPool.getTickets().add(item);
         }
     }
 }
