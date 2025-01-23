@@ -6,16 +6,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 
+import java.util.Dictionary;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Entity
 @DiscriminatorValue("CUSTOMER")
 public class Customer extends User {
     private int ticketRetrievalRate;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Ticket> tickets;
+    private List<CartItem> purchaseHistory;
 
     public Customer() {
     }
@@ -37,14 +41,14 @@ public class Customer extends User {
         return this.ticketRetrievalRate;
     }
 
-    public List<TicketDTO> getTickets() {
-        return tickets.stream()
-                .map(ticket -> new TicketDTO(
-                        ticket.getEventItem().getName(),
-                        ticket.getTicketId().toString(),
-                        ticket.getEventItem().getImageUrl(),
-                        ticket.getEventItem().getDateTime(),
-                        ticket.getEventItem().getEventId().toString()))
-                .collect(Collectors.toList());
-    }
+//    public List<TicketDTO> getTickets() {
+//        return tickets.stream()
+//                .map(ticket -> new TicketDTO(
+//                        ticket.getEventItem().getName(),
+//                        ticket.getTicketId().toString(),
+//                        ticket.getEventItem().getImageUrl(),
+//                        ticket.getEventItem().getDateTime(),
+//                        ticket.getEventItem().getEventId().toString()))
+//                .collect(Collectors.toList());
+//    }
 }

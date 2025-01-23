@@ -8,6 +8,9 @@ public class Ticket {
     @ManyToOne
     private TicketPool ticketPool;
 
+    @ManyToOne
+    private CartItem cartItem;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
