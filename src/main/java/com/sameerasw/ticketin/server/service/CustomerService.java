@@ -32,6 +32,8 @@ public class CustomerService {
     private TicketPoolService ticketPoolService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private EventService eventService;
 
     @Transactional
     public Customer createCustomer(Customer customer) {
@@ -83,4 +85,5 @@ public class CustomerService {
     public Customer getCustomerById(long customerId) {
         return customerRepository.findById(customerId).orElse(null);
     }
+
 }
