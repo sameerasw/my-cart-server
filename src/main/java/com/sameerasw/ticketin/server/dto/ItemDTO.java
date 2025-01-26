@@ -1,6 +1,6 @@
 package com.sameerasw.ticketin.server.dto;
 
-public class EventItemDTO {
+public class ItemDTO {
     private Long id;
     private String eventName;
     private String eventLocation;

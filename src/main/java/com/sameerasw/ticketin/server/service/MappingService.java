@@ -7,15 +7,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class MappingService {
 
-    public TicketDTO mapToTicketDTO(Item item) {
-        TicketDTO dto = new TicketDTO();
-        dto.setId(item.getId());
-        dto.setSold(item.isAvailable());
-        dto.setEventId(item.getEventItem().getId());
-        dto.setCustomerId(item.getCustomer() != null ? item.getCustomer().getId() : null);
-        return dto;
-    }
-
     public CustomerDTO mapToCustomerDTO(Customer customer) {
         CustomerDTO dto = new CustomerDTO();
         dto.setId(customer.getId());
@@ -34,8 +25,8 @@ public class MappingService {
         return dto;
     }
 
-    public EventItemDTO mapToEventItemDTO(EventItem eventItem) {
-        EventItemDTO dto = new EventItemDTO();
+    public ItemDTO mapToEventItemDTO(EventItem eventItem) {
+        ItemDTO dto = new ItemDTO();
         dto.setId(eventItem.getId());
         dto.setEventName(eventItem.getEventName());
         dto.setEventLocation(eventItem.getEventLocation());
