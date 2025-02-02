@@ -11,4 +11,6 @@ import java.util.List;
 @Transactional
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     List<CartItem> findByCustomerId(long customerId);
+
+    void deleteByCustomerId(long customerId);
 }

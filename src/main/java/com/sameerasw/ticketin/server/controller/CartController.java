@@ -22,7 +22,7 @@ public class CartController {
     @Autowired
     private MappingService mappingService;
 
-    @GetMapping("/{customerId}")
+    @GetMapping("/{customerId}") // Get all cart items by customer ID
     public ResponseEntity<List<CartItemDTO>> getCartItemsByCustomerId(@PathVariable long customerId) {
         List<CartItem> cartItems = cartService.getCartItemsByCustomerId(customerId);
         List<CartItemDTO> cartItemDTOs = cartItems.stream()
@@ -31,16 +31,22 @@ public class CartController {
         return new ResponseEntity<>(cartItemDTOs, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping // Add a new cart item
     public ResponseEntity<CartItemDTO> addCartItem(@RequestBody CartItemDTO cartItemDTO) {
         CartItem cartItem = mappingService.mapToCartItem(cartItemDTO);
         CartItem savedCartItem = cartService.addCartItem(cartItem);
         return new ResponseEntity<>(mappingService.mapToCartItemDTO(savedCartItem), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{cartItemId}")
+    @DeleteMapping("/{cartItemId}") // Remove a cart item
     public ResponseEntity<Void> removeCartItem(@PathVariable long cartItemId) {
         cartService.removeCartItem(cartItemId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/clear/{customerId}") // Clear all cart items by customer ID
+    public ResponseEntity<Void> clearCartItemsByCustomerId(@PathVariable long customerId) {
+        cartService.clearCartItemsByCustomerId(customerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

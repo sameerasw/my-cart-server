@@ -24,4 +24,8 @@ public class CartService {
     public void removeCartItem(long cartItemId) {
         cartItemRepository.deleteById(cartItemId);
     }
+
+    public void clearCartItemsByCustomerId(long customerId) {
+        cartItemRepository.deleteByCustomerId(customerId);
+    }
 }
