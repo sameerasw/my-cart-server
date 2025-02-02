@@ -2,10 +2,19 @@ package com.sameerasw.ticketin.server.service;
 
 import com.sameerasw.ticketin.server.dto.*;
 import com.sameerasw.ticketin.server.model.*;
+import com.sameerasw.ticketin.server.repository.CustomerRepository;
+import com.sameerasw.ticketin.server.repository.EventRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MappingService {
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
 
     public CustomerDTO mapToCustomerDTO(Customer customer) {
         CustomerDTO dto = new CustomerDTO();
@@ -51,4 +60,27 @@ public class MappingService {
         dto.setEventItemId(ticketPool.getEventItem().getId());
         return dto;
     }
+
+
+    public CartItemDTO mapToCartItemDTO(CartItem cartItem) {
+        CartItemDTO dto = new CartItemDTO();
+        dto.setId(cartItem.getId());
+        dto.setCustomerId(cartItem.getCustomer().getId());
+        dto.setEventItemId(cartItem.getEventItem().getId());
+        dto.setQuantity(cartItem.getQuantity());
+        return dto;
+    }
+
+
+    public CartItem mapToCartItem(CartItemDTO cartItemDTO) {
+        CartItem cartItem = new CartItem();
+        cartItem.setId(cartItemDTO.getId());
+        Customer customer = customerRepository.findById(cartItemDTO.getCustomerId()).orElse(null);
+        EventItem eventItem = eventRepository.findById(cartItemDTO.getEventItemId()).orElse(null);
+        cartItem.setCustomer(customer);
+        cartItem.setEventItem(eventItem);
+        cartItem.setQuantity(cartItemDTO.getQuantity());
+        return cartItem;
+    }
+
 }
