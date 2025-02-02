@@ -1,5 +1,6 @@
 package com.sameerasw.ticketin.server.model;
 
+import com.sameerasw.ticketin.server.dto.CustomerDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -37,5 +38,14 @@ public class Rating {
 
     public Long getId() {
         return id;
+    }
+
+
+    public EventItem getEventItem() {
+        return eventItem;
+    }
+
+    public Customer getCustomer() {
+        return customer;
     }
 }
