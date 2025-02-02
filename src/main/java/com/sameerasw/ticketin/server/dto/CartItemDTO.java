@@ -5,6 +5,9 @@ public class CartItemDTO {
     private Long customerId;
     private Long eventItemId;
     private int quantity;
+    private String eventName;
+    private double ticketPrice;
+    private String image;
 
     public Long getId() {
         return id;
@@ -36,5 +39,29 @@ public class CartItemDTO {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public double getTicketPrice() {
+        return ticketPrice;
+    }
+
+    public void setTicketPrice(double ticketPrice) {
+        this.ticketPrice = ticketPrice;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

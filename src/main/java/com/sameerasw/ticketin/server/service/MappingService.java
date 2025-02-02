@@ -68,6 +68,9 @@ public class MappingService {
         dto.setCustomerId(cartItem.getCustomer().getId());
         dto.setEventItemId(cartItem.getEventItem().getId());
         dto.setQuantity(cartItem.getQuantity());
+        dto.setEventName(cartItem.getEventItem().getEventName());
+        dto.setTicketPrice(cartItem.getEventItem().getTicketPrice());
+        dto.setImage(cartItem.getEventItem().getImage());
         return dto;
     }
 
