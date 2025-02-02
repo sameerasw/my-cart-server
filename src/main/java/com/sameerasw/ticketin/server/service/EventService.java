@@ -1,8 +1,12 @@
 package com.sameerasw.ticketin.server.service;
 
+import com.sameerasw.ticketin.server.model.Customer;
 import com.sameerasw.ticketin.server.model.EventItem;
+import com.sameerasw.ticketin.server.model.Rating;
 import com.sameerasw.ticketin.server.model.TicketPool;
+import com.sameerasw.ticketin.server.repository.CustomerRepository;
 import com.sameerasw.ticketin.server.repository.EventRepository;
+import com.sameerasw.ticketin.server.repository.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +20,10 @@ public class EventService {
     private TicketPoolService ticketPoolService;
     @Autowired
     private EventRepository eventRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    private RatingRepository ratingRepository;
 
     public EventItem getEventById(Long eventItemId) {
         return eventRepository.findById(eventItemId).orElse(null);
@@ -52,5 +60,33 @@ public class EventService {
 
     public List<EventItem> getVendorEvents(long vendorId) {
         return eventRepository.findByVendorId(vendorId);
+    }
+
+    public int getAvgRating(long eventItemId) {
+//        int rating = 0;
+//        int count = 0;
+//        List<EventItem> eventItems = eventRepository.findByVendorId(eventItemId);
+//        for (EventItem eventItem : eventItems) {
+//            rating += ratingRepository.findRatingByEventItemId(eventItem.getId());
+//            count++;
+//        }
+//        return rating / count;
+        return ratingRepository.findRatingByEventItemId(eventItemId);
+    }
+
+    public void rateEvent(long eventItemId, int rating, long customerId) {
+        EventItem eventItem = eventRepository.findById(eventItemId).orElse(null);
+        Customer customer = customerRepository.findById(customerId).orElse(null);
+        if (eventItem != null && customer != null) {
+            Rating ratingObj = new Rating(rating, eventItem, customer);
+            eventItem.addRating(ratingObj);
+            eventItem.setAvgRating(getAvgRating(eventItemId));
+            eventRepository.save(eventItem);
+            logger.info("Rating added for EventItem: (" + eventItem.getId() + ") - " + eventItem.getName());
+        }
+    }
+
+    public void updateEvent(EventItem eventItem) {
+        eventRepository.save(eventItem);
     }
 }

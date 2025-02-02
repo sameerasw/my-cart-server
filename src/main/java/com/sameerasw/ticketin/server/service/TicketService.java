@@ -1,6 +1,6 @@
 package com.sameerasw.ticketin.server.service;
 
-import com.sameerasw.ticketin.server.model.Ticket;
+import com.sameerasw.ticketin.server.model.Item;
 import com.sameerasw.ticketin.server.repository.TicketRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +15,20 @@ public class TicketService {
     @Autowired
     private TicketRepository ticketRepository;
 
-    public Ticket saveTicket(Ticket ticket) {
+    public Item saveTicket(Item item) {
         try {
-            Ticket savedTicket = ticketRepository.save(ticket);
-            return savedTicket;
+            Item savedItem = ticketRepository.save(item);
+            return savedItem;
         } catch (OptimisticLockingFailureException e) {
             throw new RuntimeException("Ticket update failed due to concurrent modification", e);
         }
     }
 
-    public List<Ticket> getTicketsByEventId(Long eventItemId) {
+    public List<Item> getTicketsByEventId(Long eventItemId) {
         return ticketRepository.findByEventItemId(eventItemId);
     }
 
-    public List<Ticket> getAllTickets() {
+    public List<Item> getAllTickets() {
         return ticketRepository.findAll();
     }
 }

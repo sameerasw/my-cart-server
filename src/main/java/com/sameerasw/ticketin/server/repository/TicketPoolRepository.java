@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Transactional
 public interface TicketPoolRepository extends JpaRepository<TicketPool, Long> {
 
-    TicketPool findByEventItemIdAndTicketsIsSoldFalse(Long eventItemId);
+    TicketPool findByEventItemIdAndItemsIsSoldFalse(Long eventItemId);
 
 }

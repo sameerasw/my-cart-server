@@ -2,6 +2,8 @@ package com.sameerasw.ticketin.server.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "event")
 public class EventItem {
@@ -29,6 +31,11 @@ public class EventItem {
 
     private boolean isSimulated;
     private double ticketPrice;
+
+    @OneToMany(mappedBy = "eventItem", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings;
+
+    private int avgRating;
 
     @ManyToOne
     @JoinColumn(name = "vendor_id")
@@ -170,5 +177,17 @@ public class EventItem {
 
     public String getDateTime() {
         return this.eventDate + " " + this.eventTime;
+    }
+
+    public void addRating(Rating rating) {
+        this.ratings.add(rating);
+    }
+
+    public void setAvgRating(int avgRating) {
+        this.avgRating = avgRating;
+    }
+
+    public int getAvgRating() {
+        return this.avgRating;
     }
 }
