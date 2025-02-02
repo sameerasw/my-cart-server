@@ -1,41 +1,45 @@
+// src/main/java/com/sameerasw/ticketin/server/service/RatingService.java
 package com.sameerasw.ticketin.server.service;
 
 import com.sameerasw.ticketin.server.model.Customer;
 import com.sameerasw.ticketin.server.model.EventItem;
 import com.sameerasw.ticketin.server.model.Rating;
 import com.sameerasw.ticketin.server.repository.CustomerRepository;
-import com.sameerasw.ticketin.server.repository.EventRepository;
 import com.sameerasw.ticketin.server.repository.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RatingService {
+
     @Autowired
     private RatingRepository ratingRepository;
 
     @Autowired
-    private EventRepository eventRepository;
+    private EventService eventService;
 
     @Autowired
     private CustomerRepository customerRepository;
 
-    public Rating addRating(int ratingValue, Long eventItemId, Long customerId) {
-        EventItem eventItem = eventRepository.findById(eventItemId).orElseThrow(() -> new IllegalArgumentException("Invalid event item ID"));
-        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new IllegalArgumentException("Invalid customer ID"));
-
-        Rating rating = new Rating(ratingValue, eventItem, customer);
-        ratingRepository.save(rating);
-
-        updateAvgRating(eventItemId);
-
-        return rating;
+    public Rating addRating(int ratingValue, long eventItemId, long customerId) {
+        EventItem eventItem = eventService.getEventById(eventItemId);
+        Customer customer = customerRepository.findById(customerId).orElse(null);
+        if (eventItem != null && customer != null) {
+            // Remove existing rating
+            Rating existingRating = ratingRepository.findByCustomerIdAndEventItemId(customerId, eventItemId);
+            if (existingRating != null) {
+                ratingRepository.delete(existingRating);
+            }
+            // Add new rating
+            Rating rating = new Rating(ratingValue, eventItem, customer);
+            return ratingRepository.save(rating);
+        } else {
+            return null;
+        }
     }
 
-    private void updateAvgRating(Long eventItemId) {
-        double avgRating = ratingRepository.findAvgRatingByEventItemId(eventItemId);
-        EventItem eventItem = eventRepository.findById(eventItemId).orElseThrow(() -> new IllegalArgumentException("Invalid event item ID"));
-        eventItem.setAvgRating((int) avgRating);
-        eventRepository.save(eventItem);
+    public int getRatingByCustomerAndEvent(long customerId, long eventItemId) {
+        Rating rating = ratingRepository.findByCustomerIdAndEventItemId(customerId, eventItemId);
+        return rating != null ? rating.getRating() : 0;
     }
 }

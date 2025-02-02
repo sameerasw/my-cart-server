@@ -21,4 +21,9 @@ public class RatingController {
         ratingDTO.setId(rating.getId());
         return new ResponseEntity<>(ratingDTO, HttpStatus.CREATED);
     }
+
+    @GetMapping("/customer/{customerId}/event/{eventItemId}")
+    public int getRatingByCustomerAndEvent(@PathVariable long customerId, @PathVariable long eventItemId) {
+        return ratingService.getRatingByCustomerAndEvent(customerId, eventItemId);
+    }
 }
