@@ -1,21 +1,24 @@
 package com.sameerasw.ticketin.server.model;
 
-import com.sameerasw.ticketin.server.dto.TicketDTO;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @DiscriminatorValue("CUSTOMER")
 public class Customer extends User {
     private int ticketRetrievalRate;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Ticket> tickets;
+    private List<CartItem> purchaseHistory;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings;
 
     public Customer() {
     }
@@ -37,14 +40,30 @@ public class Customer extends User {
         return this.ticketRetrievalRate;
     }
 
-    public List<TicketDTO> getTickets() {
-        return tickets.stream()
-                .map(ticket -> new TicketDTO(
-                        ticket.getEventItem().getName(),
-                        ticket.getTicketId().toString(),
-                        ticket.getEventItem().getImageUrl(),
-                        ticket.getEventItem().getDateTime(),
-                        ticket.getEventItem().getEventId().toString()))
-                .collect(Collectors.toList());
+    public List<CartItem> getCartItems() {
+        return this.cartItems;
     }
+
+    public List<CartItem> getPurchaseHistory() {
+        return this.purchaseHistory;
+    }
+
+    public void updatePurchaseHistory(CartItem cartItem) {
+        this.purchaseHistory.add(cartItem);
+    }
+
+    public void clearCart() {
+        this.cartItems.clear();
+    }
+
+//    public List<TicketDTO> getTickets() {
+//        return tickets.stream()
+//                .map(ticket -> new TicketDTO(
+//                        ticket.getEventItem().getName(),
+//                        ticket.getTicketId().toString(),
+//                        ticket.getEventItem().getImageUrl(),
+//                        ticket.getEventItem().getDateTime(),
+//                        ticket.getEventItem().getEventId().toString()))
+//                .collect(Collectors.toList());
+//    }
 }

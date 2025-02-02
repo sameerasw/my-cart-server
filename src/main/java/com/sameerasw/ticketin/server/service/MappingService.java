@@ -2,19 +2,19 @@ package com.sameerasw.ticketin.server.service;
 
 import com.sameerasw.ticketin.server.dto.*;
 import com.sameerasw.ticketin.server.model.*;
+import com.sameerasw.ticketin.server.repository.CustomerRepository;
+import com.sameerasw.ticketin.server.repository.EventRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MappingService {
 
-    public TicketDTO mapToTicketDTO(Ticket ticket) {
-        TicketDTO dto = new TicketDTO();
-        dto.setId(ticket.getId());
-        dto.setSold(ticket.isAvailable());
-        dto.setEventId(ticket.getEventItem().getId());
-        dto.setCustomerId(ticket.getCustomer() != null ? ticket.getCustomer().getId() : null);
-        return dto;
-    }
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
 
     public CustomerDTO mapToCustomerDTO(Customer customer) {
         CustomerDTO dto = new CustomerDTO();
@@ -34,8 +34,8 @@ public class MappingService {
         return dto;
     }
 
-    public EventItemDTO mapToEventItemDTO(EventItem eventItem) {
-        EventItemDTO dto = new EventItemDTO();
+    public ItemDTO mapToEventItemDTO(EventItem eventItem) {
+        ItemDTO dto = new ItemDTO();
         dto.setId(eventItem.getId());
         dto.setEventName(eventItem.getEventName());
         dto.setEventLocation(eventItem.getEventLocation());
@@ -48,6 +48,7 @@ public class MappingService {
         dto.setVendorId(eventItem.getVendor().getId());
         dto.setVendorName(eventItem.getVendor().getName());
         dto.setAvailableTickets(eventItem.getTicketPool().getAvailableTickets());
+        dto.setAvgRating(eventItem.getAvgRating());
         return dto;
     }
 
@@ -59,4 +60,39 @@ public class MappingService {
         dto.setEventItemId(ticketPool.getEventItem().getId());
         return dto;
     }
+
+
+    public CartItemDTO mapToCartItemDTO(CartItem cartItem) {
+        CartItemDTO dto = new CartItemDTO();
+        dto.setId(cartItem.getId());
+        dto.setCustomerId(cartItem.getCustomer().getId());
+        dto.setEventItemId(cartItem.getEventItem().getId());
+        dto.setQuantity(cartItem.getQuantity());
+        dto.setEventName(cartItem.getEventItem().getEventName());
+        dto.setTicketPrice(cartItem.getEventItem().getTicketPrice());
+        dto.setImage(cartItem.getEventItem().getImage());
+        return dto;
+    }
+
+
+    public CartItem mapToCartItem(CartItemDTO cartItemDTO) {
+        CartItem cartItem = new CartItem();
+        cartItem.setId(cartItemDTO.getId());
+        Customer customer = customerRepository.findById(cartItemDTO.getCustomerId()).orElse(null);
+        EventItem eventItem = eventRepository.findById(cartItemDTO.getEventItemId()).orElse(null);
+        cartItem.setCustomer(customer);
+        cartItem.setEventItem(eventItem);
+        cartItem.setQuantity(cartItemDTO.getQuantity());
+        return cartItem;
+    }
+
+    public RatingDTO mapToRatingDTO(Rating rating) {
+        RatingDTO dto = new RatingDTO();
+        dto.setId(rating.getId());
+        dto.setRating(rating.getRating());
+        dto.setEventItemId(rating.getEventItem().getId());
+        dto.setCustomerId(rating.getCustomer().getId());
+        return dto;
+    }
+
 }

@@ -21,21 +21,21 @@ public class TicketController {
     @Autowired
     private MappingService mappingService;
 
-    @GetMapping("/events/{eventId}")
-    public ResponseEntity<List<TicketDTO>> getTicketsByEventId(@PathVariable Long eventId) {
-        List<TicketDTO> tickets = ticketService.getTicketsByEventId(eventId)
-                .stream()
-                .map(mappingService::mapToTicketDTO)
-                .collect(Collectors.toList());
-        return tickets != null ? new ResponseEntity<>(tickets, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @GetMapping("/list")
-    public ResponseEntity<List<TicketDTO>> getAllTickets() {
-        List<TicketDTO> tickets = ticketService.getAllTickets()
-                .stream()
-                .map(mappingService::mapToTicketDTO)
-                .collect(Collectors.toList());
-        return tickets != null ? new ResponseEntity<>(tickets, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+//    @GetMapping("/events/{eventId}")
+//    public ResponseEntity<List<TicketDTO>> getTicketsByEventId(@PathVariable Long eventId) {
+//        List<TicketDTO> tickets = ticketService.getTicketsByEventId(eventId)
+//                .stream()
+//                .map(mappingService::mapToTicketDTO)
+//                .collect(Collectors.toList());
+//        return tickets != null ? new ResponseEntity<>(tickets, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//    }
+//
+//    @GetMapping("/list")
+//    public ResponseEntity<List<TicketDTO>> getAllTickets() {
+//        List<TicketDTO> tickets = ticketService.getAllTickets()
+//                .stream()
+//                .map(mappingService::mapToTicketDTO)
+//                .collect(Collectors.toList());
+//        return tickets != null ? new ResponseEntity<>(tickets, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//    }
 }

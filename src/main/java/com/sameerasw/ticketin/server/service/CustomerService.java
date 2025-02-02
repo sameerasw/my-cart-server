@@ -2,6 +2,7 @@ package com.sameerasw.ticketin.server.service;
 
 import com.sameerasw.ticketin.server.model.Customer;
 import com.sameerasw.ticketin.server.model.EventItem;
+import com.sameerasw.ticketin.server.repository.CartItemRepository;
 import com.sameerasw.ticketin.server.repository.CustomerRepository;
 import com.sameerasw.ticketin.server.repository.EventRepository;
 import jakarta.transaction.Transactional;
@@ -26,9 +27,13 @@ public class CustomerService {
     @Autowired
     private EventRepository eventRepository;
     @Autowired
+    private CartItemRepository cartItemRepository;
+    @Autowired
     private TicketPoolService ticketPoolService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private EventService eventService;
 
     @Transactional
     public Customer createCustomer(Customer customer) {
@@ -53,6 +58,26 @@ public class CustomerService {
         }
     }
 
+    public void checkoutCart(Customer customer) {
+        // Checkout the cart for the customer. ReentrantLock is used to ensure that only one thread can access the ticket pool at a time.
+        lock.lock();
+        try {
+            cartItemRepository.findByCustomerId(customer.getId()).forEach(cartItem -> {
+                EventItem eventItem = cartItem.getEventItem();
+                int quantity = cartItem.getQuantity();
+                if (eventItem != null && eventItem.getTicketPool() != null && eventItem.getTicketPool().getAvailableTickets() >= quantity) {
+                    for (int i = 0; i < quantity; i++) {
+                        ticketPoolService.removeTicket(eventItem.getId(), customer, cartItem);
+                    }
+                    customer.updatePurchaseHistory(cartItem);
+                    customer.clearCart();
+                }
+            });
+        } finally {
+            lock.unlock();
+        }
+    }
+
     public List<Customer> getAllCustomers(boolean isSimulated) {
         return customerRepository.findByisSimulated(isSimulated);
     }
@@ -60,4 +85,5 @@ public class CustomerService {
     public Customer getCustomerById(long customerId) {
         return customerRepository.findById(customerId).orElse(null);
     }
+
 }

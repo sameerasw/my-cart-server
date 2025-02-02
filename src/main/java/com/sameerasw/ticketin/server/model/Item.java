@@ -3,10 +3,13 @@ package com.sameerasw.ticketin.server.model;
 import jakarta.persistence.*;
 
 @Entity
-public class Ticket {
+public class Item {
 
     @ManyToOne
     private TicketPool ticketPool;
+
+    @ManyToOne
+    private CartItem cartItem;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,16 +26,16 @@ public class Ticket {
     @ManyToOne
     private Customer customer; // Link to Customer
 
-    public Ticket() {
+    public Item() {
     }
 
-    public Ticket(EventItem eventItem) {
+    public Item(EventItem eventItem) {
         this.eventItem = eventItem;
         this.isSimulated = false;
         this.ticketPool = eventItem.getTicketPool();
     }
 
-    public Ticket(EventItem eventItem, boolean isSimulated) {
+    public Item(EventItem eventItem, boolean isSimulated) {
         this.eventItem = eventItem;
         this.isSimulated = isSimulated;
         this.ticketPool = eventItem.getTicketPool();
@@ -78,4 +81,7 @@ public class Ticket {
         return this.id;
     }
 
+    public void setCartItem(CartItem cartItem) {
+        this.cartItem = cartItem;
+    }
 }

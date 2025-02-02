@@ -1,6 +1,6 @@
-# ticket-in-server
+# item-in-server
 
-This project is the backend for the TicketIn application, a ticket booking system developed as part of a coursework project at the University of Westminster for the OOP module. The backend is built using Java and Spring Boot, and it provides RESTful APIs and WebSocket endpoints for managing events, tickets, customers, and vendors. [ticket-in-client →](https://github.com/sameerasw/ticket-in-client)
+This project is the backend for the TicketIn application, a item booking system developed as part of a coursework project at the University of Westminster for the OOP module. The backend is built using Java and Spring Boot, and it provides RESTful APIs and WebSocket endpoints for managing events, items, customers, and vendors. [item-in-client →](https://github.com/sameerasw/item-in-client)
 
 <img width="1005" alt="CleanShot 2024-12-11 at 11  08 30@2x" src="https://github.com/user-attachments/assets/17a59d94-6aa0-418f-a144-12446b30e75b">
 
@@ -25,8 +25,8 @@ This project is the backend for the TicketIn application, a ticket booking syste
 
 1. **Clone the repository**:
     ```sh
-    git clone https://github.com/sameerasw/ticket-in-server.git
-    cd ticket-in-server
+    git clone https://github.com/sameerasw/item-in-server.git
+    cd item-in-server
     ```
 
 2. **Set up the database**:
@@ -76,7 +76,7 @@ DATABSE_ACTION=update
 ## Additional Details
 
 - **Logging**: The application logs are configured to be stored in the `./logs` directory. The logging configuration can be found in the `application.properties` file.
-- **Concurrency Handling**: The application uses `ReentrantLock` to handle concurrent ticket purchases and releases.
+- **Concurrency Handling**: The application uses `ReentrantLock` to handle concurrent item purchases and releases.
 - **Simulations**: The application includes simulation classes (`VendorSimulation` and `CustomerSimulation`) to simulate vendor and customer activities.
 
 For further details, please refer to the source code and the provided documentation.

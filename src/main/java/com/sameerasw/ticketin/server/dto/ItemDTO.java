@@ -1,6 +1,6 @@
 package com.sameerasw.ticketin.server.dto;
 
-public class EventItemDTO {
+public class ItemDTO {
     private Long id;
     private String eventName;
     private String eventLocation;
@@ -13,6 +13,7 @@ public class EventItemDTO {
     private String vendorName;
     private Long vendorId;
     private int availableTickets;
+    private int avgRating;
 
     public Long getId() {
         return id;
@@ -108,5 +109,13 @@ public class EventItemDTO {
 
     public Long getEventId() {
         return eventId;
+    }
+
+    public int getAvgRating() {
+        return avgRating;
+    }
+
+    public void setAvgRating(int avgRating) {
+        this.avgRating = avgRating;
     }
 }

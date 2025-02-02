@@ -1,6 +1,6 @@
 package com.sameerasw.ticketin.server.controller;
 
-import com.sameerasw.ticketin.server.dto.EventItemDTO;
+import com.sameerasw.ticketin.server.dto.ItemDTO;
 import com.sameerasw.ticketin.server.model.EventItem;
 import com.sameerasw.ticketin.server.model.Vendor;
 import com.sameerasw.ticketin.server.service.EventService;
@@ -31,14 +31,14 @@ public class EventController {
 
     // Create a new event
     @PostMapping
-    public ResponseEntity<?> createEvent(@RequestBody EventItemDTO eventItemDTO) {
+    public ResponseEntity<?> createEvent(@RequestBody ItemDTO itemDTO) {
         try {
-            if (eventItemDTO.getEventName() == null || eventItemDTO.getEventLocation() == null || eventItemDTO.getEventDate() == null || eventItemDTO.getEventTime() == null || eventItemDTO.getTicketPrice() == 0 || eventItemDTO.getDetails() == null || eventItemDTO.getImage() == null || eventItemDTO.getVendorId() == null || eventItemDTO.getVendorName() == null) {
+            if (itemDTO.getEventName() == null || itemDTO.getEventLocation() == null || itemDTO.getEventDate() == null || itemDTO.getEventTime() == null || itemDTO.getTicketPrice() == 0 || itemDTO.getDetails() == null || itemDTO.getImage() == null || itemDTO.getVendorId() == null || itemDTO.getVendorName() == null) {
                 return new ResponseEntity<>("Missing required fields", HttpStatus.BAD_REQUEST);
             } else {
-                logger.info("Creating event: " + eventItemDTO.getEventName() + " by vendor: " + eventItemDTO.getVendorName() + " with ID: " + eventItemDTO.getVendorId());
-                Vendor vendor = vendorService.getVendorById(eventItemDTO.getVendorId());
-                EventItem eventItem = new EventItem(eventItemDTO.getEventName(), eventItemDTO.getEventLocation(), eventItemDTO.getEventDate(), eventItemDTO.getEventTime(), eventItemDTO.getTicketPrice(), eventItemDTO.getDetails(), eventItemDTO.getImage(), vendor);
+                logger.info("Creating event: " + itemDTO.getEventName() + " by vendor: " + itemDTO.getVendorName() + " with ID: " + itemDTO.getVendorId());
+                Vendor vendor = vendorService.getVendorById(itemDTO.getVendorId());
+                EventItem eventItem = new EventItem(itemDTO.getEventName(), itemDTO.getEventLocation(), itemDTO.getEventDate(), itemDTO.getEventTime(), itemDTO.getTicketPrice(), itemDTO.getDetails(), itemDTO.getImage(), vendor);
                 EventItem createdEvent = eventService.createEvent(eventItem);
                 return new ResponseEntity<>(mappingService.mapToEventItemDTO(createdEvent), HttpStatus.CREATED);
             }
@@ -50,8 +50,8 @@ public class EventController {
 
     // Get all events
     @GetMapping("/list")
-    public ResponseEntity<List<EventItemDTO>> getAllEvents() {
-        List<EventItemDTO> events = eventService.getAllEvents(false)
+    public ResponseEntity<List<ItemDTO>> getAllEvents() {
+        List<ItemDTO> events = eventService.getAllEvents(false)
                 .stream()
                 .map(mappingService::mapToEventItemDTO)
                 .collect(Collectors.toList());
@@ -60,8 +60,8 @@ public class EventController {
 
     // Get all events by vendor
     @GetMapping("/{vendorId}/list")
-    public ResponseEntity<List<EventItemDTO>> getVendorEvents(@PathVariable long vendorId) {
-        List<EventItemDTO> events = eventService.getVendorEvents(vendorId)
+    public ResponseEntity<List<ItemDTO>> getVendorEvents(@PathVariable long vendorId) {
+        List<ItemDTO> events = eventService.getVendorEvents(vendorId)
                 .stream()
                 .map(mappingService::mapToEventItemDTO)
                 .collect(Collectors.toList());
@@ -70,7 +70,7 @@ public class EventController {
 
     // Get specific event by ID
     @GetMapping("/{eventId}")
-    public ResponseEntity<EventItemDTO> getEventById(@PathVariable long eventId) {
+    public ResponseEntity<ItemDTO> getEventById(@PathVariable long eventId) {
         EventItem eventItem = eventService.getEventById(eventId);
         if (eventItem == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
