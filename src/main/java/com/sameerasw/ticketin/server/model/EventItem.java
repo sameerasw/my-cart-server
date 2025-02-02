@@ -186,4 +186,8 @@ public class EventItem {
     public void setAvgRating(int avgRating) {
         this.avgRating = avgRating;
     }
+
+    public int getAvgRating() {
+        return this.avgRating;
+    }
 }

@@ -13,6 +13,7 @@ public class ItemDTO {
     private String vendorName;
     private Long vendorId;
     private int availableTickets;
+    private int avgRating;
 
     public Long getId() {
         return id;
@@ -108,5 +109,13 @@ public class ItemDTO {
 
     public Long getEventId() {
         return eventId;
+    }
+
+    public int getAvgRating() {
+        return avgRating;
+    }
+
+    public void setAvgRating(int avgRating) {
+        this.avgRating = avgRating;
     }
 }

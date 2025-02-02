@@ -39,6 +39,7 @@ public class MappingService {
         dto.setVendorId(eventItem.getVendor().getId());
         dto.setVendorName(eventItem.getVendor().getName());
         dto.setAvailableTickets(eventItem.getTicketPool().getAvailableTickets());
+        dto.setAvgRating(eventItem.getAvgRating());
         return dto;
     }
 
