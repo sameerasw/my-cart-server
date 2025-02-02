@@ -15,4 +15,6 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
     double findAvgRatingByEventItemId(long eventItemId);
 
     Rating findByCustomerIdAndEventItemId(long customerId, long eventItemId);
+
+    Rating[] findByEventItemId(long eventItemId);
 }

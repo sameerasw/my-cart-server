@@ -27,11 +27,6 @@ public class Rating {
         this.customer = customer;
     }
 
-    public Rating(int rating, EventItem eventItem) {
-        this.rating = rating;
-        this.eventItem = eventItem;
-    }
-
     public int getRating() {
         return rating;
     }

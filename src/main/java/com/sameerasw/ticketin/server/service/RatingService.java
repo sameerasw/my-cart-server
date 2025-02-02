@@ -32,7 +32,19 @@ public class RatingService {
             }
             // Add new rating
             Rating rating = new Rating(ratingValue, eventItem, customer);
-            return ratingRepository.save(rating);
+            ratingRepository.save(rating);
+
+            //calculate average rating
+            int sum = 0;
+            int count = 0;
+            for (Rating r : ratingRepository.findByEventItemId(eventItemId)) {
+                sum += r.getRating();
+                count++;
+            }
+            eventItem.setAvgRating(sum / count);
+            eventService.updateEvent(eventItem);
+            
+            return rating;
         } else {
             return null;
         }

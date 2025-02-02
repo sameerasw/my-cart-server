@@ -85,4 +85,8 @@ public class EventService {
             logger.info("Rating added for EventItem: (" + eventItem.getId() + ") - " + eventItem.getName());
         }
     }
+
+    public void updateEvent(EventItem eventItem) {
+        eventRepository.save(eventItem);
+    }
 }
