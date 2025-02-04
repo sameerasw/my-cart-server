@@ -1,6 +1,6 @@
-# item-in-server
+# my-cart-server
 
-This project is the backend for the TicketIn application, a item booking system developed as part of a coursework project at the University of Westminster for the OOP module. The backend is built using Java and Spring Boot, and it provides RESTful APIs and WebSocket endpoints for managing events, items, customers, and vendors. [item-in-client →](https://github.com/sameerasw/item-in-client)
+This is an experimental ported version of the Ticketin Backend.
 
 <img width="1005" alt="CleanShot 2024-12-11 at 11  08 30@2x" src="https://github.com/user-attachments/assets/17a59d94-6aa0-418f-a144-12446b30e75b">
 
