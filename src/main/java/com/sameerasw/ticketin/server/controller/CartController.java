@@ -25,13 +25,14 @@ public class CartController {
 
     @GetMapping("/{customerId}") // Get all cart items by customer ID
     public ResponseEntity<CartResponseDTO> getCartItemsByCustomerId(@PathVariable long customerId) {
-        List<CartItem> cartItems = cartService.getCartItemsByCustomerId(customerId);
-        List<CartItemDTO> cartItemDTOs = cartItems.stream()
+//        List<CartItem> cartItems = cartService.getCartItemsByCustomerId(customerId);
+        List<CartItemDTO> cartItemDTOs = cartService.getCartItemsByCustomerId(customerId)
+                .stream()
                 .map(mappingService::mapToCartItemDTO)
                 .collect(Collectors.toList());
 
         double totalPrice = cartItemDTOs.stream()
-                .mapToDouble(item -> item.getTicketPrice() * item.getQuantity())
+                .mapToDouble(item -> item.getProductPrice() * item.getQuantity())
                 .sum();
 
         CartResponseDTO response = new CartResponseDTO();
