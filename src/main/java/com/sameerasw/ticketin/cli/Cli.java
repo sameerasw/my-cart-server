@@ -82,14 +82,14 @@ public class Cli {
 
     private void displayMenu() {
         System.out.println(
-                ANSI_RED + "<< Server is running. Use the CLI to interact with the server for testing/ simulation purposes. >>\n" + ANSI_RESET +
-                "\n---- " + ANSI_GREEN + "TicketIn CLI Menu" + ANSI_RESET + " ----\n" +
+                ANSI_RED + "<< Server is running. Use the CLI to interact. This ported instance of the backend is not complete. Avoid using the CLI for interacting as vendors or customers or it may end up in exceptions during runtime. >>\n" + ANSI_RESET +
+                "\n---- " + ANSI_GREEN + "My-cart Menu" + ANSI_RESET + " ----\n" +
                 "---------------------------\n" +
                 "1. Create Simulated Vendor\n" +
                 "2. List Simulated Vendors\n" +
                 "3. Create Simulated Customer\n" +
                 "4. List Simulated Customers\n" +
-                "5. Create Simulated Event\n" +
+                "5. Create Simulated Event [Caution]\n" +
                 "6. List Simulated Events\n" +
                 "7. How Many Threads are Running?\n" +
                 "8. View Simulated Ticket Pool\n" +

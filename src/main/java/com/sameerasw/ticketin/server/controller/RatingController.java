@@ -17,7 +17,7 @@ public class RatingController {
 
     @PostMapping
     public ResponseEntity<RatingDTO> addRating(@RequestBody RatingDTO ratingDTO) {
-        Rating rating = ratingService.addRating(ratingDTO.getRating(), ratingDTO.getEventItemId(), ratingDTO.getCustomerId());
+        Rating rating = ratingService.addRating(ratingDTO.getRating(), ratingDTO.getProductId(), ratingDTO.getCustomerId());
         ratingDTO.setId(rating.getId());
         return new ResponseEntity<>(ratingDTO, HttpStatus.CREATED);
     }

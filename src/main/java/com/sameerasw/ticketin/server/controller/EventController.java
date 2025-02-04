@@ -33,12 +33,12 @@ public class EventController {
     @PostMapping
     public ResponseEntity<?> createEvent(@RequestBody ItemDTO itemDTO) {
         try {
-            if (itemDTO.getEventName() == null || itemDTO.getEventLocation() == null || itemDTO.getEventDate() == null || itemDTO.getEventTime() == null || itemDTO.getTicketPrice() == 0 || itemDTO.getDetails() == null || itemDTO.getImage() == null || itemDTO.getVendorId() == null || itemDTO.getVendorName() == null) {
+            if (itemDTO.getProductName() == null || itemDTO.getProductLocation() == null || itemDTO.getProductDate() == null || itemDTO.getProductTime() == null || itemDTO.getProductPrice() == 0 || itemDTO.getDetails() == null || itemDTO.getImage() == null || itemDTO.getVendorId() == null || itemDTO.getVendorName() == null) {
                 return new ResponseEntity<>("Missing required fields", HttpStatus.BAD_REQUEST);
             } else {
-                logger.info("Creating event: " + itemDTO.getEventName() + " by vendor: " + itemDTO.getVendorName() + " with ID: " + itemDTO.getVendorId());
+                logger.info("Creating event: " + itemDTO.getProductName() + " by vendor: " + itemDTO.getVendorName() + " with ID: " + itemDTO.getVendorId());
                 Vendor vendor = vendorService.getVendorById(itemDTO.getVendorId());
-                EventItem eventItem = new EventItem(itemDTO.getEventName(), itemDTO.getEventLocation(), itemDTO.getEventDate(), itemDTO.getEventTime(), itemDTO.getTicketPrice(), itemDTO.getDetails(), itemDTO.getImage(), vendor);
+                EventItem eventItem = new EventItem(itemDTO.getProductName(), itemDTO.getProductLocation(), itemDTO.getProductDate(), itemDTO.getProductTime(), itemDTO.getProductPrice(), itemDTO.getDetails(), itemDTO.getImage(), vendor);
                 EventItem createdEvent = eventService.createEvent(eventItem);
                 return new ResponseEntity<>(mappingService.mapToEventItemDTO(createdEvent), HttpStatus.CREATED);
             }

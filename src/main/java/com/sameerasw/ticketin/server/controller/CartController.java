@@ -1,6 +1,7 @@
 package com.sameerasw.ticketin.server.controller;
 
 import com.sameerasw.ticketin.server.dto.CartItemDTO;
+import com.sameerasw.ticketin.server.dto.CartResponseDTO;
 import com.sameerasw.ticketin.server.model.CartItem;
 import com.sameerasw.ticketin.server.service.CartService;
 import com.sameerasw.ticketin.server.service.MappingService;
@@ -23,12 +24,22 @@ public class CartController {
     private MappingService mappingService;
 
     @GetMapping("/{customerId}") // Get all cart items by customer ID
-    public ResponseEntity<List<CartItemDTO>> getCartItemsByCustomerId(@PathVariable long customerId) {
-        List<CartItem> cartItems = cartService.getCartItemsByCustomerId(customerId);
-        List<CartItemDTO> cartItemDTOs = cartItems.stream()
+    public ResponseEntity<CartResponseDTO> getCartItemsByCustomerId(@PathVariable long customerId) {
+//        List<CartItem> cartItems = cartService.getCartItemsByCustomerId(customerId);
+        List<CartItemDTO> cartItemDTOs = cartService.getCartItemsByCustomerId(customerId)
+                .stream()
                 .map(mappingService::mapToCartItemDTO)
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(cartItemDTOs, HttpStatus.OK);
+
+        double totalPrice = cartItemDTOs.stream()
+                .mapToDouble(item -> item.getProductPrice() * item.getQuantity())
+                .sum();
+
+        CartResponseDTO response = new CartResponseDTO();
+        response.setCartItems(cartItemDTOs);
+        response.setTotalPrice(totalPrice);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping // Add a new cart item
