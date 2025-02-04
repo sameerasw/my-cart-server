@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import static com.sameerasw.ticketin.cli.Cli.logger;
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("/product")
 @CrossOrigin(origins = "*")
 public class EventController {
     @Autowired
