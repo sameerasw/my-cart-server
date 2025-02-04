@@ -3,10 +3,10 @@ package com.sameerasw.ticketin.server.dto;
 public class CartItemDTO {
     private Long id;
     private Long customerId;
-    private Long eventItemId;
+    private Long productId;
     private int quantity;
-    private String eventName;
-    private double ticketPrice;
+    private String productName;
+    private double productPrice;
     private String image;
 
     public Long getId() {
@@ -25,12 +25,12 @@ public class CartItemDTO {
         this.customerId = customerId;
     }
 
-    public Long getEventItemId() {
-        return eventItemId;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setEventItemId(Long eventItemId) {
-        this.eventItemId = eventItemId;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public int getQuantity() {
@@ -41,20 +41,20 @@ public class CartItemDTO {
         this.quantity = quantity;
     }
 
-    public String getEventName() {
-        return eventName;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public double getTicketPrice() {
-        return ticketPrice;
+    public double getProductPrice() {
+        return productPrice;
     }
 
-    public void setTicketPrice(double ticketPrice) {
-        this.ticketPrice = ticketPrice;
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
     }
 
     public String getImage() {

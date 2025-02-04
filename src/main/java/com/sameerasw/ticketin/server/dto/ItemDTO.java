@@ -2,17 +2,17 @@ package com.sameerasw.ticketin.server.dto;
 
 public class ItemDTO {
     private Long id;
-    private String eventName;
-    private String eventLocation;
-    private String eventDate;
-    private String eventTime;
-    private Long eventId;
-    private double ticketPrice;
+    private String productName;
+    private String productLocation;
+    private String productDate;
+    private String productTime;
+    private Long productId;
+    private double productPrice;
     private String details;
     private String image;
     private String vendorName;
     private Long vendorId;
-    private int availableTickets;
+    private int availableProducts;
     private int avgRating;
 
     public Long getId() {
@@ -23,44 +23,44 @@ public class ItemDTO {
         this.id = id;
     }
 
-    public String getEventName() {
-        return eventName;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public String getEventLocation() {
-        return eventLocation;
+    public String getProductLocation() {
+        return productLocation;
     }
 
-    public void setEventLocation(String eventLocation) {
-        this.eventLocation = eventLocation;
+    public void setProductLocation(String productLocation) {
+        this.productLocation = productLocation;
     }
 
-    public String getEventDate() {
-        return eventDate;
+    public String getProductDate() {
+        return productDate;
     }
 
-    public void setEventDate(String eventDate) {
-        this.eventDate = eventDate;
+    public void setProductDate(String productDate) {
+        this.productDate = productDate;
     }
 
-    public String getEventTime() {
-        return eventTime;
+    public String getProductTime() {
+        return productTime;
     }
 
-    public void setEventTime(String eventTime) {
-        this.eventTime = eventTime;
+    public void setProductTime(String productTime) {
+        this.productTime = productTime;
     }
 
-    public double getTicketPrice() {
-        return ticketPrice;
+    public double getProductPrice() {
+        return productPrice;
     }
 
-    public void setTicketPrice(double ticketPrice) {
-        this.ticketPrice = ticketPrice;
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
     }
 
     public String getDetails() {
@@ -96,19 +96,19 @@ public class ItemDTO {
     }
 
     public int getAvailableTickets() {
-        return availableTickets;
+        return availableProducts;
     }
 
     public void setAvailableTickets(int availableTickets) {
-        this.availableTickets = availableTickets;
+        this.availableProducts = availableTickets;
     }
 
     public void setEventId(Long id) {
-        this.eventId = id;
+        this.productId = id;
     }
 
     public Long getEventId() {
-        return eventId;
+        return productId;
     }
 
     public int getAvgRating() {

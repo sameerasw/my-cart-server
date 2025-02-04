@@ -37,12 +37,12 @@ public class MappingService {
     public ItemDTO mapToEventItemDTO(EventItem eventItem) {
         ItemDTO dto = new ItemDTO();
         dto.setId(eventItem.getId());
-        dto.setEventName(eventItem.getEventName());
-        dto.setEventLocation(eventItem.getEventLocation());
-        dto.setEventDate(eventItem.getEventDate());
-        dto.setEventTime(eventItem.getEventTime());
+        dto.setProductName(eventItem.getEventName());
+        dto.setProductLocation(eventItem.getEventLocation());
+        dto.setProductDate(eventItem.getEventDate());
+        dto.setProductTime(eventItem.getEventTime());
         dto.setEventId(eventItem.getEventId());
-        dto.setTicketPrice(eventItem.getTicketPrice());
+        dto.setProductPrice(eventItem.getTicketPrice());
         dto.setDetails(eventItem.getDetails());
         dto.setImage(eventItem.getImage());
         dto.setVendorId(eventItem.getVendor().getId());
@@ -61,27 +61,23 @@ public class MappingService {
         return dto;
     }
 
-
     public CartItemDTO mapToCartItemDTO(CartItem cartItem) {
         CartItemDTO dto = new CartItemDTO();
         dto.setId(cartItem.getId());
         dto.setCustomerId(cartItem.getCustomer().getId());
-        dto.setEventItemId(cartItem.getEventItem().getId());
+        dto.setProductId(cartItem.getEventItem().getId());
         dto.setQuantity(cartItem.getQuantity());
-        dto.setEventName(cartItem.getEventItem().getEventName());
-        dto.setTicketPrice(cartItem.getEventItem().getTicketPrice());
+        dto.setProductName(cartItem.getEventItem().getEventName());
+        dto.setProductPrice(cartItem.getEventItem().getTicketPrice());
         dto.setImage(cartItem.getEventItem().getImage());
         return dto;
     }
 
-
     public CartItem mapToCartItem(CartItemDTO cartItemDTO) {
         CartItem cartItem = new CartItem();
         cartItem.setId(cartItemDTO.getId());
-        Customer customer = customerRepository.findById(cartItemDTO.getCustomerId()).orElse(null);
-        EventItem eventItem = eventRepository.findById(cartItemDTO.getEventItemId()).orElse(null);
-        cartItem.setCustomer(customer);
-        cartItem.setEventItem(eventItem);
+        cartItem.setCustomer(customerRepository.findById(cartItemDTO.getCustomerId()).orElse(null));
+        cartItem.setEventItem(eventRepository.findById(cartItemDTO.getProductId()).orElse(null));
         cartItem.setQuantity(cartItemDTO.getQuantity());
         return cartItem;
     }
@@ -90,7 +86,7 @@ public class MappingService {
         RatingDTO dto = new RatingDTO();
         dto.setId(rating.getId());
         dto.setRating(rating.getRating());
-        dto.setEventItemId(rating.getEventItem().getId());
+        dto.setProductId(rating.getEventItem().getId());
         dto.setCustomerId(rating.getCustomer().getId());
         return dto;
     }
