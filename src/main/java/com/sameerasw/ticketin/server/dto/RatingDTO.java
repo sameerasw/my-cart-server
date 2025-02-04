@@ -3,7 +3,7 @@ package com.sameerasw.ticketin.server.dto;
 public class RatingDTO {
     private Long id;
     private int rating;
-    private Long eventItemId;
+    private Long productId;
     private Long customerId;
 
     public Long getId() {
@@ -22,12 +22,12 @@ public class RatingDTO {
         this.rating = rating;
     }
 
-    public Long getEventItemId() {
-        return eventItemId;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setEventItemId(Long eventItemId) {
-        this.eventItemId = eventItemId;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public Long getCustomerId() {

@@ -86,7 +86,7 @@ public class MappingService {
         RatingDTO dto = new RatingDTO();
         dto.setId(rating.getId());
         dto.setRating(rating.getRating());
-        dto.setEventItemId(rating.getEventItem().getId());
+        dto.setProductId(rating.getEventItem().getId());
         dto.setCustomerId(rating.getCustomer().getId());
         return dto;
     }
