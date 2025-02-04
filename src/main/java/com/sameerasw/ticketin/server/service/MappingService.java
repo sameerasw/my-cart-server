@@ -37,12 +37,12 @@ public class MappingService {
     public ItemDTO mapToEventItemDTO(EventItem eventItem) {
         ItemDTO dto = new ItemDTO();
         dto.setId(eventItem.getId());
-        dto.setEventName(eventItem.getEventName());
-        dto.setEventLocation(eventItem.getEventLocation());
-        dto.setEventDate(eventItem.getEventDate());
-        dto.setEventTime(eventItem.getEventTime());
+        dto.setProductName(eventItem.getEventName()); // Changed from setEventName
+        dto.setProductLocation(eventItem.getEventLocation());
+        dto.setProductDate(eventItem.getEventDate());
+        dto.setProductTime(eventItem.getEventTime());
         dto.setEventId(eventItem.getEventId());
-        dto.setTicketPrice(eventItem.getTicketPrice());
+        dto.setProductPrice(eventItem.getTicketPrice());
         dto.setDetails(eventItem.getDetails());
         dto.setImage(eventItem.getImage());
         dto.setVendorId(eventItem.getVendor().getId());
